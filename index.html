@@ -1,0 +1,1161 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#9a2130">
+<meta name="description" content="璐恺十二钗 —— 一部搞笑校园视觉小说，十二种人格，一个杨璐恺。">
+<title>璐恺十二钗 · 搞笑校园后宫剧</title>
+<style>
+/* ============================================================
+   璐恺十二钗 —— 样式表
+   主色 #9a2130 / 背景 #f6efec / 圆角卡片 / 中文 system-ui 字体
+   零外部依赖：不引用任何 CDN 字体、图片、音频
+   ============================================================ */
+:root{
+  --main:#9a2130;
+  --main-dark:#7d1a26;
+  --main-soft:#c05563;
+  --bg:#f6efec;
+  --ink:#3a2123;
+  --ink-soft:#7a5c5f;
+  --radius:18px;
+  --shadow:0 8px 26px rgba(58,33,35,.12);
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{height:100%;margin:0}
+body{
+  font-family:system-ui,-apple-system,"PingFang SC","Microsoft YaHei","Helvetica Neue",Arial,sans-serif;
+  background:var(--bg);color:var(--ink);
+  overflow:hidden;user-select:none;-webkit-user-select:none;
+  font-size:16px;line-height:1.6;
+}
+button{font-family:inherit;cursor:pointer;border:0;background:none;color:inherit}
+img{-webkit-user-drag:none}
+
+#app{position:fixed;inset:0}
+.screen{position:absolute;inset:0;display:none}
+.screen.active{display:flex}
+
+/* ---------------- 标题页 ---------------- */
+#titleScreen{
+  flex-direction:column;align-items:center;justify-content:center;
+  padding:24px 16px calc(24px + env(safe-area-inset-bottom));
+  background:radial-gradient(120% 80% at 50% 0%,#ffffff 0%,#f6efec 45%,#efdfda 100%);
+  overflow:auto;
+}
+.title-card{
+  width:100%;max-width:460px;background:rgba(255,255,255,.88);
+  border-radius:24px;padding:22px 20px 18px;text-align:center;
+  box-shadow:var(--shadow);border:1px solid rgba(154,33,48,.10);
+}
+.game-title{font-size:clamp(28px,8vw,38px);font-weight:900;letter-spacing:.10em;color:var(--main);margin:2px 0 4px}
+.game-sub{font-size:12.5px;color:var(--ink-soft);letter-spacing:.05em}
+.seal{display:inline-block;margin-top:12px;font-size:11px;color:#fff;background:var(--main);border-radius:999px;padding:3px 11px;letter-spacing:.16em}
+.avatar-strip{display:grid;grid-template-columns:repeat(6,1fr);gap:6px;margin:14px 0 4px}
+.avatar-strip img{width:100%;aspect-ratio:1/1;object-fit:cover;border-radius:12px;box-shadow:0 2px 8px rgba(58,33,35,.16)}
+.title-btns{display:flex;flex-direction:column;gap:9px;margin-top:16px}
+.btn{display:block;width:100%;padding:13px 16px;border-radius:14px;font-size:16px;font-weight:800;letter-spacing:.04em;transition:transform .12s,box-shadow .12s}
+.btn:active{transform:scale(.98)}
+.btn-primary{background:linear-gradient(180deg,var(--main),var(--main-dark));color:#fff;box-shadow:0 6px 16px rgba(154,33,48,.28)}
+.btn-ghost{background:#fff;color:var(--main);border:1.5px solid rgba(154,33,48,.22)}
+.btn[disabled]{opacity:.42;pointer-events:none}
+.btn-row{display:flex;gap:9px}
+.btn-row .btn{flex:1}
+.title-foot{margin-top:14px;font-size:11.5px;color:#a0898c;line-height:1.7}
+.codex-line{margin-top:10px;font-size:12px;color:var(--main);font-weight:700}
+
+/* ---------------- 对话页 ---------------- */
+#gameScreen{
+  flex-direction:column;
+  padding:calc(env(safe-area-inset-top) + 8px) 10px calc(env(safe-area-inset-bottom) + 8px);
+}
+.bg{position:absolute;inset:0;z-index:0;transition:background .55s ease}
+.bg img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:.13;filter:saturate(.75) contrast(.95)}
+.bg::after{
+  content:'';position:absolute;inset:0;pointer-events:none;
+  background:linear-gradient(180deg,rgba(255,255,255,.42),rgba(255,255,255,0) 32%,rgba(255,255,255,.55) 100%);
+}
+/* 每个场景一种渐变（配合 campus.jpg 低透明度叠底） */
+.bg-class{background:linear-gradient(160deg,#fdf7f3 0%,#f1e0da 55%,#e7cec8 100%)}
+.bg-canteen{background:linear-gradient(160deg,#fff7ea 0%,#f7e2c9 55%,#efd1b5 100%)}
+.bg-field{background:linear-gradient(160deg,#eef7f0 0%,#dae9dd 55%,#c9dccd 100%)}
+.bg-stage{background:linear-gradient(160deg,#f7eff9 0%,#e7d8ef 55%,#d9c4e5 100%)}
+.bg-dorm{background:linear-gradient(160deg,#f2f4fb 0%,#dfe4f4 55%,#ccd4ec 100%)}
+.bg-wall{background:linear-gradient(160deg,#fff2f4 0%,#f5dee4 55%,#edced7 100%)}
+.bg-photo{background:linear-gradient(160deg,#fdf9f0 0%,#f3e8d0 55%,#e9dab9 100%)}
+.bg-gate{background:linear-gradient(160deg,#f8f4f6 0%,#ebe1e7 55%,#ddd0d9 100%)}
+
+.wrap{position:relative;z-index:2;flex:1;min-height:0;width:100%;max-width:760px;margin:0 auto;display:flex;flex-direction:column}
+.topbar{display:flex;align-items:center;gap:6px;flex:0 0 auto}
+.scene-label{
+  font-size:12px;color:var(--main);background:rgba(255,255,255,.74);
+  border:1px solid rgba(154,33,48,.14);border-radius:999px;padding:4px 10px;
+  overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:44%;
+  flex:1 1 auto;min-width:0;
+}
+.mini{
+  font-size:12px;font-weight:800;color:var(--main);background:rgba(255,255,255,.88);
+  border:1px solid rgba(154,33,48,.18);border-radius:11px;padding:7px 9px;
+  box-shadow:0 1px 4px rgba(58,33,35,.08);white-space:nowrap;
+}
+.mini.on{background:var(--main);color:#fff;border-color:var(--main)}
+
+.stage{flex:1 1 auto;min-height:0;position:relative;display:flex;align-items:center;justify-content:center;padding:12px 0 20px}
+.portrait-wrap{position:relative;display:flex;align-items:center;justify-content:center}
+.portrait{
+  width:min(46vw,200px);aspect-ratio:1/1;border-radius:26px;overflow:hidden;background:#fff;
+  box-shadow:0 0 0 6px rgba(255,255,255,.72),0 16px 34px rgba(154,33,48,.20),0 0 46px rgba(154,33,48,.22);
+  opacity:0;transition:opacity .22s ease;
+}
+.portrait.show{opacity:1;animation:popIn .44s cubic-bezier(.2,.9,.25,1.18)}
+.portrait img{width:100%;height:100%;object-fit:cover;display:block}
+@keyframes popIn{0%{transform:translateY(26px) scale(.84)}62%{transform:translateY(-7px) scale(1.035)}100%{transform:translateY(0) scale(1)}}
+
+/* 旁白：十二钗群像小卡 */
+.group-card{
+  width:min(52vw,220px);aspect-ratio:1/1;border-radius:26px;padding:9px;display:none;
+  grid-template-columns:repeat(4,1fr);grid-template-rows:repeat(3,1fr);gap:5px;
+  background:rgba(255,255,255,.66);box-shadow:0 0 0 6px rgba(255,255,255,.6),0 14px 30px rgba(58,33,35,.16);
+  position:relative;
+}
+.group-card.show{display:grid}
+.group-card img{width:100%;height:100%;object-fit:cover;border-radius:9px;opacity:.9}
+.nameplate{
+  position:absolute;left:50%;transform:translateX(-50%);bottom:-13px;
+  background:linear-gradient(180deg,var(--main),var(--main-dark));color:#fff;
+  font-size:13px;font-weight:800;letter-spacing:.06em;padding:5px 14px;border-radius:999px;
+  white-space:nowrap;box-shadow:0 6px 16px rgba(154,33,48,.3);z-index:3;
+}
+.nameplate.narr{background:linear-gradient(180deg,#8a7275,#6d585b)}
+
+.bottom{flex:0 0 auto;position:relative;padding-bottom:2px}
+.toast{
+  position:absolute;left:50%;top:-4px;transform:translateX(-50%);
+  background:rgba(154,33,48,.95);color:#fff;font-size:12.5px;font-weight:700;
+  padding:6px 13px;border-radius:999px;opacity:0;transition:opacity .25s,transform .25s;
+  pointer-events:none;white-space:nowrap;z-index:9;max-width:94vw;overflow:hidden;text-overflow:ellipsis;
+}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(-12px)}
+
+.choices{display:flex;flex-direction:column;gap:8px;margin-bottom:10px}
+.choice{
+  background:rgba(255,255,255,.96);border:1.5px solid rgba(154,33,48,.2);border-radius:14px;
+  padding:12px 14px;font-size:15px;font-weight:700;color:var(--main);text-align:left;line-height:1.5;
+  box-shadow:0 4px 14px rgba(58,33,35,.09);transition:transform .12s,background .12s;
+}
+.choice:active{transform:scale(.985);background:#fdf3f4}
+.choice .key{
+  display:inline-block;min-width:20px;height:20px;line-height:20px;text-align:center;
+  border-radius:6px;background:var(--main);color:#fff;font-size:11px;margin-right:8px;
+  vertical-align:1px;font-weight:900;
+}
+.dialogue{
+  position:relative;background:rgba(255,255,255,.94);border:1px solid rgba(154,33,48,.12);
+  border-radius:var(--radius);padding:13px 16px 11px;box-shadow:var(--shadow);min-height:116px;
+}
+.dl-name{
+  display:inline-block;font-size:13px;font-weight:900;color:#fff;background:var(--main);
+  border-radius:8px;padding:3px 10px;letter-spacing:.06em;margin-bottom:8px;
+}
+.dl-name.narr{background:#8a7275}
+.dl-text{margin:0;font-size:clamp(15px,4.2vw,18px);line-height:1.72;word-break:break-word;min-height:1.72em}
+.dl-text.chapter{text-align:center;font-size:clamp(16px,4.6vw,19px);font-weight:900;color:var(--main);letter-spacing:.10em}
+.cursor{display:inline-block;width:2px;height:1em;background:var(--main);vertical-align:-2px;margin-left:1px;animation:blink .6s steps(1) infinite}
+@keyframes blink{50%{opacity:0}}
+.hint{margin-top:9px;font-size:11px;color:#a0898c;text-align:right;animation:hintPulse 1.8s ease-in-out infinite}
+@keyframes hintPulse{0%,100%{opacity:.45}50%{opacity:1}}
+
+/* 好感度面板 */
+.aff-panel{
+  position:absolute;z-index:12;right:10px;top:48px;width:min(80vw,310px);
+  background:rgba(255,255,255,.97);border:1px solid rgba(154,33,48,.14);border-radius:16px;
+  box-shadow:0 14px 34px rgba(58,33,35,.22);padding:10px;display:none;max-height:64vh;overflow:auto;
+}
+.aff-panel.show{display:block}
+.aff-head{display:flex;align-items:center;justify-content:space-between;font-size:12px;color:var(--ink-soft);padding:0 4px 6px;border-bottom:1px solid #f3e8e8;margin-bottom:4px}
+.aff-head b{color:var(--main);font-size:13px}
+.aff-row{display:flex;align-items:center;gap:8px;padding:4px 4px;border-radius:10px}
+.aff-row.top{background:#fdf1f3}
+.aff-row img{width:26px;height:26px;border-radius:8px;object-fit:cover;flex:0 0 auto}
+.aff-row .nm{font-size:12.5px;font-weight:800;flex:0 0 56px}
+.aff-row .bar{flex:1 1 auto;height:8px;border-radius:99px;background:#f1e3e3;overflow:hidden}
+.aff-row .bar i{display:block;height:100%;width:0;background:linear-gradient(90deg,#e0778a,var(--main));border-radius:99px;transition:width .35s ease}
+.aff-row .hr{font-size:11px;color:var(--main);letter-spacing:-1px;flex:0 0 auto}
+.aff-row .num{font-size:11px;color:var(--ink-soft);flex:0 0 14px;text-align:right;font-variant-numeric:tabular-nums}
+
+/* ---------------- 结局页 ---------------- */
+#endingScreen{
+  flex-direction:column;overflow:auto;
+  padding:calc(env(safe-area-inset-top) + 20px) 16px calc(env(safe-area-inset-bottom) + 20px);
+  background:radial-gradient(120% 80% at 50% 0%,#ffffff 0%,#f6efec 45%,#efdfda 100%);
+}
+.ending-card{
+  width:100%;max-width:520px;margin:auto;background:rgba(255,255,255,.93);
+  border-radius:22px;padding:20px;box-shadow:var(--shadow);border:1px solid rgba(154,33,48,.10);
+}
+.ending-kicker{font-size:11.5px;color:var(--ink-soft);letter-spacing:.2em}
+.ending-name{font-size:clamp(21px,6vw,27px);font-weight:900;color:var(--main);margin:6px 0 12px;line-height:1.35}
+.ending-avatar{width:76px;height:76px;border-radius:20px;object-fit:cover;float:right;margin:0 0 8px 12px;box-shadow:0 6px 18px rgba(154,33,48,.24)}
+.ending-text{font-size:15px;line-height:1.85;color:#4a3033;white-space:pre-wrap}
+.ending-foot{
+  clear:both;margin-top:16px;padding-top:12px;border-top:1px dashed rgba(154,33,48,.28);
+  font-size:13.5px;color:var(--main);text-align:center;font-weight:700;line-height:1.75;
+}
+.sec-title{font-size:12.5px;font-weight:900;color:var(--main);letter-spacing:.12em;margin:18px 0 6px}
+.rank-row{display:flex;align-items:center;gap:8px;font-size:13px;padding:3px 0}
+.rank-row .idx{width:22px;color:var(--ink-soft);font-weight:800;font-variant-numeric:tabular-nums}
+.rank-row .nm{width:60px;font-weight:800}
+.rank-row .hr{color:var(--main);letter-spacing:-1px}
+.rank-row .num{margin-left:auto;color:var(--ink-soft);font-variant-numeric:tabular-nums}
+.rank-row .crown{font-size:11px;color:#fff;background:var(--main);border-radius:6px;padding:1px 5px;margin-left:6px}
+.meta-line{font-size:12px;color:var(--ink-soft);margin-top:8px;line-height:1.9}
+.meta-line b{color:var(--main)}
+
+/* 图鉴弹窗 */
+.modal{position:absolute;inset:0;z-index:30;background:rgba(58,33,35,.44);display:none;align-items:center;justify-content:center;padding:18px}
+.modal.show{display:flex}
+.modal-card{width:100%;max-width:440px;max-height:82vh;overflow:auto;background:#fff;border-radius:20px;padding:16px 16px 12px;box-shadow:0 20px 50px rgba(0,0,0,.3)}
+.modal-card h3{margin:0 0 4px;font-size:16px;color:var(--main)}
+.modal-sub{font-size:12px;color:var(--ink-soft);margin-bottom:10px}
+.codex-item{display:flex;gap:10px;align-items:flex-start;padding:8px 0;border-bottom:1px solid #f4eaea;font-size:13.5px}
+.codex-item:last-child{border-bottom:0}
+.codex-item .ci-nm{font-weight:800}
+.codex-item.locked{color:#b6a3a5}
+.codex-item .ci-t{font-size:11px;color:var(--ink-soft);margin-left:auto;white-space:nowrap}
+</style>
+</head>
+<body>
+<div id="app">
+
+  <!-- ===================== 标题页 ===================== -->
+  <section id="titleScreen" class="screen active">
+    <div class="title-card">
+      <div class="game-sub">SCUT 校园 · 十二种人格 · 一个杨璐恺</div>
+      <h1 class="game-title">璐恺十二钗</h1>
+      <div class="game-sub">搞笑校园视觉小说 · 后宫（玩梗版）</div>
+      <div class="seal">十二钗争宠实录</div>
+      <div class="avatar-strip" id="avatarStrip"></div>
+      <div class="title-btns">
+        <button class="btn btn-primary" id="btnStart">开始新游戏</button>
+        <button class="btn btn-ghost" id="btnContinue" disabled>继续游戏</button>
+        <div class="btn-row">
+          <button class="btn btn-ghost" id="btnCodex">结局图鉴</button>
+          <button class="btn btn-ghost" id="btnSound">音效：开</button>
+        </div>
+      </div>
+      <div class="codex-line" id="codexLine">结局收集：0 / 13</div>
+      <div class="title-foot">点击推进 · 空格/回车推进 · 数字键 1-4 选选项<br>谨以此，纪念那些被我们笑过、也被我们记住的大学时光</div>
+    </div>
+  </section>
+
+  <!-- ===================== 对话页 ===================== -->
+  <section id="gameScreen" class="screen">
+    <div class="bg bg-class" id="bgLayer">
+      <img src="assets/campus.jpg" alt="" draggable="false">
+    </div>
+
+    <div class="wrap">
+      <div class="topbar">
+        <div class="scene-label" id="sceneLabel">教学楼 302</div>
+        <button class="mini" id="btnSave">存档</button>
+        <button class="mini" id="btnAuto">快进</button>
+        <button class="mini" id="btnMute">🔊</button>
+        <button class="mini" id="btnAff">好感 ♥</button>
+      </div>
+
+      <div class="aff-panel" id="affPanel">
+        <div class="aff-head"><b>十二钗好感度</b><span id="affTop">—</span></div>
+        <div id="affList"></div>
+      </div>
+
+      <div class="stage" id="tapArea">
+        <div class="portrait-wrap">
+          <div class="portrait" id="portrait"><img id="portraitImg" src="assets/kai_01.jpg" alt=""></div>
+          <div class="group-card" id="groupCard"></div>
+          <div class="nameplate" id="nameplate">旁白</div>
+        </div>
+      </div>
+
+      <div class="bottom" id="bottomArea">
+        <div class="toast" id="toast"></div>
+        <div class="choices" id="choices"></div>
+        <div class="dialogue" id="dialogueBox">
+          <div class="dl-name narr" id="dlName">旁白</div>
+          <p class="dl-text" id="dlText"></p>
+          <div class="hint" id="dlHint">点击 / 空格 继续</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== 结局页 ===================== -->
+  <section id="endingScreen" class="screen">
+    <div class="ending-card">
+      <div class="ending-kicker">ENDING</div>
+      <img class="ending-avatar" id="endAvatar" src="assets/kai_01.jpg" alt="">
+      <div class="ending-name" id="endName">《——》</div>
+      <div class="ending-text" id="endText"></div>
+      <div class="ending-foot">谨以此，纪念那些被我们笑过、也被我们记住的大学时光。</div>
+      <div class="sec-title">好 感 排 行</div>
+      <div id="endRank"></div>
+      <div class="meta-line" id="endMeta"></div>
+      <div class="title-btns">
+        <button class="btn btn-primary" id="btnRestart">从头再来</button>
+        <button class="btn btn-ghost" id="btnBackTitle">回到标题</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== 图鉴弹窗 ===================== -->
+  <div class="modal" id="codexModal">
+    <div class="modal-card">
+      <h3>结局图鉴</h3>
+      <div class="modal-sub" id="codexSub">已解锁 0 / 13</div>
+      <div id="codexList"></div>
+      <div class="title-btns"><button class="btn btn-ghost" id="btnCodexClose">关闭</button></div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+/* ============================================================================
+ * 璐恺十二钗 —— 单文件视觉小说引擎 + 剧本
+ * 纯原生 JS，零依赖，无构建，无外部资源（图片除外，均在本目录 assets/ 下）
+ * ==========================================================================*/
+(function(){
+'use strict';
+
+/* ---------------------------------------------------------------
+ * 0. 常量与存档键（键名固定，勿改）
+ * -------------------------------------------------------------*/
+var SAVE_KEY  = 'galgame-yanglukai:save:v1';   // 进度 + 好感 + 已解锁结局
+var ENDS_KEY  = 'galgame-yanglukai:ends:v1';   // 结局收集（图鉴）
+var HAREM_THRESHOLD = 7;   // 后宫结局阈值：12 位好感都 >= 该值
+var AFF_MAX   = 8;         // 好感条 / 心形的显示上限（本作单角色好感上限恰为 8）
+var TYPE_SPEED = 26;       // 打字机速度（毫秒 / 字）
+
+/* ---------------------------------------------------------------
+ * 1. 十二钗（顺序固定：01 幼年恺 … 12 奶龙恺）
+ * -------------------------------------------------------------*/
+var CHARS = [
+  { name:'幼年恺', img:'assets/kai_01.jpg', tag:'十二钗里最乖的那个（自称）' },
+  { name:'生日恺', img:'assets/kai_02.jpg', tag:'每天都过生日' },
+  { name:'比心恺', img:'assets/kai_03.jpg', tag:'连罚站都在比心' },
+  { name:'Wink恺', img:'assets/kai_04.jpg', tag:'说话不带眨眼会卡壳' },
+  { name:'托腮恺', img:'assets/kai_05.jpg', tag:'一托腮就想通了人生' },
+  { name:'拼好恺', img:'assets/kai_06.jpg', tag:'左半边内向，右半边社牛' },
+  { name:'奖牌恺', img:'assets/kai_07.jpg', tag:'走一步叮当三步' },
+  { name:'鬼脸恺', img:'assets/kai_08.jpg', tag:'毕业照上永远不正经' },
+  { name:'军训恺', img:'assets/kai_09.jpg', tag:'军训结束三年，口令没结束' },
+  { name:'绷绷恺', img:'assets/kai_10.jpg', tag:'一般不笑，笑起来很吓人' },
+  { name:'怼脸恺', img:'assets/kai_11.jpg', tag:'距离越近，照片越对' },
+  { name:'奶龙恺', img:'assets/kai_12.jpg', tag:'成年了，但说话有点奶' }
+];
+
+/* ---------------------------------------------------------------
+ * 2. 场景背景（渐变 + campus.jpg 低透明度叠底）
+ * -------------------------------------------------------------*/
+var BGS = {
+  class:  { cls:'bg-class',   label:'教学楼 302' },
+  canteen:{ cls:'bg-canteen', label:'第一食堂' },
+  field:  { cls:'bg-field',   label:'军训操场' },
+  stage:  { cls:'bg-stage',   label:'大礼堂' },
+  dorm:   { cls:'bg-dorm',    label:'宿舍楼下' },
+  wall:   { cls:'bg-wall',    label:'表白墙前' },
+  photo:  { cls:'bg-photo',   label:'毕业照现场' },
+  gate:   { cls:'bg-gate',    label:'校门口' }
+};
+
+/* ---------------------------------------------------------------
+ * 3. 剧本数据（数据驱动，改台词只改这里）
+ *
+ * 字段说明：
+ *   id      节点唯一 id（字符串）
+ *   who     说话者：0~11 对应十二钗；-1 表示旁白
+ *   text    台词
+ *   bg      场景 id（可省略，沿用上一个场景）
+ *   chapter 可选 true，表示章节标题样式
+ *   next    下一句的 id；省略则顺序播放数组的下一项；
+ *           取值 '@end' 表示进入结局结算
+ *   choices 选项数组：{ label, next, aff:{钗下标:+n}, affAll:+n }
+ *           aff  = 给指定钗加好感；affAll = 给全部 12 位一起加好感
+ * -------------------------------------------------------------*/
+var SCRIPT = [
+
+/* ===================== 序章 · 开学第一天 ===================== */
+{ id:'p01', who:-1, bg:'class', text:'九月一号，早上七点半。教学楼 302，新学期的第一节课。' },
+{ id:'p02', who:-1, text:'你抱着刚领的课本推开门，发现教室里已经坐了一个人。' },
+{ id:'p03', who:0, text:'哟，新同学？我叫杨璐恺——不过在这间教室里，你得叫我"幼年恺"。' },
+{ id:'p04', who:0, text:'别紧张，我是"璐恺十二钗"里最乖的那个。' },
+{ id:'p05', who:-1, text:'话音刚落，后门"砰"地被人撞开了。' },
+{ id:'p06', who:1, text:'等一下！自我介绍这种事，必须等寿星先说！' },
+{ id:'p07', who:0, text:'……你昨天不是刚过完生日吗？' },
+{ id:'p08', who:1, text:'对啊。今天也是我生日，明天也是。生日恺的日历，只有一页。' },
+{ id:'p09', who:2, text:'哎呀别吵别吵，先让我比个心。我连被罚站都是比心姿势，站了四十分钟，老师都不好意思了。' },
+{ id:'p10', who:3, text:'大家好呀（眨眼）。不好意思，我说话不带眨眼会卡壳——刚才那句，我眨了三次。' },
+{ id:'p11', who:4, text:'（托腮）我想通了。自我介绍，本质上是一种社会性的自我暴露。' },
+{ id:'p12', who:0, text:'说人话。' },
+{ id:'p13', who:4, text:'我叫托腮恺，我喜欢托腮。' },
+{ id:'p14', who:5, text:'我叫拼好恺。我的左半边很内向，右半边是社交恐怖分子，他俩每天早上都要吵一架。' },
+{ id:'p15', who:6, text:'都让让，都让让——（叮当叮当）我叫奖牌恺。这块是小学三年级跳绳第三名，这块是体测及格，这块是上周光盘行动纪念章。' },
+{ id:'p16', who:7, text:'略——！抱歉抱歉，不是针对你。我天生就长这样……不对，是我天生就想这样。' },
+{ id:'p17', who:8, text:'全体注意——！立正！稍息！报数！……报告，我叫军训恺。军训结束三年了，我的口令还没结束。' },
+{ id:'p18', who:9, text:'（面无表情）我叫绷绷恺。我一般不笑。' },
+{ id:'p19', who:0, text:'他上次笑，是听说食堂开了个新窗口。' },
+{ id:'p20', who:9, text:'那个窗口，值得。' },
+{ id:'p21', who:10, text:'来来来，先怼脸拍一张！近点，再近点——好。这张用来当班级群头像，就叫"怼脸恺"。' },
+{ id:'p22', who:11, text:'还有窝！还有窝！窝叫奶龙恺~ 窝说话是有点奶，但窝已经成年了哦~' },
+{ id:'p23', who:0, text:'……行吧。现在你认识了十二个我。同一个杨璐恺，十二种打开方式。' },
+{ id:'p24', who:0, text:'开学第一天，你打算先跟谁打招呼？' },
+{ id:'pChoice', who:0, text:'（你只有一次开口的机会。）', choices:[
+  { label:'先跟幼年恺和生日恺握个手', aff:{0:2, 1:2, 11:1}, next:'pA1' },
+  { label:'站直敬礼，先跟军训恺和绷绷恺套近乎', aff:{8:2, 9:2, 10:1}, next:'pB1' },
+  { label:'一个都不落下，从第一排招呼到最后一排', affAll:1, next:'pC1' }
+]},
+
+{ id:'pA1', who:-1, text:'你走过去，先跟幼年恺和生日恺握了手。' },
+{ id:'pA2', who:1, text:'握手的这一刻，请允许我把它记作我的生日礼物。' },
+{ id:'pA3', who:0, text:'……他一年能收三百六十五份礼物。', next:'a01' },
+
+{ id:'pB1', who:-1, text:'你条件反射地站直，抬手敬了个礼。' },
+{ id:'pB2', who:8, text:'好！这位同学有天赋！考虑一下，明年军训你来当教官！' },
+{ id:'pB3', who:9, text:'（嘴角向上移动了 0.5 毫米）可以。' },
+{ id:'pB4', who:10, text:'别动！刚才那个表情我拍下来了！', next:'a01' },
+
+{ id:'pC1', who:-1, text:'你决定一个都不落下，从第一排走到最后一排，把十二张脸都招呼了一遍。' },
+{ id:'pC2', who:0, text:'……你是第一个把十二个人全部招呼一遍的人。' },
+{ id:'pC3', who:-1, text:'十二张一模一样的脸同时朝你点头。教室瞬间像开了十二个窗口。', next:'a01' },
+
+/* ===================== 第一幕 · 排座位 ===================== */
+{ id:'a01', who:-1, bg:'class', chapter:true, text:'—— 第一幕 · 排座位 ——' },
+{ id:'a02', who:0, text:'班主任说，这学期的座位可以自己选。话音刚落，十二张脸同时转了过来。' },
+{ id:'a03', who:5, text:'我左右都能坐！左边一个，右边一个，正好凑齐我。' },
+{ id:'a04', who:10, text:'我坐哪都行，反正我拍谁都怼脸。' },
+{ id:'a05', who:7, text:'我坐你同桌的话，每天给你做一个鬼脸当早安。' },
+{ id:'a05b', who:2, text:'（比心）我先表个态：不管你选谁，我都比心。' },
+{ id:'a06', who:-1, text:'十二个人同时看着你。而你，只有一张空桌子。' },
+{ id:'aChoice', who:0, text:'你要选谁当同桌？', choices:[
+  { label:'跟拼好恺坐——左边放书，右边放他', aff:{5:3, 4:1}, next:'aA1' },
+  { label:'跟怼脸恺坐——反正躲不掉', aff:{10:3, 7:1}, next:'aB1' },
+  { label:'把课桌拼成一个圈，让十二钗轮流来坐同桌', affAll:1, next:'aC1' }
+]},
+
+{ id:'aA1', who:-1, text:'你把桌子推过去，拼好恺一屁股坐下，左右两张脸同时开口。' },
+{ id:'aA2', who:5, text:'左边："打扰了。" 右边："久等了！"' },
+{ id:'aA3', who:4, text:'（托腮）我建议你们中间画条线。我托着腮，帮你们看着。', next:'aEnd' },
+
+{ id:'aB1', who:-1, text:'怼脸恺坐下的第一件事，就是把手机举到你面前。' },
+{ id:'aB2', who:10, text:'开学第一张，来，笑一个——' },
+{ id:'aB3', who:7, text:'（在后面做鬼脸）你笑不出来，我帮你笑。', next:'aEnd' },
+
+{ id:'aC1', who:-1, text:'你把十二张桌子拼成了一个圈。班主任路过，驻足看了三秒。' },
+{ id:'aC2', who:0, text:'……他说，只要你们上课不转圈，就随你们。' },
+{ id:'aC3', who:-1, text:'于是这张"同桌"，你一个人占了十二个。', next:'aEnd' },
+
+{ id:'aEnd', who:-1, text:'（下课铃响了。）', next:'b01' },
+
+/* ===================== 第二幕 · 食堂抢饭 ===================== */
+{ id:'b01', who:-1, bg:'canteen', chapter:true, text:'—— 第二幕 · 中午十二点的第一食堂 ——' },
+{ id:'b02', who:8, text:'全体注意！排队！一人一格！不许插队！' },
+{ id:'b03', who:11, text:'窝帮尼占了个位置！就在那边！' },
+{ id:'b04', who:7, text:'我刚才插队被阿姨瞪了一眼，我做了个鬼脸把她逗笑了，然后她把我赶出去了。' },
+{ id:'b05', who:9, text:'（面无表情地端着空餐盘）新窗口，值得排四十分钟。' },
+{ id:'b05b', who:3, text:'（眨眼）我建议咱们……（眨眼）……算了，我一句话眨三次，说不完。' },
+{ id:'b05c', who:9, text:'（绷着脸补了一句）他刚才那句话，眨了两秒半。' },
+{ id:'b06', who:-1, text:'窗口前排着长队，而你的餐盘还是空的。' },
+{ id:'bChoice', who:0, text:'午饭怎么办？', choices:[
+  { label:'跟着奶龙恺去他占好的位置', aff:{11:3, 2:1}, next:'bA1' },
+  { label:'听军训恺的指挥，老老实实排队', aff:{8:3, 9:1}, next:'bB1' },
+  { label:'学鬼脸恺，做个鬼脸把阿姨逗笑', aff:{7:3, 3:1}, next:'bC1' },
+  { label:'算了，给十二钗一人带一份饭', affAll:2, next:'bD1' }
+]},
+
+{ id:'bA1', who:11, text:'窝怕尼找不到，就把一整张桌子都占了哦~' },
+{ id:'bA2', who:2, text:'（比心）很好，这顿饭我们吃得很圆满。', next:'bEnd' },
+
+{ id:'bB1', who:8, text:'很好。有队列意识，可以打八十分。' },
+{ id:'bB2', who:9, text:'剩下二十分，扣在他刚才插了半只脚。', next:'bEnd' },
+
+{ id:'bC1', who:7, text:'不够！看我的——' },
+{ id:'bC2', who:3, text:'（眨眼）阿姨笑了，多给你打了三块肉。这个 wink，值三块。', next:'bEnd' },
+
+{ id:'bD1', who:-1, text:'你端着十二份饭回到座位，收获了十二句"谢谢"。' },
+{ id:'bD2', who:11, text:'哇——尼好像我们宿舍的食堂！', next:'bEnd' },
+
+{ id:'bEnd', who:-1, text:'（下午的课，全教室都在打嗝。）', next:'c01' },
+
+/* ===================== 第三幕 · 表白墙与毕业照 ===================== */
+{ id:'c01', who:-1, bg:'wall', chapter:true, text:'—— 第三幕 · 毕业季 ——' },
+{ id:'c02', who:-1, text:'四年过得很快。快到你还没来得及反应，表白墙就已经贴满了。' },
+{ id:'c03', who:4, text:'（托腮）我在想，最后这一个月，我们应该留下点什么。' },
+{ id:'c03b', who:5, text:'左边想写"加油"，右边想写"我喜欢你"。他俩又吵起来了。' },
+{ id:'c03c', who:6, text:'（叮当）我建议一人写一句，写完都挂我奖牌上——反正我挂得下。' },
+{ id:'c04', who:1, text:'写情书也行。今天可以算我生日，我允许你们表白。' },
+{ id:'cChoice', who:0, text:'你在表白墙上写下了——', choices:[
+  { label:'一句给生日恺的"生日快乐"，祝你三百六十五天都快乐', aff:{1:3}, next:'cA1' },
+  { label:'一句给托腮恺的"别想了，就是我们"', aff:{4:3}, next:'cB1' },
+  { label:'一句给奖牌恺的"这块奖牌，颁给你"', aff:{6:3}, next:'cC1' },
+  { label:'十二句话，一人一句，一句都不能少', affAll:1, next:'cD1' }
+]},
+
+{ id:'cA1', who:1, text:'（他第一次没有说"今天是我生日"）……谢谢。' },
+{ id:'cA2', who:-1, text:'他小声补了一句："明年这天，也可以算。"', next:'c10' },
+
+{ id:'cB1', who:4, text:'我想通了。' },
+{ id:'cB2', who:4, text:'这次，我不打算再想了。', next:'c10' },
+
+{ id:'cC1', who:6, text:'（叮当）这块不是体育奖，也不是学习奖。这块叫"被记住了"。' },
+{ id:'cC2', who:-1, text:'他把你写的纸条摘下来，郑重地挂在了最上面那块奖牌旁边。', next:'c10' },
+
+{ id:'cD1', who:0, text:'幼年恺看完，点了点头："不错，十二个都照顾到了。"' },
+{ id:'cD2', who:9, text:'（绷着脸）……我在第三行。', next:'c10' },
+
+{ id:'c10', who:-1, bg:'photo', chapter:true, text:'—— 毕业照 ——' },
+{ id:'c11', who:8, text:'全体注意！三分钟后在图书馆台阶集合！拍毕业照！' },
+{ id:'c12', who:7, text:'我要站第一排！我要在所有人头上做鬼脸！' },
+{ id:'cPhotoChoice', who:0, text:'摄影师喊："同学，你站哪边？"', choices:[
+  { label:'站 C 位，把奖牌恺搂过来', aff:{6:3, 2:1}, next:'cA10' },
+  { label:'站边上，让鬼脸恺在我头顶做鬼脸', aff:{7:3, 3:1}, next:'cB10' },
+  { label:'让十二个人全挤进来，把画面塞满', affAll:2, next:'cC10' }
+]},
+
+{ id:'cA10', who:-1, text:'你搂着奖牌恺站在正中间。他愣了一下，把最亮的一块奖牌挂到了你脖子上。' },
+{ id:'cA11', who:6, text:'（叮当）这块，颁给大学四年。', next:'cLast' },
+
+{ id:'cB10', who:-1, text:'你站在最边上。快门响起的前一秒，鬼脸恺从你头顶探了出来。' },
+{ id:'cB11', who:7, text:'完美！这张照片，我一辈子不删！', next:'cLast' },
+
+{ id:'cC10', who:-1, text:'十二个人一起往上挤，队伍瞬间乱了套。摄影师连按了十次快门。' },
+{ id:'cC11', who:11, text:'挤一挤嘛~ 反正窝们本来就是一个人！', next:'cLast' },
+
+{ id:'cLast', who:0, text:'快门落下的那一刻，十二张脸同时安静了一秒。' },
+{ id:'cLast2', who:0, text:'然后幼年恺小声说："……其实我不是最乖的那个。"' },
+{ id:'cLast3', who:-1, text:'其他人齐声说："我们知道。"', next:'@end' }
+
+];
+
+/* ---------------------------------------------------------------
+ * 4. 结局表（12 位钗的专属结局 + 十二钗齐聚后宫结局）
+ * -------------------------------------------------------------*/
+var ENDINGS = [
+  { id:'kai01', who:0, name:'《同桌的你，从小学开始》',
+    text:'毕业那天，幼年恺站在校门口，看起来还是开学第一天的样子。\n"我一直是十二钗里最乖的那个。"他说。\n你点点头，没有拆穿他——毕竟这四年，他装得也挺辛苦的。' },
+  { id:'kai02', who:1, name:'《今天也是你的生日》',
+    text:'毕业后每年的这一天，你都会收到一条消息："今天我生日。"\n后来你才发现，他的生日是三百六十五天。\n但你每年都回了一句"生日快乐"，因为四年里，他确实陪你把每一天都过成了节日。' },
+  { id:'kai03', who:2, name:'《比心到最后一秒》',
+    text:'散伙饭上，他举起酒杯，比了个心。\n"这是我第 10086 次比心了。"他说。\n你没数过，但你相信——因为从开学到毕业，他一直在比。有些人不会说好听的，只会比心。' },
+  { id:'kai04', who:3, name:'《眨眼之间，四年就过去了》',
+    text:'你问他为什么总眨眼。他说："因为四年太快了，眨一下眼，就过去一学期。"\n毕业照那天，他眨眼眨得最凶。你说别眨了。\n他说："不行啊。不眨眼，就要哭了。"' },
+  { id:'kai05', who:4, name:'《坐在窗边想了四年》',
+    text:'他在毕业典礼上托着腮，整整坐了两个小时。\n散场时你问他想了什么。\n"我想通了。"他说，"这四年我最想不通的，就是为什么要毕业。"' },
+  { id:'kai06', who:5, name:'《左半边和右半边都喜欢你》',
+    text:'他的左半边很内向，右半边很社牛。\n毕业那天，左半边哭了，右半边在笑。你递过去一张纸巾，两边同时接住了。\n"你看，"他说，"我们俩都喜欢你。"' },
+  { id:'kai07', who:6, name:'《这块奖牌，颁给大学四年》',
+    text:'他把最后一块奖牌挂到了你脖子上："大学四年，优秀室友奖。"\n你说这奖牌上没字啊。\n他说："没关系，我记得。"' },
+  { id:'kai08', who:7, name:'《毕业照上，你又在做鬼脸》',
+    text:'毕业照上，他又做了一次鬼脸。辅导员说要重拍，你说不用了。\n"十年后翻出来，"你说，"我肯定第一个认出你。"\n他愣了一下，然后做了一个更大的鬼脸。' },
+  { id:'kai09', who:8, name:'《全体都有，解散》',
+    text:'"全体注意——"他喊了最后一次口令，"立正！稍息！……解散。"\n十二个人，第一次没有一个人动。\n他别过头去："我说解散。"' },
+  { id:'kai10', who:9, name:'《绷了一整个大学，最后破功》',
+    text:'整整四年，没人见他笑过。\n毕业那天，他站在人群后面看着合影，嘴角动了动。\n"那个窗口，"他说，"下学期就不开了。"\n你第一次觉得，绷着脸的人，心里其实很软。' },
+  { id:'kai11', who:10, name:'《最后一张怼脸拍》',
+    text:'他举起手机，怼脸拍了最后一张。\n"近点，再近点。"这次你没有躲。\n照片里两张脸挤在一起，背景是教学楼 302。\n"这张，"他说，"叫毕业。"' },
+  { id:'kai12', who:11, name:'《奶声奶气地说再见》',
+    text:'奶龙恺毕业那天没哭，只是说话更奶了。\n"窝以后……还会来找尼玩的哦~"他吸了吸鼻子，"窝已经成年了，窝不哭的。"\n然后他哭得整栋楼都听见了。' },
+  { id:'harem', who:-1, name:'《十二钗齐聚》',
+    text:'十二个人挤在一张毕业照里，谁也没抢到 C 位——因为画面已经满了。\n幼年恺说这四年他还是最乖的，生日恺说今天也是他生日，其他人七嘴八舌地反驳。\n辅导员说："别吵了，笑一个。"\n十二张一模一样的脸，同时笑了。\n那一刻你突然明白：所谓后宫，其实就是一群愿意陪你笑到最后的人。' }
+];
+var END_BY_ID = {};
+for (var ei = 0; ei < ENDINGS.length; ei++) END_BY_ID[ENDINGS[ei].id] = ENDINGS[ei];
+
+/* ============================================================================
+ * 5. 引擎
+ * ==========================================================================*/
+function $(id){ return document.getElementById(id); }
+function clamp(v, a, b){ return v < a ? a : (v > b ? b : v); }
+
+/* ---- DOM ---- */
+var screenTitle = $('titleScreen'), screenGame = $('gameScreen'), screenEnding = $('endingScreen');
+var bgLayer = $('bgLayer'), sceneLabel = $('sceneLabel');
+var portrait = $('portrait'), portraitImg = $('portraitImg'), groupCard = $('groupCard'), nameplate = $('nameplate');
+var dlName = $('dlName'), dlText = $('dlText'), dlHint = $('dlHint'), dialogueBox = $('dialogueBox');
+var choicesBox = $('choices'), toastEl = $('toast');
+var affPanel = $('affPanel'), affList = $('affList'), affTop = $('affTop');
+var endAvatar = $('endAvatar'), endName = $('endName'), endText = $('endText'), endRank = $('endRank'), endMeta = $('endMeta');
+var codexModal = $('codexModal'), codexList = $('codexList'), codexSub = $('codexSub'), codexLine = $('codexLine');
+
+/* ---- 运行状态 ---- */
+var NODE_BY_ID = {};
+for (var ni = 0; ni < SCRIPT.length; ni++) NODE_BY_ID[SCRIPT[ni].id] = SCRIPT[ni];
+
+var screenName = 'title';        // title | game | ending
+var curId = null;                // 当前节点 id
+var curNode = null;
+var curBg = 'class';
+var aff = [];                    // 12 位好感度
+var gainSeq = [];                // 每位钗最后一次涨好感的序号（用于并列时决胜）
+var gainCounter = 0;
+var curChoices = [];
+var typing = false, typeTimer = null, autoTimer = null, toastTimer = null;
+var fullText = '', typeIdx = 0;
+var ended = false, endingId = null, endedAt = 0;
+var autoMode = false, muted = false;
+var unlockedEnds = {};
+var lastSavedAt = 0;
+
+/* ---- localStorage 安全包装（file:// 或隐私模式下不抛错） ---- */
+function lsGet(k){ try { return localStorage.getItem(k); } catch(e){ return null; } }
+function lsSet(k, v){ try { localStorage.setItem(k, v); return true; } catch(e){ return false; } }
+
+function loadEnds(){
+  unlockedEnds = {};
+  var raw = lsGet(ENDS_KEY);
+  if (raw){ try { var o = JSON.parse(raw); if (o && typeof o === 'object') unlockedEnds = o; } catch(e){} }
+}
+function saveEnds(){ lsSet(ENDS_KEY, JSON.stringify(unlockedEnds)); }
+
+/* ---- 音效：WebAudio 现场合成，无任何音频文件 ---- */
+var actx = null;
+function audioCtx(){
+  if (muted) return null;
+  if (!actx){
+    var AC = window.AudioContext || window.webkitAudioContext;
+    if (!AC) return null;
+    try { actx = new AC(); } catch(e){ actx = null; }
+  }
+  if (actx && actx.state === 'suspended'){ try { actx.resume(); } catch(e){} }
+  return actx;
+}
+function tone(freq, dur, type, vol, delay){
+  var c = audioCtx(); if (!c) return;
+  try{
+    var o = c.createOscillator(), g = c.createGain();
+    o.type = type || 'sine';
+    o.frequency.value = freq;
+    var t = c.currentTime + (delay || 0);
+    g.gain.setValueAtTime(0.0001, t);
+    g.gain.linearRampToValueAtTime(vol || 0.05, t + 0.012);
+    g.gain.exponentialRampToValueAtTime(0.0001, t + dur);
+    o.connect(g); g.connect(c.destination);
+    o.start(t); o.stop(t + dur + 0.03);
+  }catch(e){}
+}
+var blipToggle = 0;
+function sfxText(){                     // 打字机逐字音：隔一个字响一次，避免太吵
+  blipToggle = 1 - blipToggle;
+  if (!blipToggle) return;
+  tone(760 + Math.random() * 260, 0.045, 'triangle', 0.022);
+}
+function sfxChoice(){ tone(660, 0.09, 'square', 0.05); tone(990, 0.12, 'square', 0.045, 0.07); }
+function sfxClick(){ tone(520, 0.05, 'sine', 0.035); }
+function sfxSave(){ tone(880, 0.07, 'sine', 0.05); tone(1320, 0.1, 'sine', 0.04, 0.06); }
+function sfxEnding(){                   // 结局小旋律
+  var notes = [523, 659, 784, 1046, 784, 1046, 1318];
+  for (var i = 0; i < notes.length; i++) tone(notes[i], 0.32, 'sine', 0.055, i * 0.17);
+}
+
+/* ---- 打字机 ---- */
+function startTyping(text, instant){
+  clearTimeout(typeTimer);
+  fullText = text || '';
+  typeIdx = 0;
+  typing = !instant && fullText.length > 0;
+  dlText.textContent = '';
+  if (typing){ tick(); }
+  else { dlText.textContent = fullText; typing = false; onTypingDone(); }
+}
+function tick(){
+  if (typeIdx >= fullText.length){ finishTyping(); return; }
+  typeIdx++;
+  dlText.textContent = fullText.slice(0, typeIdx);
+  sfxText();
+  typeTimer = setTimeout(tick, TYPE_SPEED);
+}
+function finishTyping(){
+  clearTimeout(typeTimer);
+  typeIdx = fullText.length;
+  dlText.textContent = fullText;
+  typing = false;
+  onTypingDone();
+}
+function onTypingDone(){
+  if (autoMode && !curChoices.length) scheduleAuto();
+}
+
+/* ---- 快进（自动播放） ---- */
+function scheduleAuto(){
+  clearTimeout(autoTimer);
+  if (!autoMode || screenName !== 'game' || curChoices.length) return;
+  autoTimer = setTimeout(function(){
+    if (!autoMode || screenName !== 'game' || curChoices.length) return;
+    if (typing){ finishTyping(); }
+    else { advance(); }
+  }, 820);
+}
+
+/* ---- 好感度 ---- */
+function applyAff(choice){
+  var parts = [];
+  var k;
+  if (choice.aff){
+    for (k in choice.aff){
+      if (!choice.aff.hasOwnProperty(k)) continue;
+      var idx = parseInt(k, 10);
+      if (isNaN(idx) || idx < 0 || idx > 11) continue;
+      aff[idx] += choice.aff[k];
+      gainSeq[idx] = ++gainCounter;
+      parts.push(CHARS[idx].name + ' +' + choice.aff[k]);
+    }
+  }
+  if (choice.affAll){
+    for (var i = 0; i < 12; i++){
+      aff[i] += choice.affAll;
+      gainSeq[i] = ++gainCounter;
+    }
+    parts.push('全员 +' + choice.affAll);
+  }
+  if (parts.length) { renderAffPanel(); toast(parts.join(' · ')); }
+}
+function toast(msg){
+  toastEl.textContent = msg;
+  toastEl.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(function(){ toastEl.classList.remove('show'); }, 1700);
+}
+
+/* ---- 界面渲染 ---- */
+function showScreen(name){
+  screenName = name;
+  screenTitle.classList.toggle('active', name === 'title');
+  screenGame.classList.toggle('active', name === 'game');
+  screenEnding.classList.toggle('active', name === 'ending');
+}
+
+function setBg(bgId){
+  if (!bgId || !BGS[bgId] || bgId === curBg) { if (bgId) curBg = bgId; return; }
+  curBg = bgId;
+  bgLayer.className = 'bg ' + BGS[bgId].cls;
+  sceneLabel.textContent = BGS[bgId].label;
+}
+
+function setPortrait(who){
+  if (who >= 0 && CHARS[who]){
+    groupCard.classList.remove('show');
+    portraitImg.src = CHARS[who].img;
+    portraitImg.alt = CHARS[who].name;
+    portrait.classList.remove('show');
+    void portrait.offsetWidth;                 // 强制回流，让开场弹跳动画重新播放
+    portrait.classList.add('show');
+    nameplate.textContent = CHARS[who].name;
+    nameplate.classList.remove('narr');
+    dlName.textContent = CHARS[who].name;
+    dlName.classList.remove('narr');
+    dlName.style.background = '';
+  } else {
+    portrait.classList.remove('show');
+    groupCard.classList.add('show');
+    nameplate.textContent = '旁白';
+    nameplate.classList.add('narr');
+    dlName.textContent = '旁白';
+    dlName.classList.add('narr');
+  }
+}
+
+function renderAffPanel(){
+  var max = -1, topIdx = -1;
+  for (var i = 0; i < 12; i++) if (aff[i] > max){ max = aff[i]; topIdx = i; }
+  var html = '';
+  for (var j = 0; j < 12; j++){
+    var pct = clamp(aff[j] / AFF_MAX, 0, 1) * 100;
+    var hearts = Math.round(clamp(aff[j] / AFF_MAX, 0, 1) * 5);
+    var hr = '';
+    for (var h = 0; h < 5; h++) hr += (h < hearts ? '♥' : '♡');
+    html += '<div class="aff-row' + (j === topIdx ? ' top' : '') + '">'
+         +  '<img src="' + CHARS[j].img + '" alt="">'
+         +  '<span class="nm">' + CHARS[j].name + '</span>'
+         +  '<span class="bar"><i style="width:' + pct.toFixed(1) + '%"></i></span>'
+         +  '<span class="hr">' + hr + '</span>'
+         +  '<span class="num">' + aff[j] + '</span>'
+         +  '</div>';
+  }
+  affList.innerHTML = html;
+  affTop.textContent = topIdx >= 0 ? ('当前最高：' + CHARS[topIdx].name + ' ' + max) : '—';
+}
+
+function renderChoices(){
+  choicesBox.innerHTML = '';
+  if (!curChoices.length){ dlHint.style.visibility = 'visible'; return; }
+  dlHint.style.visibility = 'hidden';
+  for (var i = 0; i < curChoices.length; i++){
+    (function(i){
+      var b = document.createElement('button');
+      b.className = 'choice';
+      b.type = 'button';
+      var key = document.createElement('span');
+      key.className = 'key'; key.textContent = String(i + 1);
+      b.appendChild(key);
+      b.appendChild(document.createTextNode(curChoices[i].label));
+      b.addEventListener('click', function(ev){ ev.stopPropagation(); choose(i); });
+      choicesBox.appendChild(b);
+    })(i);
+  }
+}
+
+function nextIdOf(node){
+  if (node.next) return node.next;
+  var i = SCRIPT.indexOf(node);
+  if (i >= 0 && i + 1 < SCRIPT.length) return SCRIPT[i + 1].id;
+  return '@end';
+}
+
+/* 进入某个节点并渲染 */
+function goNode(id, instant){
+  if (id === '@end'){ showEnding(); return; }
+  var node = NODE_BY_ID[id];
+  if (!node) return false;
+  curId = id; curNode = node;
+  setBg(node.bg);
+  setPortrait(node.who);
+  dlText.className = 'dl-text' + (node.chapter ? ' chapter' : '');
+  startTyping(node.text, !!instant);
+  curChoices = (node.choices && node.choices.length) ? node.choices.slice() : [];
+  renderChoices();
+  updateHint();
+  autosave();
+  if (autoMode && !curChoices.length) scheduleAuto();
+  return true;
+}
+
+function updateHint(){
+  var keys = curChoices.length ? ('数字键 1-' + curChoices.length + ' 选择') : '点击 / 空格 继续';
+  dlHint.textContent = keys;
+}
+
+/* 推进：正在打字则先补全整句；否则进入下一句 */
+function advance(){
+  if (screenName !== 'game') return false;
+  if (typing){ finishTyping(); return true; }
+  if (curChoices.length) return false;          // 有选项时必须先选择
+  return goNode(nextIdOf(curNode));
+}
+
+/* 选择第 i 个选项 */
+function choose(i){
+  if (screenName !== 'game' || !curChoices.length) return false;
+  var c = curChoices[i];
+  if (!c) return false;
+  clearTimeout(autoTimer);
+  sfxChoice();
+  applyAff(c);
+  curChoices = [];
+  choicesBox.innerHTML = '';
+  updateHint();
+  goNode(c.next || nextIdOf(curNode));
+  return true;
+}
+
+/* ---- 存档 ---- */
+function autosave(){
+  var data = {
+    v: 1,
+    node: curId,
+    aff: aff.slice(),
+    gainSeq: gainSeq.slice(),
+    gainCounter: gainCounter,
+    ends: unlockedEnds,
+    muted: muted,
+    ended: ended,
+    ending: endingId,
+    savedAt: Date.now()
+  };
+  lastSavedAt = data.savedAt;
+  if (lsSet(SAVE_KEY, JSON.stringify(data))){}
+}
+function manualSave(){
+  autosave();
+  sfxSave();
+  toast('已存档 · ' + timeStr(lastSavedAt));
+}
+function hasSave(){
+  var raw = lsGet(SAVE_KEY);
+  if (!raw) return null;
+  try { var o = JSON.parse(raw); return (o && o.node) ? o : null; } catch(e){ return null; }
+}
+function timeStr(ts){
+  try { return new Date(ts).toLocaleString('zh-CN', { hour12:false }); }
+  catch(e){ return String(ts); }
+}
+function dateStr(ts){
+  try {
+    var d = new Date(ts);
+    var p = function(n){ return (n < 10 ? '0' : '') + n; };
+    return p(d.getMonth() + 1) + '/' + p(d.getDate()) + ' ' + p(d.getHours()) + ':' + p(d.getMinutes());
+  } catch(e){ return ''; }
+}
+
+/* ---- 结局结算 ---- */
+function computeEnding(){
+  var i, min = Infinity, max = -Infinity;
+  for (i = 0; i < 12; i++){ if (aff[i] < min) min = aff[i]; if (aff[i] > max) max = aff[i]; }
+  if (min >= HAREM_THRESHOLD) return END_BY_ID['harem'];   // 十二钗齐聚
+  var cands = [];
+  for (i = 0; i < 12; i++){ if (aff[i] === max) cands.push(i); }
+  var best = cands[0];
+  if (cands.length > 1){
+    for (i = 1; i < cands.length; i++) if (gainSeq[cands[i]] > gainSeq[best]) best = cands[i];
+  }
+  return END_BY_ID['kai' + ('0' + (best + 1)).slice(-2)];
+}
+
+function showEnding(){
+  clearTimeout(autoTimer);
+  autoMode = false; $('btnAuto').classList.remove('on'); $('btnAuto').textContent = '快进';
+  var e = computeEnding();
+  ended = true; endingId = e.id; endedAt = Date.now();
+  if (!unlockedEnds[e.id]) unlockedEnds[e.id] = endedAt;
+  saveEnds();
+  autosave();
+  sfxEnding();
+  renderEnding(e);
+  showScreen('ending');
+}
+
+function renderEnding(e){
+  endName.textContent = e.name;
+  endText.textContent = e.text;
+  if (e.who >= 0){ endAvatar.src = CHARS[e.who].img; endAvatar.style.display = 'block'; }
+  else { endAvatar.style.display = 'none'; }
+  /* 好感排行 */
+  var order = [];
+  for (var i = 0; i < 12; i++) order.push(i);
+  order.sort(function(a, b){ return aff[b] - aff[a] || a - b; });   // 好感降序；并列按 01→12 顺序，读起来更顺
+  var html = '';
+  for (var r = 0; r < order.length; r++){
+    var idx = order[r];
+    var hearts = Math.round(clamp(aff[idx] / AFF_MAX, 0, 1) * 5);
+    var hr = ''; for (var h = 0; h < 5; h++) hr += (h < hearts ? '♥' : '♡');
+    html += '<div class="rank-row">'
+         +  '<span class="idx">' + (r + 1) + '</span>'
+         +  '<span class="nm">' + CHARS[idx].name + '</span>'
+         +  '<span class="hr">' + hr + '</span>'
+         +  (r === 0 ? '<span class="crown">最高</span>' : '')
+         +  '<span class="num">' + aff[idx] + '</span>'
+         +  '</div>';
+  }
+  endRank.innerHTML = html;
+  var total = 0; for (var k in unlockedEnds) if (unlockedEnds.hasOwnProperty(k)) total++;
+  endMeta.innerHTML = '达成时间：<b>' + timeStr(endedAt) + '</b><br>'
+                    + '结局收集：<b>' + total + ' / ' + ENDINGS.length + '</b>'
+                    + (e.id === 'harem' ? '<br>十二位钗的好感全部达到阈值 ' + HAREM_THRESHOLD + '。' : '')
+                    + '<br>好感结算：最高 <b>' + Math.max.apply(null, aff) + '</b> · 最低 <b>' + Math.min.apply(null, aff) + '</b>';
+  renderCodexLine();
+}
+
+/* ---- 图鉴 ---- */
+function renderCodexLine(){
+  var n = 0; for (var k in unlockedEnds) if (unlockedEnds.hasOwnProperty(k)) n++;
+  codexLine.textContent = '结局收集：' + n + ' / ' + ENDINGS.length;
+}
+function openCodex(){
+  var html = '', n = 0;
+  for (var i = 0; i < ENDINGS.length; i++){
+    var e = ENDINGS[i], got = !!unlockedEnds[e.id];
+    if (got) n++;
+    html += '<div class="codex-item' + (got ? '' : ' locked') + '">'
+         +  '<span class="ci-nm">' + (got ? e.name : '？？？') + '</span>'
+         +  (e.id === 'harem' ? '<span class="ci-t">隐藏</span>' : '')
+         +  (got ? '<span class="ci-t">' + dateStr(unlockedEnds[e.id]) + '</span>' : '')
+         +  '</div>';
+  }
+  codexList.innerHTML = html;
+  codexSub.textContent = '已解锁 ' + n + ' / ' + ENDINGS.length + '（' + (n === ENDINGS.length ? '全收集，厉害！' : '继续加油') + '）';
+  codexModal.classList.add('show');
+}
+
+/* ---- 新游戏 / 继续 ---- */
+function newGame(){
+  aff = []; gainSeq = [];
+  for (var i = 0; i < 12; i++){ aff.push(1); gainSeq.push(0); }   // 序章：你和十二钗都打过招呼了
+  gainCounter = 0;
+  ended = false; endingId = null; endedAt = 0;
+  curBg = null;
+  loadEnds();
+  showScreen('game');
+  renderAffPanel();
+  goNode('p01');
+  sfxClick();
+}
+function continueGame(){
+  var s = hasSave();
+  if (!s){ newGame(); return; }
+  aff = (s.aff && s.aff.length === 12) ? s.aff.slice() : [1,1,1,1,1,1,1,1,1,1,1,1];
+  gainSeq = (s.gainSeq && s.gainSeq.length === 12) ? s.gainSeq.slice() : [0,0,0,0,0,0,0,0,0,0,0,0];
+  gainCounter = s.gainCounter || 0;
+  if (s.ends && typeof s.ends === 'object'){ for (var k in s.ends) if (s.ends.hasOwnProperty(k)) unlockedEnds[k] = s.ends[k]; }
+  muted = !!s.muted; syncMuteBtn();
+  ended = !!s.ended; endingId = s.ending || null; endedAt = s.savedAt || Date.now();
+  curBg = null;
+  if (ended && endingId && END_BY_ID[endingId]){
+    showScreen('game');
+    renderAffPanel();
+    renderEnding(END_BY_ID[endingId]);
+    showScreen('ending');
+    return;
+  }
+  showScreen('game');
+  renderAffPanel();
+  goNode(s.node, true);   // 恢复时直接显示整句，不播打字机
+  sfxClick();
+}
+function backToTitle(){
+  clearTimeout(autoTimer); clearTimeout(typeTimer);
+  autoMode = false; $('btnAuto').classList.remove('on'); $('btnAuto').textContent = '快进';
+  showScreen('title');
+  refreshTitle();
+}
+function refreshTitle(){
+  var s = hasSave();
+  $('btnContinue').disabled = !s;
+  if (s){
+    $('btnContinue').textContent = '继续游戏 · ' + timeStr(s.savedAt).slice(-8) + (s.ended ? '（结局）' : '');
+  } else {
+    $('btnContinue').textContent = '继续游戏（暂无存档）';
+  }
+  renderCodexLine();
+}
+
+/* ---- 标题页十二钗头像条 ---- */
+function buildTitleStrip(){
+  var strip = $('avatarStrip'), html = '';
+  for (var i = 0; i < 12; i++) html += '<img src="' + CHARS[i].img + '" alt="' + CHARS[i].name + '" title="' + CHARS[i].name + '：' + CHARS[i].tag + '">';
+  strip.innerHTML = html;
+  var g = '';
+  for (var j = 0; j < 12; j++) g += '<img src="' + CHARS[j].img + '" alt="">';
+  groupCard.innerHTML = g;
+}
+
+/* ---- 静音 ---- */
+function syncMuteBtn(){
+  $('btnMute').textContent = muted ? '🔇' : '🔊';
+  $('btnSound').textContent = muted ? '音效：关' : '音效：开';
+}
+function toggleMute(){
+  muted = !muted;
+  syncMuteBtn();
+  if (!muted) sfxClick();
+  autosave();
+}
+
+/* ---- 测试钩子（不影响正常玩法） ---- */
+window.__state = function(){
+  return {
+    scene: curId,
+    who: (curNode && curNode.who >= 0 && CHARS[curNode.who]) ? CHARS[curNode.who].name : '旁白',
+    whoIndex: (curNode ? curNode.who : -1),
+    text: (typing ? dlText.textContent : fullText) || '',
+    fullText: fullText,
+    typing: typing,
+    aff: aff.slice(),
+    choices: curChoices.map(function(c){ return c.label; }),
+    ended: !!ended,
+    ending: endingId,
+    endingName: endingId && END_BY_ID[endingId] ? END_BY_ID[endingId].name : null,
+    savedAt: lastSavedAt,
+    screen: screenName,
+    muted: muted,
+    unlocked: Object.keys(unlockedEnds),
+    bg: curBg,
+    total: SCRIPT.length
+  };
+};
+window.__goto = function(sceneId){ return goNode(sceneId); };
+window.__choose = function(i){ return choose(i); };
+window.__skip = function(){
+  if (screenName !== 'game') return false;
+  if (typing){ finishTyping(); return true; }   // 跳过打字机：先补全整句
+  return advance();                            // 否则推进到下一句
+};
+window.__auto = function(on){ autoMode = !!on; $('btnAuto').classList.toggle('on', autoMode); $('btnAuto').textContent = autoMode ? '快进中' : '快进'; return autoMode; };
+window.__save = function(){ manualSave(); return lastSavedAt; };
+window.__affAll = function(v){ for (var i = 0; i < 12; i++){ aff[i] = v; gainSeq[i] = ++gainCounter; } renderAffPanel(); return aff.slice(); };
+
+/* ---- 事件绑定 ---- */
+$('btnStart').addEventListener('click', function(){ sfxClick(); newGame(); });
+$('btnContinue').addEventListener('click', function(){ sfxClick(); continueGame(); });
+$('btnCodex').addEventListener('click', function(){ sfxClick(); openCodex(); });
+$('btnCodexClose').addEventListener('click', function(){ sfxClick(); codexModal.classList.remove('show'); });
+$('btnSound').addEventListener('click', function(){ toggleMute(); });
+$('btnSave').addEventListener('click', function(ev){ ev.stopPropagation(); manualSave(); });
+$('btnMute').addEventListener('click', function(ev){ ev.stopPropagation(); toggleMute(); });
+$('btnAuto').addEventListener('click', function(ev){
+  ev.stopPropagation();
+  autoMode = !autoMode;
+  $('btnAuto').classList.toggle('on', autoMode);
+  $('btnAuto').textContent = autoMode ? '快进中' : '快进';
+  sfxClick();
+  if (autoMode) scheduleAuto();
+});
+$('btnAff').addEventListener('click', function(ev){
+  ev.stopPropagation();
+  renderAffPanel();
+  affPanel.classList.toggle('show');
+  sfxClick();
+});
+$('btnRestart').addEventListener('click', function(){ sfxClick(); newGame(); });
+$('btnBackTitle').addEventListener('click', function(){ sfxClick(); backToTitle(); });
+
+/* 点击推进（点击正在打字的句子 → 先补全整句） */
+function onTap(ev){
+  if (ev && ev.target && ev.target.closest && ev.target.closest('button')) return;
+  if (affPanel.classList.contains('show')){ affPanel.classList.remove('show'); }
+  advance();
+}
+$('tapArea').addEventListener('click', onTap);
+dialogueBox.addEventListener('click', onTap);
+choicesBox.addEventListener('click', function(ev){ ev.stopPropagation(); });
+
+/* 键盘：空格/回车推进，数字键选选项，M 静音，A 好感面板，S 存档 */
+document.addEventListener('keydown', function(ev){
+  if (codexModal.classList.contains('show')){ if (ev.key === 'Escape') codexModal.classList.remove('show'); return; }
+  if (screenName === 'title'){
+    if (ev.key === 'Enter' || ev.key === ' '){ ev.preventDefault(); if (! $('btnContinue').disabled) continueGame(); else newGame(); }
+    return;
+  }
+  if (screenName === 'ending'){
+    if (ev.key === 'Enter' || ev.key === ' '){ ev.preventDefault(); newGame(); }
+    return;
+  }
+  if (ev.key === ' ' || ev.key === 'Enter' || ev.key === 'Spacebar'){ ev.preventDefault(); advance(); return; }
+  if (ev.key >= '1' && ev.key <= '9'){
+    var i = parseInt(ev.key, 10) - 1;
+    if (i < curChoices.length){ ev.preventDefault(); choose(i); }
+    return;
+  }
+  var k = (ev.key || '').toLowerCase();
+  if (k === 'm'){ toggleMute(); }
+  else if (k === 'a'){ renderAffPanel(); affPanel.classList.toggle('show'); }
+  else if (k === 's'){ manualSave(); }
+  else if (k === 'escape'){ affPanel.classList.remove('show'); }
+});
+
+/* 切回页面时纠正一次自动播放（避免后台定时器堆积） */
+document.addEventListener('visibilitychange', function(){
+  if (document.hidden){ clearTimeout(autoTimer); }
+  else if (autoMode) scheduleAuto();
+});
+
+/* ---- 初始化 ---- */
+loadEnds();
+aff = []; gainSeq = [];
+for (var zi = 0; zi < 12; zi++){ aff.push(1); gainSeq.push(0); }
+buildTitleStrip();
+syncMuteBtn();
+refreshTitle();
+showScreen('title');
+
+})();
+</script>
+</body>
+</html>
