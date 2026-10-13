@@ -11,6 +11,7 @@
    璐恺十二钗 —— 样式表
    主色 #9a2130 / 背景 #f6efec / 圆角卡片 / 中文 system-ui 字体
    零外部依赖：不引用任何 CDN 字体、图片、音频
+   背景共 15 种：CSS 渐变 + 内联 SVG 场景元素（deco），观感各不相同
    ============================================================ */
 :root{
   --main:#9a2130;
@@ -19,6 +20,7 @@
   --bg:#f6efec;
   --ink:#3a2123;
   --ink-soft:#7a5c5f;
+  --narr:#7b666a;
   --radius:18px;
   --shadow:0 8px 26px rgba(58,33,35,.12);
 }
@@ -65,31 +67,91 @@ img{-webkit-user-drag:none}
 .title-foot{margin-top:14px;font-size:11.5px;color:#a0898c;line-height:1.7}
 .codex-line{margin-top:10px;font-size:12px;color:var(--main);font-weight:700}
 
+/* ---------------- 取名页 ---------------- */
+#nameScreen{
+  flex-direction:column;align-items:center;justify-content:center;
+  padding:24px 16px calc(24px + env(safe-area-inset-bottom));
+  background:radial-gradient(120% 90% at 50% 0%,#fffdfb 0%,#f6efec 42%,#e9d5d1 100%);
+  overflow:auto;
+}
+.name-card{
+  width:100%;max-width:420px;background:rgba(255,255,255,.94);
+  border-radius:24px;padding:22px 20px 18px;text-align:center;
+  box-shadow:var(--shadow);border:1px solid rgba(154,33,48,.12);
+}
+.name-kicker{font-size:11.5px;color:var(--ink-soft);letter-spacing:.2em}
+.name-title{font-size:clamp(20px,5.6vw,25px);font-weight:900;color:var(--main);margin:8px 0 4px;line-height:1.4}
+.name-ask{
+  margin:12px 0 14px;padding:12px 14px;border-radius:14px;text-align:left;
+  background:#fdf6f4;border-left:4px solid rgba(154,33,48,.35);
+  font-size:14px;line-height:1.8;color:#5c4245;font-style:italic;
+}
+#nameInput{
+  width:100%;padding:13px 14px;font-size:17px;font-weight:800;color:var(--main);
+  font-family:inherit;text-align:center;letter-spacing:.08em;
+  background:#fff;border:2px solid rgba(154,33,48,.24);border-radius:14px;outline:none;
+  -webkit-user-select:text;user-select:text;
+}
+#nameInput:focus{border-color:var(--main);box-shadow:0 0 0 4px rgba(154,33,48,.10)}
+.name-tip{margin:10px 0 14px;font-size:11.5px;color:#a0898c;line-height:1.75}
+.name-char{display:block;margin-bottom:14px}
+.name-char img{width:66px;height:66px;border-radius:18px;object-fit:cover;box-shadow:0 6px 16px rgba(154,33,48,.22)}
+
 /* ---------------- 对话页 ---------------- */
 #gameScreen{
   flex-direction:column;
   padding:calc(env(safe-area-inset-top) + 8px) 10px calc(env(safe-area-inset-bottom) + 8px);
 }
-.bg{position:absolute;inset:0;z-index:0;transition:background .55s ease}
+.bg{position:absolute;inset:0;z-index:0;transition:background .55s ease;overflow:hidden}
 .bg img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:.13;filter:saturate(.75) contrast(.95)}
+/* 每个场景一种"底纹"：低透明度校园照 + 不同滤镜，暗场景再压暗 */
+.bg-class   img{opacity:.12;filter:saturate(.7) contrast(.95)}
+.bg-canteen img{opacity:.16;filter:sepia(.28) saturate(.9)}
+.bg-field   img{opacity:.14;filter:saturate(.85) brightness(1.04)}
+.bg-dorm    img{opacity:.16;filter:grayscale(.35) brightness(.72)}
+.bg-club    img{opacity:.18;filter:saturate(1.05) contrast(.96)}
+.bg-exam    img{opacity:.10;filter:grayscale(.55) brightness(1.05)}
+.bg-sports  img{opacity:.15;filter:saturate(1.1)}
+.bg-cake    img{opacity:.14;filter:sepia(.2) saturate(1.05) brightness(1.04)}
+.bg-medal   img{opacity:.14;filter:sepia(.5) saturate(1.1) brightness(1.02)}
+.bg-newyear img{opacity:.20;filter:grayscale(.3) brightness(.62)}
+.bg-wall    img{opacity:.12;filter:sepia(.2) saturate(.95)}
+.bg-snow    img{opacity:.20;filter:grayscale(.85) brightness(1.06)}
+.bg-library img{opacity:.13;filter:sepia(.35) brightness(1.02)}
+.bg-photo   img{opacity:.17;filter:sepia(.3) saturate(1.05) brightness(1.04)}
+.bg-gate    img{opacity:.15;filter:sepia(.35) saturate(1.02)}
 .bg::after{
   content:'';position:absolute;inset:0;pointer-events:none;
   background:linear-gradient(180deg,rgba(255,255,255,.42),rgba(255,255,255,0) 32%,rgba(255,255,255,.55) 100%);
 }
-/* 每个场景一种渐变（配合 campus.jpg 低透明度叠底） */
-.bg-class{background:linear-gradient(160deg,#fdf7f3 0%,#f1e0da 55%,#e7cec8 100%)}
-.bg-canteen{background:linear-gradient(160deg,#fff7ea 0%,#f7e2c9 55%,#efd1b5 100%)}
-.bg-field{background:linear-gradient(160deg,#eef7f0 0%,#dae9dd 55%,#c9dccd 100%)}
-.bg-stage{background:linear-gradient(160deg,#f7eff9 0%,#e7d8ef 55%,#d9c4e5 100%)}
-.bg-dorm{background:linear-gradient(160deg,#f2f4fb 0%,#dfe4f4 55%,#ccd4ec 100%)}
-.bg-wall{background:linear-gradient(160deg,#fff2f4 0%,#f5dee4 55%,#edced7 100%)}
-.bg-photo{background:linear-gradient(160deg,#fdf9f0 0%,#f3e8d0 55%,#e9dab9 100%)}
-.bg-gate{background:linear-gradient(160deg,#f8f4f6 0%,#ebe1e7 55%,#ddd0d9 100%)}
+.bg.dark::after{background:linear-gradient(180deg,rgba(12,14,26,.34),rgba(12,14,26,.04) 38%,rgba(255,255,255,.10) 100%)}
+.bg.dark .scene-label{background:rgba(255,255,255,.82)}
+/* 场景装饰层：内联 SVG（黑板 / 课桌 / 跑道 / 烟花 / 蛋糕 / 奖牌墙 …） */
+.bg-deco{position:absolute;inset:0;pointer-events:none;opacity:.9}
+.bg-deco svg{display:block;width:100%;height:100%}
+.bg.dark .bg-deco{opacity:1}
+
+/* —— 15 种场景底色（每种观感明显不同） —— */
+.bg-gate     {background:linear-gradient(170deg,#fff6e6 0%,#ffe2c4 45%,#f0c6a4 100%)}
+.bg-class    {background:linear-gradient(160deg,#fdfbf6 0%,#e9efe6 52%,#d3e0d8 100%)}
+.bg-club     {background:linear-gradient(165deg,#fff8e8 0%,#ffe7c6 42%,#cfe7f2 100%)}
+.bg-canteen  {background:linear-gradient(160deg,#fff7ea 0%,#f7e2c9 55%,#efd1b5 100%)}
+.bg-field    {background:linear-gradient(160deg,#eaf6ee 0%,#cfe4d2 50%,#e6d7b6 100%)}
+.bg-dorm     {background:linear-gradient(170deg,#232b46 0%,#39456a 52%,#5b688a 100%)}
+.bg-exam     {background:linear-gradient(160deg,#f8fcf5 0%,#e3efe0 55%,#d2e2cc 100%)}
+.bg-sports   {background:linear-gradient(165deg,#eaf4ff 0%,#d6e8fa 44%,#f4d1c9 100%)}
+.bg-cake     {background:linear-gradient(160deg,#fff4f7 0%,#ffe1ea 50%,#ffcfd9 100%)}
+.bg-medal    {background:linear-gradient(165deg,#fdf7e4 0%,#f1e1b9 50%,#dcc48f 100%)}
+.bg-newyear  {background:linear-gradient(170deg,#171632 0%,#382852 45%,#6a3a5c 100%)}
+.bg-wall     {background:linear-gradient(160deg,#fff4f2 0%,#f7dfe0 50%,#eccdd1 100%)}
+.bg-snow     {background:linear-gradient(170deg,#eef5fb 0%,#cfdfee 50%,#a8bdd6 100%)}
+.bg-library  {background:linear-gradient(160deg,#fcf8f0 0%,#efe4d3 50%,#dccdb3 100%)}
+.bg-photo    {background:linear-gradient(160deg,#fffbef 0%,#f4ead0 45%,#d8e3c2 100%)}
 
 .wrap{position:relative;z-index:2;flex:1;min-height:0;width:100%;max-width:760px;margin:0 auto;display:flex;flex-direction:column}
 .topbar{display:flex;align-items:center;gap:6px;flex:0 0 auto}
 .scene-label{
-  font-size:12px;color:var(--main);background:rgba(255,255,255,.74);
+  font-size:12px;color:var(--main);background:rgba(255,255,255,.78);
   border:1px solid rgba(154,33,48,.14);border-radius:999px;padding:4px 10px;
   overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:44%;
   flex:1 1 auto;min-width:0;
@@ -117,17 +179,17 @@ img{-webkit-user-drag:none}
   width:min(52vw,220px);aspect-ratio:1/1;border-radius:26px;padding:9px;display:none;
   grid-template-columns:repeat(4,1fr);grid-template-rows:repeat(3,1fr);gap:5px;
   background:rgba(255,255,255,.66);box-shadow:0 0 0 6px rgba(255,255,255,.6),0 14px 30px rgba(58,33,35,.16);
-  position:relative;
+  position:relative;opacity:.72;
 }
 .group-card.show{display:grid}
-.group-card img{width:100%;height:100%;object-fit:cover;border-radius:9px;opacity:.9}
+.group-card img{width:100%;height:100%;object-fit:cover;border-radius:9px;opacity:.9;filter:saturate(.6)}
 .nameplate{
   position:absolute;left:50%;transform:translateX(-50%);bottom:-13px;
   background:linear-gradient(180deg,var(--main),var(--main-dark));color:#fff;
   font-size:13px;font-weight:800;letter-spacing:.06em;padding:5px 14px;border-radius:999px;
   white-space:nowrap;box-shadow:0 6px 16px rgba(154,33,48,.3);z-index:3;
 }
-.nameplate.narr{background:linear-gradient(180deg,#8a7275,#6d585b)}
+.nameplate.narr{background:linear-gradient(180deg,#9b8589,#7b666a);letter-spacing:.22em}
 
 .bottom{flex:0 0 auto;position:relative;padding-bottom:2px}
 .toast{
@@ -154,12 +216,22 @@ img{-webkit-user-drag:none}
   position:relative;background:rgba(255,255,255,.94);border:1px solid rgba(154,33,48,.12);
   border-radius:var(--radius);padding:13px 16px 11px;box-shadow:var(--shadow);min-height:116px;
 }
+/* —— 旁白专属样式：淡色斜体 + 左侧竖线 + 淡底 —— */
+.dialogue.narr-mode{
+  background:rgba(250,247,246,.94);
+  border-left:5px solid rgba(123,102,106,.42);
+  border-top-color:rgba(123,102,106,.14);border-right-color:rgba(123,102,106,.14);border-bottom-color:rgba(123,102,106,.14);
+  box-shadow:0 8px 22px rgba(58,33,35,.09);
+}
 .dl-name{
   display:inline-block;font-size:13px;font-weight:900;color:#fff;background:var(--main);
   border-radius:8px;padding:3px 10px;letter-spacing:.06em;margin-bottom:8px;
 }
-.dl-name.narr{background:#8a7275}
+.dl-name.narr{background:#9b8589;letter-spacing:.2em}
 .dl-text{margin:0;font-size:clamp(15px,4.2vw,18px);line-height:1.72;word-break:break-word;min-height:1.72em}
+.dl-text.narr-text{font-style:italic;color:#6b5357;letter-spacing:.01em}
+.dl-text.narr-text::before{content:'“';color:rgba(123,102,106,.5);margin-right:1px}
+.dl-text.narr-text::after{content:'”';color:rgba(123,102,106,.5);margin-left:1px}
 .dl-text.chapter{text-align:center;font-size:clamp(16px,4.6vw,19px);font-weight:900;color:var(--main);letter-spacing:.10em}
 .cursor{display:inline-block;width:2px;height:1em;background:var(--main);vertical-align:-2px;margin-left:1px;animation:blink .6s steps(1) infinite}
 @keyframes blink{50%{opacity:0}}
@@ -182,7 +254,7 @@ img{-webkit-user-drag:none}
 .aff-row .bar{flex:1 1 auto;height:8px;border-radius:99px;background:#f1e3e3;overflow:hidden}
 .aff-row .bar i{display:block;height:100%;width:0;background:linear-gradient(90deg,#e0778a,var(--main));border-radius:99px;transition:width .35s ease}
 .aff-row .hr{font-size:11px;color:var(--main);letter-spacing:-1px;flex:0 0 auto}
-.aff-row .num{font-size:11px;color:var(--ink-soft);flex:0 0 14px;text-align:right;font-variant-numeric:tabular-nums}
+.aff-row .num{font-size:11px;color:var(--ink-soft);flex:0 0 20px;text-align:right;font-variant-numeric:tabular-nums}
 
 /* ---------------- 结局页 ---------------- */
 #endingScreen{
@@ -223,6 +295,7 @@ img{-webkit-user-drag:none}
 .codex-item .ci-nm{font-weight:800}
 .codex-item.locked{color:#b6a3a5}
 .codex-item .ci-t{font-size:11px;color:var(--ink-soft);margin-left:auto;white-space:nowrap}
+.codex-item.special .ci-nm{color:#a2740b}
 </style>
 </head>
 <body>
@@ -244,8 +317,24 @@ img{-webkit-user-drag:none}
           <button class="btn btn-ghost" id="btnSound">音效：开</button>
         </div>
       </div>
-      <div class="codex-line" id="codexLine">结局收集：0 / 13</div>
+      <div class="codex-line" id="codexLine">结局收集：0 / 15</div>
       <div class="title-foot">点击推进 · 空格/回车推进 · 数字键 1-4 选选项<br>谨以此，纪念那些被我们笑过、也被我们记住的大学时光</div>
+    </div>
+  </section>
+
+  <!-- ===================== 取名页 ===================== -->
+  <section id="nameScreen" class="screen">
+    <div class="name-card">
+      <div class="name-kicker">PROLOGUE</div>
+      <div class="name-title">开学第一天，先写上你的名字</div>
+      <div class="name-ask" id="nameAsk">幼年恺把报到单翻到背面，掏出笔递给你：<br>"名字写这儿。我记性好——十二个人一起记。"</div>
+      <span class="name-char"><img src="assets/kai_01.jpg" alt="幼年恺"></span>
+      <input id="nameInput" type="text" maxlength="8" autocomplete="off" spellcheck="false" placeholder="同学">
+      <div class="name-tip">最多 8 个字，留空就叫你"同学"。这个名字会出现在后面的台词里。</div>
+      <div class="title-btns">
+        <button class="btn btn-primary" id="btnNameOk">就这个，开始</button>
+        <button class="btn btn-ghost" id="btnNameBack">返回标题</button>
+      </div>
     </div>
   </section>
 
@@ -253,6 +342,7 @@ img{-webkit-user-drag:none}
   <section id="gameScreen" class="screen">
     <div class="bg bg-class" id="bgLayer">
       <img src="assets/campus.jpg" alt="" draggable="false">
+      <div class="bg-deco" id="bgDeco"></div>
     </div>
 
     <div class="wrap">
@@ -311,7 +401,7 @@ img{-webkit-user-drag:none}
   <div class="modal" id="codexModal">
     <div class="modal-card">
       <h3>结局图鉴</h3>
-      <div class="modal-sub" id="codexSub">已解锁 0 / 13</div>
+      <div class="modal-sub" id="codexSub">已解锁 0 / 15</div>
       <div id="codexList"></div>
       <div class="title-btns"><button class="btn btn-ghost" id="btnCodexClose">关闭</button></div>
     </div>
@@ -323,6 +413,7 @@ img{-webkit-user-drag:none}
 /* ============================================================================
  * 璐恺十二钗 —— 单文件视觉小说引擎 + 剧本
  * 纯原生 JS，零依赖，无构建，无外部资源（图片除外，均在本目录 assets/ 下）
+ * 结构：0 常量 / 1 十二钗 / 2 场景背景 / 3 剧本 / 4 结局 / 5 引擎
  * ==========================================================================*/
 (function(){
 'use strict';
@@ -332,9 +423,13 @@ img{-webkit-user-drag:none}
  * -------------------------------------------------------------*/
 var SAVE_KEY  = 'galgame-yanglukai:save:v1';   // 进度 + 好感 + 已解锁结局
 var ENDS_KEY  = 'galgame-yanglukai:ends:v1';   // 结局收集（图鉴）
-var HAREM_THRESHOLD = 7;   // 后宫结局阈值：12 位好感都 >= 该值
-var AFF_MAX   = 8;         // 好感条 / 心形的显示上限（本作单角色好感上限恰为 8）
+var HAREM_THRESHOLD = 14;  // 后宫结局阈值：12 位好感都 >= 该值
+var ALONE_MIN = 5;         // 「毕业快乐」结局：独处选项达到该次数
+var DODGE_MIN = 5;         // 「路人结局」结局：回避/敷衍选项达到该次数
+var PASSERBY_MAX = 4;      // 兜底：12 位好感全 <= 该值 → 路人结局
+var AFF_MAX   = 18;        // 好感条 / 心形的显示上限
 var TYPE_SPEED = 26;       // 打字机速度（毫秒 / 字）
+var DEFAULT_NAME = '同学';  // 玩家名字兜底
 
 /* ---------------------------------------------------------------
  * 1. 十二钗（顺序固定：01 幼年恺 … 12 奶龙恺）
@@ -355,17 +450,220 @@ var CHARS = [
 ];
 
 /* ---------------------------------------------------------------
- * 2. 场景背景（渐变 + campus.jpg 低透明度叠底）
+ * 2. 场景背景（共 15 种）
+ *    每种 = 一条专属 CSS 渐变（.bg-xxx）+ 一张 campus.jpg 的不同滤镜/透明度
+ *         + 一段内联 SVG 场景元素（BGDECO）
+ *    dark:true 表示暗色场景，会换一套压暗遮罩
  * -------------------------------------------------------------*/
+var BGDECO = {
+
+/* 校门口：门柱 + 横梁 + 校名牌 + 晨光 */
+gate:
+  '<svg viewBox="0 0 400 600" preserveAspectRatio="xMidYMid slice" aria-hidden="true">'
++ '<circle cx="322" cy="86" r="48" fill="#ffd9a0" opacity=".55"/>'
++ '<rect x="0" y="330" width="400" height="270" fill="#e7d6c2" opacity=".35"/>'
++ '<rect x="42" y="150" width="34" height="230" rx="6" fill="#b9564f" opacity=".82"/>'
++ '<rect x="324" y="150" width="34" height="230" rx="6" fill="#b9564f" opacity=".82"/>'
++ '<rect x="30" y="120" width="340" height="34" rx="8" fill="#a8463f" opacity=".82"/>'
++ '<rect x="86" y="130" width="228" height="16" rx="4" fill="#fdf3e6" opacity=".9"/>'
++ '<path d="M62 470 L340 382 M62 520 L340 402 M62 570 L340 422" stroke="#cbb69c" stroke-width="3" opacity=".5"/>'
++ '</svg>',
+
+/* 教学楼 302：黑板 + 粉笔字 + 课桌 + 窗 */
+class:
+  '<svg viewBox="0 0 400 600" preserveAspectRatio="xMidYMid slice" aria-hidden="true">'
++ '<rect x="30" y="58" width="340" height="190" rx="12" fill="#31504a" opacity=".85"/>'
++ '<rect x="30" y="58" width="340" height="190" rx="12" fill="none" stroke="#cbb184" stroke-width="9"/>'
++ '<path d="M64 114h150M64 148h210M64 182h96" stroke="#eef4ee" stroke-width="5" opacity=".5" stroke-linecap="round"/>'
++ '<rect x="298" y="300" width="82" height="142" rx="6" fill="#cfe3f2" opacity=".5"/>'
++ '<g fill="#c39a68" opacity=".82">'
++ '<rect x="28" y="400" width="150" height="18" rx="6"/><rect x="40" y="418" width="10" height="82"/><rect x="156" y="418" width="10" height="82"/>'
++ '<rect x="212" y="462" width="150" height="18" rx="6"/><rect x="224" y="480" width="10" height="82"/><rect x="340" y="480" width="10" height="82"/>'
++ '</g></svg>',
+
+/* 社团招新：两顶帐篷 + 横幅 + 彩旗 + 灌木 */
+club:
+  '<svg viewBox="0 0 400 600" preserveAspectRatio="xMidYMid slice" aria-hidden="true">'
++ '<path d="M36 262 L118 158 L200 262 Z" fill="#ffb3a0" opacity=".85"/>'
++ '<path d="M200 262 L282 158 L364 262 Z" fill="#9fd4e8" opacity=".85"/>'
++ '<rect x="30" y="258" width="340" height="12" rx="4" fill="#e8a37f" opacity=".7"/>'
++ '<rect x="18" y="300" width="364" height="28" rx="7" fill="#f6d24a" opacity=".88"/>'
++ '<path d="M60 300v28M120 300v28M180 300v28M240 300v28M300 300v28" stroke="#d98b2b" stroke-width="3" opacity=".5"/>'
++ '<g stroke="#cfcfcf" stroke-width="2" opacity=".55"><path d="M0 384 H400 M0 436 H400"/></g>'
++ '<g fill="#8fc7a0" opacity=".72"><circle cx="58" cy="366" r="15"/><circle cx="92" cy="360" r="10"/><circle cx="344" cy="368" r="14"/></g>'
++ '</svg>',
+
+/* 第一食堂：打饭窗口 + 餐盘 + 汤碗 */
+canteen:
+  '<svg viewBox="0 0 400 600" preserveAspectRatio="xMidYMid slice" aria-hidden="true">'
++ '<rect x="0" y="380" width="400" height="220" fill="#e8b98a" opacity=".5"/>'
++ '<rect x="28" y="148" width="344" height="132" rx="10" fill="#fff3dd" opacity=".82"/>'
++ '<path d="M28 190 H372 M28 230 H372" stroke="#e0b98f" stroke-width="6" opacity=".7"/>'
++ '<circle cx="106" cy="330" r="42" fill="#ffffff" opacity=".78"/><circle cx="106" cy="330" r="26" fill="#f2c98f" opacity=".85"/>'
++ '<circle cx="248" cy="340" r="34" fill="#ffffff" opacity=".78"/><circle cx="248" cy="340" r="19" fill="#d8e6c8" opacity=".9"/>'
++ '<rect x="332" y="298" width="16" height="62" rx="6" fill="#cf9a6a" opacity=".82"/>'
++ '</svg>',
+
+/* 军训操场：跑道弧线 + 看台 + 太阳 + 白线 */
+field:
+  '<svg viewBox="0 0 400 600" preserveAspectRatio="xMidYMid slice" aria-hidden="true">'
++ '<rect x="0" y="358" width="400" height="242" fill="#cfe0b8" opacity=".55"/>'
++ '<ellipse cx="200" cy="470" rx="232" ry="92" fill="none" stroke="#f2f2ea" stroke-width="7" opacity=".6"/>'
++ '<ellipse cx="200" cy="470" rx="170" ry="62" fill="none" stroke="#f2f2ea" stroke-width="5" opacity=".45"/>'
++ '<circle cx="330" cy="78" r="40" fill="#ffe6a8" opacity=".6"/>'
++ '<rect x="18" y="300" width="364" height="14" rx="4" fill="#d8c7a4" opacity=".6"/>'
++ '<g fill="#b9c9a2" opacity=".72"><rect x="30" y="330" width="40" height="18" rx="4"/><rect x="90" y="330" width="40" height="18" rx="4"/><rect x="150" y="330" width="40" height="18" rx="4"/></g>'
++ '</svg>',
+
+/* 宿舍楼下：楼体格子窗（亮灯）+ 月亮 + 晾衣绳 */
+dorm:
+  '<svg viewBox="0 0 400 600" preserveAspectRatio="xMidYMid slice" aria-hidden="true">'
++ '<rect x="18" y="56" width="364" height="424" rx="10" fill="#26304a" opacity=".55"/>'
++ '<g fill="#ffdf9a">'
++ '<rect x="56" y="108" width="46" height="40" rx="5" opacity=".92"/><rect x="132" y="108" width="46" height="40" rx="5" opacity=".45"/>'
++ '<rect x="208" y="108" width="46" height="40" rx="5" opacity=".92"/><rect x="284" y="108" width="46" height="40" rx="5" opacity=".7"/>'
++ '<rect x="56" y="198" width="46" height="40" rx="5" opacity=".6"/><rect x="132" y="198" width="46" height="40" rx="5" opacity=".92"/>'
++ '<rect x="208" y="198" width="46" height="40" rx="5" opacity=".8"/><rect x="284" y="198" width="46" height="40" rx="5" opacity=".35"/>'
++ '<rect x="132" y="288" width="46" height="40" rx="5" opacity=".55"/><rect x="208" y="288" width="46" height="40" rx="5" opacity=".9"/>'
++ '</g>'
++ '<circle cx="332" cy="68" r="26" fill="#fdf6d8" opacity=".8"/>'
++ '<path d="M30 420 H370" stroke="#8fa3c8" stroke-width="3" opacity=".6"/>'
++ '</svg>',
+
+/* 期中考场：挂钟 + 斜放的试卷 */
+exam:
+  '<svg viewBox="0 0 400 600" preserveAspectRatio="xMidYMid slice" aria-hidden="true">'
++ '<circle cx="200" cy="108" r="60" fill="#ffffff" opacity=".82"/>'
++ '<circle cx="200" cy="108" r="60" fill="none" stroke="#9aa79a" stroke-width="6" opacity=".7"/>'
++ '<path d="M200 108 V68 M200 108 L232 126" stroke="#7a8a7a" stroke-width="6" stroke-linecap="round"/>'
++ '<g transform="rotate(-3 200 400)">'
++ '<rect x="58" y="300" width="284" height="204" rx="8" fill="#fdfdf8" opacity=".92"/>'
++ '<g stroke="#c9cfc4" stroke-width="4"><path d="M88 340 H312 M88 372 H312 M88 404 H312 M88 436 H240"/></g>'
++ '</g></svg>',
+
+/* 校运会：领奖台 + 跑道线 + 彩旗 */
+sports:
+  '<svg viewBox="0 0 400 600" preserveAspectRatio="xMidYMid slice" aria-hidden="true">'
++ '<rect x="0" y="378" width="400" height="222" fill="#e8b9a8" opacity=".5"/>'
++ '<g fill="#d9d2c4" opacity=".92"><rect x="120" y="330" width="160" height="50"/><rect x="88" y="292" width="80" height="38"/><rect x="232" y="292" width="80" height="38"/></g>'
++ '<path d="M120 330 H280 M88 292 H168 M232 292 H312" stroke="#fdf8ee" stroke-width="4" opacity=".8"/>'
++ '<g stroke="#f2f2ea" stroke-width="6" opacity=".55"><path d="M0 432 H400 M0 492 H400"/></g>'
++ '<path d="M18 118 L118 56 L118 178 Z" fill="#f6d24a" opacity=".85"/>'
++ '<path d="M382 118 L282 56 L282 178 Z" fill="#9fd4e8" opacity=".85"/>'
++ '</svg>',
+
+/* 生日会：三层蛋糕 + 蜡烛 + 气球 */
+cake:
+  '<svg viewBox="0 0 400 600" preserveAspectRatio="xMidYMid slice" aria-hidden="true">'
++ '<rect x="90" y="380" width="220" height="72" rx="10" fill="#ffd6e0" opacity=".95"/>'
++ '<rect x="110" y="318" width="180" height="64" rx="10" fill="#fff0f4" opacity=".95"/>'
++ '<rect x="132" y="262" width="136" height="58" rx="10" fill="#ffe3ea" opacity=".95"/>'
++ '<g fill="#f6b8c8" opacity=".9"><circle cx="150" cy="316" r="7"/><circle cx="200" cy="316" r="7"/><circle cx="250" cy="316" r="7"/></g>'
++ '<g><rect x="164" y="228" width="10" height="40" rx="4" fill="#fdf6e3"/><rect x="196" y="222" width="10" height="46" rx="4" fill="#fdf6e3"/><rect x="228" y="228" width="10" height="40" rx="4" fill="#fdf6e3"/>'
++ '<path d="M169 212 q6 -18 12 -5 q6 -13 10 5 z" fill="#ffca55"/><path d="M201 206 q6 -18 12 -5 q6 -13 10 5 z" fill="#ffca55"/><path d="M233 212 q6 -18 12 -5 q6 -13 10 5 z" fill="#ffca55"/></g>'
++ '<g fill="#f6b8c8" opacity=".68"><circle cx="58" cy="146" r="18"/><circle cx="342" cy="168" r="22"/><circle cx="300" cy="86" r="13"/></g>'
++ '</svg>',
+
+/* 奖牌墙：网格 + 挂着的奖牌 */
+medal:
+  '<svg viewBox="0 0 400 600" preserveAspectRatio="xMidYMid slice" aria-hidden="true">'
++ '<rect x="18" y="56" width="364" height="404" rx="12" fill="#e9d9b4" opacity=".55"/>'
++ '<g stroke="#c9ae7e" stroke-width="3" opacity=".7"><path d="M18 156 H382 M18 256 H382 M18 356 H382 M140 56 V460 M260 56 V460"/></g>'
++ '<g transform="translate(78,106)"><path d="M-14 -18 L0 6 L14 -18" stroke="#c0392b" stroke-width="7" fill="none"/><circle cy="18" r="18" fill="#e8c14a"/><circle cy="18" r="11" fill="#f6df94"/></g>'
++ '<g transform="translate(200,106)"><path d="M-14 -18 L0 6 L14 -18" stroke="#2b6cb0" stroke-width="7" fill="none"/><circle cy="18" r="18" fill="#dfe6ef"/><circle cy="18" r="11" fill="#f4f7fb"/></g>'
++ '<g transform="translate(320,208)"><path d="M-14 -18 L0 6 L14 -18" stroke="#b8860b" stroke-width="7" fill="none"/><circle cy="18" r="18" fill="#e8c14a"/><circle cy="18" r="11" fill="#f6df94"/></g>'
++ '<g transform="translate(200,318)"><path d="M-14 -18 L0 6 L14 -18" stroke="#2f855a" stroke-width="7" fill="none"/><circle cy="18" r="18" fill="#e8c14a"/><circle cy="18" r="11" fill="#f6df94"/></g>'
++ '</svg>',
+
+/* 跨年夜：三朵烟花 + 城市剪影 + 窗灯 */
+newyear:
+  '<svg viewBox="0 0 400 600" preserveAspectRatio="xMidYMid slice" aria-hidden="true">'
++ '<g transform="translate(78,120)"><g stroke="#ffd166" stroke-width="3">'
++ '<path d="M0 0 L0 -62 M0 0 L54 -31 M0 0 L54 31 M0 0 L0 62 M0 0 L-54 31 M0 0 L-54 -31 M0 0 L44 -52 M0 0 L-44 52"/></g>'
++ '<circle r="10" fill="#fff3b0"/></g>'
++ '<g transform="translate(302,92)"><g stroke="#ff9ec4" stroke-width="3">'
++ '<path d="M0 0 L0 -52 M0 0 L45 -26 M0 0 L45 26 M0 0 L0 52 M0 0 L-45 26 M0 0 L-45 -26"/></g>'
++ '<circle r="9" fill="#ffd9e8"/></g>'
++ '<g transform="translate(206,224)"><g stroke="#9fd4e8" stroke-width="3">'
++ '<path d="M0 0 L0 -40 M0 0 L34 -20 M0 0 L34 20 M0 0 L0 40 M0 0 L-34 20 M0 0 L-34 -20"/></g>'
++ '<circle r="7" fill="#dff2fa"/></g>'
++ '<g fill="#12111f" opacity=".62"><rect x="0" y="428" width="58" height="172"/><rect x="68" y="388" width="72" height="212"/><rect x="150" y="448" width="50" height="152"/><rect x="210" y="366" width="82" height="234"/><rect x="302" y="418" width="60" height="182"/></g>'
++ '<g fill="#fff6c9" opacity=".72"><rect x="80" y="408" width="10" height="10"/><rect x="228" y="388" width="10" height="10"/><rect x="252" y="428" width="10" height="10"/><rect x="316" y="450" width="10" height="10"/></g>'
++ '</svg>',
+
+/* 表白墙：木板上六张七色便签 + 图钉 */
+wall:
+  '<svg viewBox="0 0 400 600" preserveAspectRatio="xMidYMid slice" aria-hidden="true">'
++ '<rect x="18" y="56" width="364" height="444" rx="10" fill="#e4c9b0" opacity=".55"/>'
++ '<g opacity=".95">'
++ '<rect x="58" y="108" width="86" height="86" fill="#fff6a8" transform="rotate(-6 101 151)"/>'
++ '<rect x="168" y="98" width="86" height="86" fill="#ffd2dd" transform="rotate(4 211 141)"/>'
++ '<rect x="278" y="118" width="86" height="86" fill="#c9e8f2" transform="rotate(-3 321 161)"/>'
++ '<rect x="78" y="238" width="86" height="86" fill="#d8f2cf" transform="rotate(5 121 281)"/>'
++ '<rect x="198" y="248" width="86" height="86" fill="#ffe0c0" transform="rotate(-5 241 291)"/>'
++ '<rect x="288" y="298" width="86" height="86" fill="#e2d6f7" transform="rotate(3 331 341)"/>'
++ '</g>'
++ '<g fill="#c0392b" opacity=".8"><circle cx="101" cy="120" r="5"/><circle cx="211" cy="110" r="5"/><circle cx="321" cy="130" r="5"/><circle cx="121" cy="250" r="5"/><circle cx="241" cy="260" r="5"/><circle cx="331" cy="310" r="5"/></g>'
++ '</svg>',
+
+/* 雪夜：雪花 + 路灯 + 树影 */
+snow:
+  '<svg viewBox="0 0 400 600" preserveAspectRatio="xMidYMid slice" aria-hidden="true">'
++ '<rect x="0" y="378" width="400" height="222" fill="#f2f7fc" opacity=".78"/>'
++ '<g fill="#ffffff" opacity=".9">'
++ '<circle cx="40" cy="70" r="5"/><circle cx="110" cy="140" r="4"/><circle cx="180" cy="58" r="6"/><circle cx="250" cy="160" r="4"/>'
++ '<circle cx="320" cy="88" r="5"/><circle cx="368" cy="228" r="4"/><circle cx="70" cy="248" r="5"/><circle cx="150" cy="300" r="4"/>'
++ '<circle cx="290" cy="278" r="5"/><circle cx="220" cy="218" r="3"/><circle cx="340" cy="328" r="4"/><circle cx="30" cy="178" r="3"/>'
++ '<circle cx="196" cy="112" r="3"/><circle cx="266" cy="52" r="4"/><circle cx="94" cy="382" r="4"/>'
++ '</g>'
++ '<rect x="120" y="240" width="8" height="180" fill="#5b6b80" opacity=".8"/><circle cx="124" cy="230" r="26" fill="#ffe9a8" opacity=".85"/>'
++ '<path d="M268 420 q-30 -62 6 -102 q34 40 6 102 z" fill="#8aa58c" opacity=".5"/>'
++ '</svg>',
+
+/* 图书馆：书架 + 书脊 + 台灯 */
+library:
+  '<svg viewBox="0 0 400 600" preserveAspectRatio="xMidYMid slice" aria-hidden="true">'
++ '<rect x="18" y="56" width="364" height="304" rx="8" fill="#d9c6a5" opacity=".5"/>'
++ '<g fill="#c2a87f" opacity=".9"><rect x="38" y="88" width="324" height="14"/><rect x="38" y="178" width="324" height="14"/><rect x="38" y="268" width="324" height="14"/></g>'
++ '<g opacity=".95">'
++ '<rect x="48" y="104" width="18" height="74" fill="#b9564f"/><rect x="70" y="104" width="14" height="74" fill="#4f7f8f"/><rect x="88" y="104" width="20" height="74" fill="#c79a3f"/><rect x="112" y="104" width="12" height="74" fill="#6b7f4f"/>'
++ '<rect x="132" y="194" width="16" height="74" fill="#8f5f8f"/><rect x="152" y="194" width="22" height="74" fill="#b9564f"/><rect x="178" y="194" width="14" height="74" fill="#4f7f8f"/>'
++ '<rect x="220" y="104" width="18" height="74" fill="#c79a3f"/><rect x="242" y="104" width="14" height="74" fill="#6b7f4f"/>'
++ '<rect x="260" y="194" width="20" height="74" fill="#b9564f"/><rect x="284" y="194" width="14" height="74" fill="#8f5f8f"/><rect x="302" y="104" width="18" height="74" fill="#4f7f8f"/>'
++ '</g>'
++ '<rect x="150" y="400" width="100" height="10" rx="4" fill="#c2a87f"/>'
++ '<path d="M230 400 L258 300 L278 300 L250 400 Z" fill="#ffe9a8" opacity=".6"/>'
++ '</svg>',
+
+/* 毕业照：相机 + 台阶 + 学士帽 + 太阳 */
+photo:
+  '<svg viewBox="0 0 400 600" preserveAspectRatio="xMidYMid slice" aria-hidden="true">'
++ '<rect x="0" y="430" width="400" height="170" fill="#cbd8b8" opacity=".6"/>'
++ '<g fill="#dcd3c0" opacity=".92"><rect x="28" y="380" width="344" height="26" rx="6"/><rect x="60" y="350" width="280" height="26" rx="6"/></g>'
++ '<rect x="140" y="180" width="120" height="90" rx="10" fill="#3a3a44" opacity=".85"/>'
++ '<circle cx="200" cy="225" r="30" fill="#8fa6b8" opacity=".9"/><circle cx="200" cy="225" r="16" fill="#dfe9f2" opacity=".9"/>'
++ '<rect x="180" y="158" width="40" height="26" rx="6" fill="#3a3a44" opacity=".85"/>'
++ '<path d="M56 302 l42 -20 l42 20 z" fill="#5b5b66" opacity=".7"/><rect x="86" y="286" width="24" height="10" fill="#5b5b66" opacity=".7"/>'
++ '<circle cx="332" cy="118" r="30" fill="#f6d24a" opacity=".7"/>'
++ '</svg>'
+};
+
 var BGS = {
-  class:  { cls:'bg-class',   label:'教学楼 302' },
-  canteen:{ cls:'bg-canteen', label:'第一食堂' },
-  field:  { cls:'bg-field',   label:'军训操场' },
-  stage:  { cls:'bg-stage',   label:'大礼堂' },
-  dorm:   { cls:'bg-dorm',    label:'宿舍楼下' },
-  wall:   { cls:'bg-wall',    label:'表白墙前' },
-  photo:  { cls:'bg-photo',   label:'毕业照现场' },
-  gate:   { cls:'bg-gate',    label:'校门口' }
+  gate:     { cls:'bg-gate',     label:'校门口 · 早上七点四十', deco:BGDECO.gate },
+  class:    { cls:'bg-class',    label:'教学楼 302',            deco:BGDECO['class'] },
+  club:     { cls:'bg-club',     label:'中心广场 · 社团招新',    deco:BGDECO.club },
+  canteen:  { cls:'bg-canteen',  label:'第一食堂 · 中午十二点',  deco:BGDECO.canteen },
+  field:    { cls:'bg-field',    label:'军训操场 · 正午',        deco:BGDECO.field },
+  dorm:     { cls:'bg-dorm',     label:'宿舍楼下 · 熄灯前',      deco:BGDECO.dorm, dark:true },
+  exam:     { cls:'bg-exam',     label:'阶梯教室 · 期中考场',    deco:BGDECO.exam },
+  sports:   { cls:'bg-sports',   label:'校运会 · 田径场',        deco:BGDECO.sports },
+  cake:     { cls:'bg-cake',     label:'活动室 · 生日会',        deco:BGDECO.cake },
+  medal:    { cls:'bg-medal',    label:'奖牌墙 · 教学楼一层',    deco:BGDECO.medal },
+  newyear:  { cls:'bg-newyear',  label:'宿舍楼下 · 跨年夜',      deco:BGDECO.newyear, dark:true },
+  wall:     { cls:'bg-wall',     label:'表白墙 · 宿舍楼下',      deco:BGDECO.wall },
+  snow:     { cls:'bg-snow',     label:'主干道 · 第一场雪',      deco:BGDECO.snow },
+  library:  { cls:'bg-library',  label:'图书馆四楼自习室',       deco:BGDECO.library },
+  photo:    { cls:'bg-photo',    label:'图书馆台阶 · 毕业照',    deco:BGDECO.photo }
 };
 
 /* ---------------------------------------------------------------
@@ -374,198 +672,715 @@ var BGS = {
  * 字段说明：
  *   id      节点唯一 id（字符串）
  *   who     说话者：0~11 对应十二钗；-1 表示旁白
- *   text    台词
+ *   text    台词（可用 {name} 占位玩家名字；旁白自动套斜体样式）
  *   bg      场景 id（可省略，沿用上一个场景）
- *   chapter 可选 true，表示章节标题样式
- *   next    下一句的 id；省略则顺序播放数组的下一项；
- *           取值 '@end' 表示进入结局结算
- *   choices 选项数组：{ label, next, aff:{钗下标:+n}, affAll:+n }
- *           aff  = 给指定钗加好感；affAll = 给全部 12 位一起加好感
+ *   place   顶栏地点/时间标签（可省略，沿用 bg 的默认标签）
+ *   chapter true 时按"章节标题"样式居中放大显示
+ *   next    下一句的 id；省略则顺序播放数组的下一项；'@end' 表示进入结局结算
+ *   cond    按 flags 分流：[{flag:'club', is:'photo', next:'a1Rp'}, …]，都不匹配则用 next
+ *   choices 选项数组：{ label, next, aff:{钗下标:+n}, affAll:+n, flags:{计数键:+1} }
+ *           aff      = 给指定钗加好感
+ *           affAll   = 给全部 12 位一起加好感
+ *           flags    = 记一个剧情计数（alone = 独处次数，dodge = 回避次数）
  * -------------------------------------------------------------*/
 var SCRIPT = [
 
 /* ===================== 序章 · 开学第一天 ===================== */
-{ id:'p01', who:-1, bg:'class', text:'九月一号，早上七点半。教学楼 302，新学期的第一节课。' },
-{ id:'p02', who:-1, text:'你抱着刚领的课本推开门，发现教室里已经坐了一个人。' },
-{ id:'p03', who:0, text:'哟，新同学？我叫杨璐恺——不过在这间教室里，你得叫我"幼年恺"。' },
-{ id:'p04', who:0, text:'别紧张，我是"璐恺十二钗"里最乖的那个。' },
-{ id:'p05', who:-1, text:'话音刚落，后门"砰"地被人撞开了。' },
-{ id:'p06', who:1, text:'等一下！自我介绍这种事，必须等寿星先说！' },
-{ id:'p07', who:0, text:'……你昨天不是刚过完生日吗？' },
-{ id:'p08', who:1, text:'对啊。今天也是我生日，明天也是。生日恺的日历，只有一页。' },
-{ id:'p09', who:2, text:'哎呀别吵别吵，先让我比个心。我连被罚站都是比心姿势，站了四十分钟，老师都不好意思了。' },
-{ id:'p10', who:3, text:'大家好呀（眨眼）。不好意思，我说话不带眨眼会卡壳——刚才那句，我眨了三次。' },
-{ id:'p11', who:4, text:'（托腮）我想通了。自我介绍，本质上是一种社会性的自我暴露。' },
-{ id:'p12', who:0, text:'说人话。' },
-{ id:'p13', who:4, text:'我叫托腮恺，我喜欢托腮。' },
-{ id:'p14', who:5, text:'我叫拼好恺。我的左半边很内向，右半边是社交恐怖分子，他俩每天早上都要吵一架。' },
-{ id:'p15', who:6, text:'都让让，都让让——（叮当叮当）我叫奖牌恺。这块是小学三年级跳绳第三名，这块是体测及格，这块是上周光盘行动纪念章。' },
-{ id:'p16', who:7, text:'略——！抱歉抱歉，不是针对你。我天生就长这样……不对，是我天生就想这样。' },
-{ id:'p17', who:8, text:'全体注意——！立正！稍息！报数！……报告，我叫军训恺。军训结束三年了，我的口令还没结束。' },
-{ id:'p18', who:9, text:'（面无表情）我叫绷绷恺。我一般不笑。' },
-{ id:'p19', who:0, text:'他上次笑，是听说食堂开了个新窗口。' },
-{ id:'p20', who:9, text:'那个窗口，值得。' },
-{ id:'p21', who:10, text:'来来来，先怼脸拍一张！近点，再近点——好。这张用来当班级群头像，就叫"怼脸恺"。' },
-{ id:'p22', who:11, text:'还有窝！还有窝！窝叫奶龙恺~ 窝说话是有点奶，但窝已经成年了哦~' },
-{ id:'p23', who:0, text:'……行吧。现在你认识了十二个我。同一个杨璐恺，十二种打开方式。' },
-{ id:'p24', who:0, text:'开学第一天，你打算先跟谁打招呼？' },
-{ id:'pChoice', who:0, text:'（你只有一次开口的机会。）', choices:[
-  { label:'先跟幼年恺和生日恺握个手', aff:{0:2, 1:2, 11:1}, next:'pA1' },
-  { label:'站直敬礼，先跟军训恺和绷绷恺套近乎', aff:{8:2, 9:2, 10:1}, next:'pB1' },
-  { label:'一个都不落下，从第一排招呼到最后一排', affAll:1, next:'pC1' }
+{ id:'p01', who:-1, bg:'gate', place:'校门口 · 早上七点四十', text:'九月一号，早上七点四十。校门口的行李箱轮子碾过地砖，声音像一场小型阅兵。' },
+{ id:'p02', who:-1, text:'你捏着报到单，抬头看了一眼校名，又低头看了一眼手机导航——导航说你已经在学校里面了。' },
+{ id:'p03', who:-1, text:'就在这时，一个男生从人群里挤出来，在你面前立正站好，认真地清了清嗓子。' },
+{ id:'p04', who:0, text:'你好，我叫杨璐恺。从今天起，在这所学校里，"十二钗"里我是最乖的那个。' },
+{ id:'p05', who:-1, text:'你还没来得及问"十二钗是什么"，他身后已经又站了十一个人。' },
+{ id:'p06', who:-1, text:'十二张一模一样的脸围成一个半圆，像十二个浏览器标签页同时加载。' },
+{ id:'p07', who:1, text:'等一下等一下——自我介绍之前，先祝我生日快乐。' },
+{ id:'p08', who:0, text:'你昨天说过了。' },
+{ id:'p09', who:1, text:'昨天是昨天，今天是今天。我的日历只有一页，撕不掉。' },
+{ id:'p10', who:2, text:'（比心）大家好，我叫比心恺。我连被罚站都是这个姿势，站了四十分钟，老师最后说"你站得挺有礼貌"。' },
+
+/* —— 支线 A：比心恺的《比心台账》—— 每天比心次数要记账，从高一记到毕业 —— */
+{ id:'p10b', who:2, text:'（掏出一个小本子，飞快地画了一道）等一下，先记一笔——今天第 12 次。这本子叫《比心台账》，从高一记到现在，一天都没落下过。' },
+{ id:'p10c', who:-1, text:'你凑过去看了一眼：每一页最上面写着日期，下面是一串数字，页脚还画着一排小格子。年度目标那一栏写着——一万次。' },
+
+{ id:'p11', who:3, text:'大家好呀（眨眼）……不好意思，我说话不带眨眼会卡壳，刚才那句我眨了四次。' },
+
+/* —— 支线 B：Wink恺的「不眨眼挑战」—— 谁先眨眼谁请奶茶，鬼脸恺是官方作弊选手 —— */
+{ id:'p11b', who:3, text:'顺便立个规矩：我们宿舍有个挑战，叫"不眨眼一分钟"，谁先眨眼谁请奶茶。我的最好成绩是四秒。' },
+{ id:'p11c', who:7, text:'我的成绩是一分钟。因为我做鬼脸的时候，眼睛本来就是眯着的。', next:'p12' },
+{ id:'p12', who:4, text:'（托腮）我想通了。自我介绍，本质上是把一整个人压缩成一句话的行为艺术。' },
+{ id:'p13', who:0, text:'说人话。' },
+{ id:'p14', who:4, text:'我叫托腮恺。我喜欢托腮，也喜欢告诉你"我想通了"。' },
+{ id:'p15', who:5, text:'我叫拼好恺。我左半边很内向，右半边是社交恐怖分子，他俩每天早上都要在镜子前开会。' },
+{ id:'p16', who:6, text:'（叮当叮当）让让，让让——我叫奖牌恺。这块是小学跳绳第三名，这块是体测及格，这块是上周食堂光盘行动纪念章。' },
+{ id:'p17', who:7, text:'略——！抱歉抱歉，不是针对你。我这张脸天生就这样，主要是我自己想的。' },
+{ id:'p18', who:8, text:'全体注意——！立正！稍息！报数！……报告：我叫军训恺。军训结束三年了，我的口令还没结束。' },
+{ id:'p19', who:9, text:'（面无表情）我叫绷绷恺。我不太笑。' },
+{ id:'p20', who:0, text:'他上次笑，是听说食堂新开了一个窗口。' },
+{ id:'p21', who:9, text:'那个窗口，值得。' },
+{ id:'p22', who:10, text:'先拍一张！近点，再近点——好。这张以后就是班级群头像了，我叫怼脸恺。' },
+{ id:'p23', who:11, text:'还有窝！还有窝！窝叫奶龙恺~ 窝说话是有一点点奶，但窝已经成年了哦~' },
+
+/* —— 支线 C：奶龙恺的「腹黑」—— 奶声奶气，却是十二个人里最会算计的那个 —— */
+{ id:'p23b', who:11, text:'（奶声奶气）对了，窝刚才顺手帮尼占了宿舍最好的那个床位哦~ 尼一定会选它的。' },
+{ id:'p23c', who:-1, text:'后来你才知道，那间是唯一一间朝北、但带独立卫浴的。他提前把整栋楼的房型表都背下来了。' },
+{ id:'p23d', who:11, text:'窝没有算计哦。窝只是……把所有可能都先算了一遍。', next:'p24' },
+{ id:'p24', who:0, text:'总之，我们是同一个人——杨璐恺，十二种打开方式。以后你要跟谁玩，自己挑。' },
+{ id:'p25', who:-1, text:'行李箱的轮子又响了半声。你忽然意识到，大学第一天，你已经被十二个人记住了。' },
+{ id:'p26', who:0, place:'教学楼 302 · 上午八点', bg:'class', text:'对了，{name}——这名字我记住了，十二个人一起记的。' },
+{ id:'p27', who:-1, text:'预备铃响了。十二个人同时转身往教学楼走，那画面像一个人分裂出十二个残影。' },
+{ id:'p28', who:0, text:'进教室吧。提醒你一句：接下来这四年，你得学会在十二张一模一样的脸里认人。' },
+{ id:'p29', who:-1, text:'你抱着一摞新书走进 302。窗帘半开，阳光把黑板照出一层灰白。' },
+{ id:'p30', who:0, text:'第一节课的自我介绍，谁先来？' },
+{ id:'p31', who:-1, text:'十二个人同时举起了手。而你手里只有一支笔，点名册上只有一行空位。' },
+
+{ id:'pChoice', who:0, text:'（先跟谁打个招呼？你只有一次开口的机会。）', choices:[
+  { label:'先跟幼年恺和生日恺握个手', aff:{0:3, 1:2, 11:1}, next:'pA1' },
+  { label:'站直敬礼，找军训恺和绷绷恺报到', aff:{8:3, 9:2, 10:1}, next:'pB1' },
+  { label:'主动往前走一步，让怼脸恺先拍一张', aff:{10:3, 7:1, 6:1}, next:'pC1' },
+  { label:'一个都不落下，从第一排招呼到最后一排', affAll:2, next:'pD1' }
 ]},
 
 { id:'pA1', who:-1, text:'你走过去，先跟幼年恺和生日恺握了手。' },
 { id:'pA2', who:1, text:'握手的这一刻，请允许我把它记作我的生日礼物。' },
-{ id:'pA3', who:0, text:'……他一年能收三百六十五份礼物。', next:'a01' },
+{ id:'pA3', who:0, text:'……他一年能收三百六十五份礼物。', next:'pEnd' },
 
 { id:'pB1', who:-1, text:'你条件反射地站直，抬手敬了个礼。' },
 { id:'pB2', who:8, text:'好！这位同学有天赋！考虑一下，明年军训你来当教官！' },
 { id:'pB3', who:9, text:'（嘴角向上移动了 0.5 毫米）可以。' },
-{ id:'pB4', who:10, text:'别动！刚才那个表情我拍下来了！', next:'a01' },
+{ id:'pB4', who:10, text:'别动！刚才那个表情我拍下来了！', next:'pEnd' },
 
-{ id:'pC1', who:-1, text:'你决定一个都不落下，从第一排走到最后一排，把十二张脸都招呼了一遍。' },
-{ id:'pC2', who:0, text:'……你是第一个把十二个人全部招呼一遍的人。' },
-{ id:'pC3', who:-1, text:'十二张一模一样的脸同时朝你点头。教室瞬间像开了十二个窗口。', next:'a01' },
+{ id:'pC1', who:-1, text:'你往前一步，站到了怼脸恺的镜头前面。' },
+{ id:'pC2', who:10, text:'很好，你没有躲。四年来你是第一个没有躲的人。' },
+{ id:'pC3', who:7, text:'我也要拍！我从后面探个头——这样照片里就有两个脑袋，一个正经一个不正经。' },
+{ id:'pC4', who:6, text:'（叮当）我把奖牌借你挂脖子上，拍出来显得你很有来头。', next:'pEnd' },
+
+{ id:'pD1', who:-1, text:'你决定一个都不落下，从第一排走到最后一排，把十二张脸都招呼了一遍。' },
+{ id:'pD2', who:0, text:'……你是第一个把十二个人全部招呼一遍的人。' },
+{ id:'pD3', who:-1, text:'十二张一模一样的脸同时朝你点头。教室瞬间像开了十二个窗口。', next:'pEnd' },
+
+{ id:'pEnd', who:-1, text:'（上课铃响。第一节课，教授点名点到了三个"杨璐恺"。）', next:'a01' },
+
+/* ===================== 第一幕 · 社团招新 ===================== */
+{ id:'a01', who:-1, bg:'club', place:'中心广场 · 社团招新日', chapter:true, text:'—— 第一幕 · 社团招新 ——' },
+{ id:'a02', who:-1, text:'九月，社团招新日。中心广场上支起几十顶帐篷，横幅被风吹得啪啪响。' },
+{ id:'a03', who:-1, text:'你们班被安排在最角落的位置，左边是天文学社，右边是"睡觉研究社"。' },
+{ id:'a04', who:8, text:'全体注意！招新就是抢人！谁先喊出声，人就是谁的！' },
+{ id:'a05', who:6, text:'（叮当）我把奖牌全带来了，挂在帐篷上，远远看像一棵圣诞树。' },
+{ id:'a06', who:10, text:'我先拍横幅！拍完横幅拍你！你再往后站点儿，对，就那儿——' },
+{ id:'a07', who:2, text:'（比心）我们摊位最重要的是"亲和力"，所以我全程比心。' },
+{ id:'a07b', who:3, text:'（眨眼）我们社也招人……（眨眼）……主要条件是，能接受我说话慢。' },
+{ id:'a07c', who:2, text:'（比心）刚才这一下是今天的第 88 次。我有个小本子专门记着。' },
+{ id:'a08', who:5, text:'我左半边在发传单，右半边在跟隔壁社的人吵架。他们俩业绩都很好。' },
+{ id:'a09', who:7, text:'我在帐篷上画了个巨大的鬼脸，隔壁帐篷来投诉了三次，说我们"太有感染力"。' },
+{ id:'a10', who:4, text:'（托腮）我想通了。招新的本质，是让一群陌生人相信你和他们一样怪。' },
+{ id:'a1X1', who:0, text:'说人话。' },
+{ id:'a1X2', who:4, text:'我们很怪，但你可以一起来怪。' },
+{ id:'a1X3', who:-1, text:'十二个人同时看向你，摊位上只有一份空白的报名表。' },
+
+{ id:'a1Choice', who:0, text:'你要报哪个社？', choices:[
+  { label:'摄影社——怼脸恺主推，他说社里只有他一个正式成员', aff:{10:3, 7:1, 3:1}, flags:{club:'photo'}, next:'a1A1' },
+  { label:'话剧社——拼好恺和托腮恺已经在那儿演起来了', aff:{5:3, 4:1, 7:1}, flags:{club:'drama'}, next:'a1B1' },
+  { label:'志愿者队——幼年恺和军训恺在招人，周末六点集合', aff:{0:2, 8:3, 9:1}, flags:{club:'vol'}, next:'a1C1' },
+  { label:'哪个都不报，回宿舍睡一觉（一个人待着）', flags:{alone:1}, next:'a1D1' }
+]},
+
+{ id:'a1A1', who:-1, text:'你在摄影社的报名表上写下名字。怼脸恺立刻把相机举了起来。' },
+{ id:'a1A2', who:10, text:'这就对了！摄影社招新三年，第一次凑够两个人……加上我。' },
+{ id:'a1A3', who:0, text:'他社团的正式成员一直只有他自己。因为没人愿意被怼脸拍。' },
+{ id:'a1A4', who:7, text:'我可以当模特！我这张脸，天生就适合被广角镜头拉一下。' },
+{ id:'a1A5', who:10, text:'……你确实很合适。合适得有点吓人。' },
+{ id:'a1A6', who:-1, text:'那天下午，摄影社的帐篷下面挂出了二十张新照片，全是同一张脸的不同角度。', next:'a1R' },
+
+{ id:'a1B1', who:-1, text:'话剧社的学长递给你一份剧本，封面写着《雷雨（校园改编版）》。' },
+{ id:'a1B2', who:5, text:'我左半边想演男一号，右半边想演一棵树。导演说那就演"树下的男一号"。' },
+{ id:'a1B3', who:4, text:'（托腮）我想通了。舞台剧最重要的不是台词，是让观众相信你真的站在雨里。' },
+{ id:'a1B4', who:7, text:'那我可以演雷。我这张脸一出现，全场都觉得要下雨了。' },
+{ id:'a1B5', who:2, text:'（比心）我申请演"爱情线"。我不会说台词，但我可以一直比心。', next:'a1R' },
+
+{ id:'a1C1', who:-1, text:'志愿者队的报名表上，第一行写着"周末六点集合，去城郊小学支教"。' },
+{ id:'a1C2', who:8, text:'六点集合！全体注意！迟到的人负责给全队买水！' },
+{ id:'a1C3', who:0, text:'他上周迟到了一次，买了两箱水，搬上去的时候还在喊口令。' },
+{ id:'a1C4', who:9, text:'（面无表情）我报名了。我不说话，但我会把黑板擦干净。' },
+{ id:'a1C5', who:-1, text:'后来那所小学的孩子，记住了十二个长得一模一样、但性格完全不同的小老师。', next:'a1R' },
+
+{ id:'a1D1', who:-1, text:'你把报名表推了回去，说想先回去睡一觉。' },
+{ id:'a1D2', who:0, text:'也行。大学第一年，睡觉也是个正经爱好。' },
+{ id:'a1D3', who:11, text:'那窝帮尼占个床位！窝把尼的被子晒过了哦~' },
+{ id:'a1D4', who:-1, text:'那天下午，你一个人在宿舍睡了三个小时。醒来时，桌上多了一份没人认领的社团传单。', next:'a1R' },
+
+{ id:'a1R', who:0, text:'幼年恺把报名表收好，低头看了你那一栏一眼。', cond:[
+  { flag:'club', is:'photo', next:'a1Rp' },
+  { flag:'club', is:'drama', next:'a1Rd' },
+  { flag:'club', is:'vol',   next:'a1Rv' }
+], next:'a1Rn' },
+{ id:'a1Rp', who:0, text:'摄影社啊……行。以后拍照的时候记得躲一下镜头，他怼脸是真的怼。', next:'a11' },
+{ id:'a1Rd', who:0, text:'话剧社好啊。年底要演出，到时候我给你留第一排——反正票也卖不出去。', next:'a11' },
+{ id:'a1Rv', who:0, text:'志愿者队……那你以后周末就没有懒觉了。先说好，我不心疼你。', next:'a11' },
+{ id:'a1Rn', who:0, text:'哪个社都不报？也行。反正我们十二个，天天都在你宿舍楼下。', next:'a11' },
 
 /* ===================== 第一幕 · 排座位 ===================== */
-{ id:'a01', who:-1, bg:'class', chapter:true, text:'—— 第一幕 · 排座位 ——' },
-{ id:'a02', who:0, text:'班主任说，这学期的座位可以自己选。话音刚落，十二张脸同时转了过来。' },
-{ id:'a03', who:5, text:'我左右都能坐！左边一个，右边一个，正好凑齐我。' },
-{ id:'a04', who:10, text:'我坐哪都行，反正我拍谁都怼脸。' },
-{ id:'a05', who:7, text:'我坐你同桌的话，每天给你做一个鬼脸当早安。' },
-{ id:'a05b', who:2, text:'（比心）我先表个态：不管你选谁，我都比心。' },
-{ id:'a06', who:-1, text:'十二个人同时看着你。而你，只有一张空桌子。' },
-{ id:'aChoice', who:0, text:'你要选谁当同桌？', choices:[
-  { label:'跟拼好恺坐——左边放书，右边放他', aff:{5:3, 4:1}, next:'aA1' },
-  { label:'跟怼脸恺坐——反正躲不掉', aff:{10:3, 7:1}, next:'aB1' },
-  { label:'把课桌拼成一个圈，让十二钗轮流来坐同桌', affAll:1, next:'aC1' }
+{ id:'a11', who:-1, bg:'class', place:'教学楼 302 · 上午十点', text:'上午十点，教学楼 302。班主任推门进来，把座位表往讲台上一放。' },
+{ id:'a12', who:0, text:'老师说，这学期座位可以自己选。' },
+{ id:'a13', who:-1, text:'话音刚落，十二张脸同时转了过来，像十二个摄像头完成了对焦。' },
+{ id:'a14', who:5, text:'我坐哪都行！我左边一个，右边一个，正好凑齐我。' },
+{ id:'a15', who:10, text:'我坐哪都行，反正我拍谁都怼脸。' },
+{ id:'a16', who:7, text:'我坐你旁边的话，每天给你做一个鬼脸当早安。' },
+{ id:'a17', who:2, text:'（比心）我先表个态：不管你选谁，我都比心。' },
+{ id:'a18', who:9, text:'（绷着脸）我坐最后一排。不是因为不喜欢你，是因为后排离门近。' },
+{ id:'a19', who:0, text:'他说的"门"，是食堂的门。' },
+{ id:'a20', who:11, text:'窝其实想坐尼旁边……但窝怕尼上课老看窝的脸会走神。' },
+{ id:'a21', who:3, text:'（眨眼）要不……（眨眼）……算了，这个建议我说不完。' },
+{ id:'a22', who:-1, text:'十二个人同时看着你。而你，只有一张空桌子。' },
+
+{ id:'a2Choice', who:0, text:'你要选谁当同桌？', choices:[
+  { label:'跟拼好恺坐——左边放书，右边放他', aff:{5:3, 4:1}, next:'a2A1' },
+  { label:'跟怼脸恺坐——反正躲不掉', aff:{10:3, 7:1}, next:'a2B1' },
+  { label:'把课桌拼成一个圈，让十二钗轮流来坐同桌', affAll:2, next:'a2C1' },
+  { label:'自己坐最后一排靠窗，安静一点（一个人待着）', flags:{alone:1}, next:'a2D1' }
 ]},
 
-{ id:'aA1', who:-1, text:'你把桌子推过去，拼好恺一屁股坐下，左右两张脸同时开口。' },
-{ id:'aA2', who:5, text:'左边："打扰了。" 右边："久等了！"' },
-{ id:'aA3', who:4, text:'（托腮）我建议你们中间画条线。我托着腮，帮你们看着。', next:'aEnd' },
+{ id:'a2A1', who:-1, text:'你把桌子推过去，拼好恺一屁股坐下，左右两张脸同时开口。' },
+{ id:'a2A2', who:5, text:'左边："打扰了。" 右边："久等了！"' },
+{ id:'a2A3', who:4, text:'（托腮）我建议你们中间画条线。我托着腮，帮你们看着。', next:'a23' },
 
-{ id:'aB1', who:-1, text:'怼脸恺坐下的第一件事，就是把手机举到你面前。' },
-{ id:'aB2', who:10, text:'开学第一张，来，笑一个——' },
-{ id:'aB3', who:7, text:'（在后面做鬼脸）你笑不出来，我帮你笑。', next:'aEnd' },
+{ id:'a2B1', who:-1, text:'怼脸恺坐下的第一件事，就是把手机举到你面前。' },
+{ id:'a2B2', who:10, text:'开学第一张，来，笑一个——' },
+{ id:'a2B3', who:7, text:'（在后面做鬼脸）你笑不出来，我帮你笑。', next:'a23' },
 
-{ id:'aC1', who:-1, text:'你把十二张桌子拼成了一个圈。班主任路过，驻足看了三秒。' },
-{ id:'aC2', who:0, text:'……他说，只要你们上课不转圈，就随你们。' },
-{ id:'aC3', who:-1, text:'于是这张"同桌"，你一个人占了十二个。', next:'aEnd' },
+{ id:'a2C1', who:-1, text:'你把十二张桌子拼成了一个圈。班主任路过，驻足看了三秒。' },
+{ id:'a2C2', who:0, text:'……他说，只要你们上课不转圈，就随你们。' },
+{ id:'a2C3', who:-1, text:'于是这张"同桌"，你一个人占了十二个。', next:'a23' },
 
-{ id:'aEnd', who:-1, text:'（下课铃响了。）', next:'b01' },
+{ id:'a2D1', who:-1, text:'你把书搬到最后一排靠窗的位置，一个人占了两个座位。' },
+{ id:'a2D2', who:9, text:'（抱着书坐到过道另一侧）很好，我们中间隔着一条走道。这叫边界感。', next:'a23' },
 
-/* ===================== 第二幕 · 食堂抢饭 ===================== */
-{ id:'b01', who:-1, bg:'canteen', chapter:true, text:'—— 第二幕 · 中午十二点的第一食堂 ——' },
-{ id:'b02', who:8, text:'全体注意！排队！一人一格！不许插队！' },
-{ id:'b03', who:11, text:'窝帮尼占了个位置！就在那边！' },
-{ id:'b04', who:7, text:'我刚才插队被阿姨瞪了一眼，我做了个鬼脸把她逗笑了，然后她把我赶出去了。' },
-{ id:'b05', who:9, text:'（面无表情地端着空餐盘）新窗口，值得排四十分钟。' },
-{ id:'b05b', who:3, text:'（眨眼）我建议咱们……（眨眼）……算了，我一句话眨三次，说不完。' },
-{ id:'b05c', who:9, text:'（绷着脸补了一句）他刚才那句话，眨了两秒半。' },
-{ id:'b06', who:-1, text:'窗口前排着长队，而你的餐盘还是空的。' },
-{ id:'bChoice', who:0, text:'午饭怎么办？', choices:[
-  { label:'跟着奶龙恺去他占好的位置', aff:{11:3, 2:1}, next:'bA1' },
-  { label:'听军训恺的指挥，老老实实排队', aff:{8:3, 9:1}, next:'bB1' },
-  { label:'学鬼脸恺，做个鬼脸把阿姨逗笑', aff:{7:3, 3:1}, next:'bC1' },
-  { label:'算了，给十二钗一人带一份饭', affAll:2, next:'bD1' }
+{ id:'a23', who:-1, text:'（下课铃响。十二个人同时收拾书包，动作整齐得像排练过。）', next:'a30' },
+
+/* ===================== 第一幕 · 军训拉练 ===================== */
+{ id:'a30', who:-1, bg:'field', place:'军训操场 · 正午', text:'一周后，军训操场。太阳把跑道晒得发白，塑胶的味道一股一股往上翻。' },
+{ id:'a31', who:8, text:'全体注意——！今天的科目是拉练！三公里！不许掉队！' },
+{ id:'a32', who:-1, text:'队列里十二个人站成一排，看起来特别整齐——因为他们本来就长得一样。' },
+{ id:'a33', who:3, text:'（眨眼）教官……我能申请边走边眨眼吗？' },
+{ id:'a34', who:8, text:'批准。你眨眼不影响队伍，你影响的是我的注意力。' },
+{ id:'a35', who:6, text:'（叮当）报告教官！我的奖牌跑起来会响，容易暴露目标！' },
+{ id:'a36', who:8, text:'那你就当我们的战鼓。' },
+{ id:'a37', who:11, text:'窝跑不动了……窝可以变成奶龙形态吗……' },
+{ id:'a38', who:9, text:'（面无表情地从他身边走过去）不能。快走。' },
+{ id:'a39', who:-1, text:'跑到第二公里，你的水壶空了。前面还有一公里，太阳还在头顶，队伍里开始有人喘粗气。' },
+
+{ id:'a3Choice', who:0, text:'最后半壶水，你打算怎么办？', choices:[
+  { label:'递给军训恺——他喊了一路，嗓子里全是沙子', aff:{8:3, 0:1}, next:'a3A1' },
+  { label:'递给快趴下的奶龙恺', aff:{11:3, 9:1}, next:'a3B1' },
+  { label:'自己一口闷完，谁也不给（装死）', flags:{dodge:1}, next:'a3C1' },
+  { label:'大声跟着喊口号，让全队一起提速', affAll:2, next:'a3D1' }
 ]},
 
-{ id:'bA1', who:11, text:'窝怕尼找不到，就把一整张桌子都占了哦~' },
-{ id:'bA2', who:2, text:'（比心）很好，这顿饭我们吃得很圆满。', next:'bEnd' },
+{ id:'a3A1', who:-1, text:'你把水壶塞到军训恺手里。他愣了一下，仰头喝了一口，然后还给你。' },
+{ id:'a3A2', who:8, text:'……我喝一口就够。剩下的是你的。军人的水壶，不能空着回营房。' },
+{ id:'a3A3', who:-1, text:'他把水壶塞回你怀里的时候，队伍里有人小声说了句"我也想要"。', next:'a40' },
 
-{ id:'bB1', who:8, text:'很好。有队列意识，可以打八十分。' },
-{ id:'bB2', who:9, text:'剩下二十分，扣在他刚才插了半只脚。', next:'bEnd' },
+{ id:'a3B1', who:-1, text:'你把水壶递过去。奶龙恺抱着水壶，咕咚咕咚喝了半壶。' },
+{ id:'a3B2', who:11, text:'尼真好……窝以后帮尼占一年的位置……不，两年……' },
+{ id:'a3B3', who:9, text:'（在旁边看着）他的"两年"，指的是食堂二楼靠窗那桌。那个位置确实好。', next:'a40' },
 
-{ id:'bC1', who:7, text:'不够！看我的——' },
-{ id:'bC2', who:3, text:'（眨眼）阿姨笑了，多给你打了三块肉。这个 wink，值三块。', next:'bEnd' },
+{ id:'a3C1', who:-1, text:'你仰头把最后半壶水喝完了。喉结动的那一下，被六个人同时看见了。' },
+{ id:'a3C2', who:8, text:'……行。喝自己的水，不犯法。' },
+{ id:'a3C3', who:7, text:'（凑过来小声说）你刚才那个表情，我这辈子都会记得。不是夸你。', next:'a40' },
 
-{ id:'bD1', who:-1, text:'你端着十二份饭回到座位，收获了十二句"谢谢"。' },
-{ id:'bD2', who:11, text:'哇——尼好像我们宿舍的食堂！', next:'bEnd' },
+{ id:'a3D1', who:-1, text:'你深吸一口气，跟着军训恺一起喊起了口号。' },
+{ id:'a3D2', who:8, text:'好！有人接我的口令了！全体注意——！一二三四——！' },
+{ id:'a3D3', who:-1, text:'队伍的速度提了起来。十二个人的脚步声叠在一起，居然真的像一个人。', next:'a40' },
 
-{ id:'bEnd', who:-1, text:'（下午的课，全教室都在打嗝。）', next:'c01' },
+{ id:'a40', who:8, text:'全体注意——！到点了！立正！稍息！解散！' },
+{ id:'a41', who:-1, text:'他说完"解散"，十二个人一个都没动，全都在原地喘气。他别过头去，笑了一下。', next:'a50' },
 
-/* ===================== 第三幕 · 表白墙与毕业照 ===================== */
-{ id:'c01', who:-1, bg:'wall', chapter:true, text:'—— 第三幕 · 毕业季 ——' },
-{ id:'c02', who:-1, text:'四年过得很快。快到你还没来得及反应，表白墙就已经贴满了。' },
-{ id:'c03', who:4, text:'（托腮）我在想，最后这一个月，我们应该留下点什么。' },
-{ id:'c03b', who:5, text:'左边想写"加油"，右边想写"我喜欢你"。他俩又吵起来了。' },
-{ id:'c03c', who:6, text:'（叮当）我建议一人写一句，写完都挂我奖牌上——反正我挂得下。' },
-{ id:'c04', who:1, text:'写情书也行。今天可以算我生日，我允许你们表白。' },
-{ id:'cChoice', who:0, text:'你在表白墙上写下了——', choices:[
-  { label:'一句给生日恺的"生日快乐"，祝你三百六十五天都快乐', aff:{1:3}, next:'cA1' },
-  { label:'一句给托腮恺的"别想了，就是我们"', aff:{4:3}, next:'cB1' },
-  { label:'一句给奖牌恺的"这块奖牌，颁给你"', aff:{6:3}, next:'cC1' },
-  { label:'十二句话，一人一句，一句都不能少', affAll:1, next:'cD1' }
+/* ===================== 第一幕 · 宿舍楼下 ===================== */
+{ id:'a50', who:-1, bg:'dorm', place:'宿舍楼下 · 熄灯前', text:'军训结束的晚上，宿舍楼下。路灯把十二个影子拉成十二根柱子。' },
+{ id:'a51', who:4, text:'（托腮）我想通了。军训的意义，是让我们在四年后回想起来时，还能一起喊口令。' },
+{ id:'a52', who:8, text:'这句话说得不错。可以写进我们连的总结里。' },
+{ id:'a53', who:1, text:'顺便说一句，今天也是我生日。军训完过生日，很合理。' },
+{ id:'a54', who:0, text:'你的生日没有一天不合理。' },
+{ id:'a55', who:7, text:'我今天在操场做了个鬼脸，结果远处一个排的人集体后退了一步。' },
+{ id:'a56', who:10, text:'我拍下来了。那张照片我取名叫《威慑》。' },
+{ id:'a57', who:2, text:'（比心）今天太累了，我就比一个心，然后回去睡觉。' },
+{ id:'a58', who:-1, text:'熄灯前的十分钟，楼下安静得能听见蝉。这时有人轻轻敲了敲你的窗户。' },
+{ id:'a59', who:0, text:'幼年恺站在窗下，抬头看着你，手里还拿着一沓东西。', cond:[
+  { flag:'club', is:'photo', next:'a59p' },
+  { flag:'club', is:'drama', next:'a59d' },
+  { flag:'club', is:'vol',   next:'a59v' }
+], next:'a59n' },
+{ id:'a59p', who:0, text:'摄影社的群我把你拉进去了。群里现在两个人，其中一个三天没说话了——是你。', next:'a60' },
+{ id:'a59d', who:0, text:'话剧社的群我把你拉进去了。他们让我演一棵树，我同意了，因为树不用背台词。', next:'a60' },
+{ id:'a59v', who:0, text:'志愿者队的群我把你拉进去了。周六早上六点集合，我先说好，我不会叫你第二次。', next:'a60' },
+{ id:'a59n', who:0, text:'你哪个社都没报，所以我把十二个群都拉你进去了。你手机现在有点烫。', next:'a60' },
+{ id:'a60', who:-1, text:'你打开窗户。楼下站着的不止一个——十二个人都在，手里还端着十二杯奶茶。' },
+{ id:'a61', who:11, text:'窝们猜尼渴了！奶茶窝已经帮尼插好吸管了哦~' },
+{ id:'a62', who:9, text:'（绷着脸）我的是无糖。我的人生也是。' },
+{ id:'a63', who:5, text:'我左半边想喝你的，右半边说不行。所以我现在站在这里，很痛苦。' },
+
+{ id:'a4Choice', who:0, text:'熄灯还有十分钟，你打算怎么过？', choices:[
+  { label:'让十二个人把奶茶端上楼，聊到熄灯', affAll:2, next:'a4A1' },
+  { label:'只留下托腮恺，陪他在楼下坐到熄灯', aff:{4:3, 5:1}, next:'a4B1' },
+  { label:'谢过大家，说今天太累想早点睡（装死）', flags:{dodge:1}, next:'a4C1' },
+  { label:'奶茶收下，一个人坐在楼梯口喝完（一个人待着）', flags:{alone:1}, next:'a4D1' }
 ]},
 
-{ id:'cA1', who:1, text:'（他第一次没有说"今天是我生日"）……谢谢。' },
-{ id:'cA2', who:-1, text:'他小声补了一句："明年这天，也可以算。"', next:'c10' },
+{ id:'a4A1', who:-1, text:'十二个人挤进你的宿舍，把四张椅子坐出了十二种姿势。' },
+{ id:'a4A2', who:6, text:'（叮当）注意音量，楼管阿姨的耳朵比我的奖牌还灵。' },
+{ id:'a4A3', who:-1, text:'那一晚你们聊到熄灯。灯灭的时候，十二个人同时安静下来，然后同时笑了。', next:'a64' },
 
-{ id:'cB1', who:4, text:'我想通了。' },
-{ id:'cB2', who:4, text:'这次，我不打算再想了。', next:'c10' },
+{ id:'a4B1', who:-1, text:'其他人识趣地散了，只剩下托腮恺，坐在台阶上，托着腮看月亮。' },
+{ id:'a4B2', who:4, text:'我想通了。有些话不用说出来，坐着就行。' },
+{ id:'a4B3', who:-1, text:'你们就这么坐到熄灯。他一句话都没再说，但他没有走。', next:'a64' },
 
-{ id:'cC1', who:6, text:'（叮当）这块不是体育奖，也不是学习奖。这块叫"被记住了"。' },
-{ id:'cC2', who:-1, text:'他把你写的纸条摘下来，郑重地挂在了最上面那块奖牌旁边。', next:'c10' },
+{ id:'a4C1', who:-1, text:'你说今天太累了。十二个人同时"哦"了一声，把奶茶放在门口，走了。' },
+{ id:'a4C2', who:-1, text:'你关上门，听见楼下他们的脚步声，一直响到楼道尽头。', next:'a64' },
 
-{ id:'cD1', who:0, text:'幼年恺看完，点了点头："不错，十二个都照顾到了。"' },
-{ id:'cD2', who:9, text:'（绷着脸）……我在第三行。', next:'c10' },
+{ id:'a4D1', who:-1, text:'你抱着十二杯奶茶，坐在楼梯口，一杯一杯地喝。' },
+{ id:'a4D2', who:-1, text:'喝到第七杯的时候你有点撑，但你不想上楼——因为楼上没有人等你。', next:'a64' },
 
-{ id:'c10', who:-1, bg:'photo', chapter:true, text:'—— 毕业照 ——' },
-{ id:'c11', who:8, text:'全体注意！三分钟后在图书馆台阶集合！拍毕业照！' },
-{ id:'c12', who:7, text:'我要站第一排！我要在所有人头上做鬼脸！' },
-{ id:'cPhotoChoice', who:0, text:'摄影师喊："同学，你站哪边？"', choices:[
-  { label:'站 C 位，把奖牌恺搂过来', aff:{6:3, 2:1}, next:'cA10' },
-  { label:'站边上，让鬼脸恺在我头顶做鬼脸', aff:{7:3, 3:1}, next:'cB10' },
-  { label:'让十二个人全挤进来，把画面塞满', affAll:2, next:'cC10' }
+{ id:'a64', who:-1, text:'（第一学期就这样过去了。冬天来的时候，第一食堂的新窗口排起了四十分钟的长队。）', next:'b01' },
+
+/* ===================== 第二幕 · 第一食堂 ===================== */
+{ id:'b01', who:-1, bg:'canteen', place:'第一食堂 · 中午十二点', chapter:true, text:'—— 第二幕 · 大二 · 第一食堂 ——' },
+{ id:'b02', who:-1, text:'中午十二点，第一食堂。人潮从三个门同时涌入，像三条河汇进一个湖。' },
+{ id:'b03', who:8, text:'全体注意！排队！一人一格！不许插队！' },
+{ id:'b04', who:11, text:'窝帮尼占了位置！就在那边！靠窗！那桌能晒到太阳！' },
+{ id:'b05', who:7, text:'我刚才插队被阿姨瞪了一眼，我做了个鬼脸，她笑了，然后把我请出去了。' },
+{ id:'b06', who:9, text:'（面无表情地端着空餐盘）新窗口，值得排四十分钟。' },
+{ id:'b07', who:3, text:'（眨眼）我建议咱们……（眨眼）……算了，我一句话眨三次，说不完。' },
+{ id:'b08', who:9, text:'（绷着脸补充）他刚才那句，眨了两秒半。' },
+{ id:'b09', who:6, text:'（叮当）我用三个奖牌换了阿姨多打一勺土豆——她可能以为我这是学生会的证。' },
+{ id:'b10', who:5, text:'我左半边想排队，右半边想插队。我现在站在原地，原地内耗。' },
+{ id:'b11', who:-1, text:'窗口前的队伍长得像一条会呼吸的蛇。你的餐盘还是空的。' },
+
+{ id:'b1Choice', who:0, text:'午饭怎么办？', choices:[
+  { label:'跟比心恺和奶龙恺去他们占好的位置', aff:{2:3, 11:1}, next:'b1A1' },
+  { label:'听军训恺的指挥，老老实实排队', aff:{8:3, 9:1}, next:'b1B1' },
+  { label:'学 Wink恺 眨眨眼，把打饭阿姨逗笑', aff:{3:3, 7:1}, next:'b1C1' },
+  { label:'算了，给十二钗一人带一份饭', affAll:2, next:'b1D1' }
 ]},
 
-{ id:'cA10', who:-1, text:'你搂着奖牌恺站在正中间。他愣了一下，把最亮的一块奖牌挂到了你脖子上。' },
-{ id:'cA11', who:6, text:'（叮当）这块，颁给大学四年。', next:'cLast' },
+{ id:'b1A1', who:11, text:'窝怕尼找不到，就把一整张桌子都占了哦~' },
+{ id:'b1A2', who:2, text:'（比心）很好，这顿饭我们吃得很圆满。' },
+{ id:'b1A2b', who:2, text:'（翻本子）今天第 233 次。食堂是最出成绩的地方——打饭阿姨看得见，账也好记。', next:'b1A3' },
+{ id:'b1A3', who:-1, text:'后来那张桌子成了你们的固定座位。每次有人先到，都会替其他人占十二个位置。', next:'b12' },
 
-{ id:'cB10', who:-1, text:'你站在最边上。快门响起的前一秒，鬼脸恺从你头顶探了出来。' },
-{ id:'cB11', who:7, text:'完美！这张照片，我一辈子不删！', next:'cLast' },
+{ id:'b1B1', who:8, text:'很好。有队列意识，可以打八十分。' },
+{ id:'b1B2', who:9, text:'剩下二十分，扣在他刚才插了半只脚。' },
+{ id:'b1B3', who:-1, text:'你排了二十六分钟，吃到了一份不算好吃、但排得非常理直气壮的饭。', next:'b12' },
 
-{ id:'cC10', who:-1, text:'十二个人一起往上挤，队伍瞬间乱了套。摄影师连按了十次快门。' },
-{ id:'cC11', who:11, text:'挤一挤嘛~ 反正窝们本来就是一个人！', next:'cLast' },
+{ id:'b1C1', who:7, text:'不够！看我的——' },
+{ id:'b1C2', who:3, text:'（眨眼）阿姨笑了，多给你打了三块肉。这个 wink，值三块。' },
+{ id:'b1C2b', who:3, text:'（眨眼）挑战规则里写着"有效眨眼"。刚才对阿姨那一下算技术动作，不计入。', next:'b1C3' },
+{ id:'b1C3', who:-1, text:'从那天起，你们窗口的阿姨每次看到十二张一样的脸，都会多舀半勺。', next:'b12' },
 
-{ id:'cLast', who:0, text:'快门落下的那一刻，十二张脸同时安静了一秒。' },
-{ id:'cLast2', who:0, text:'然后幼年恺小声说："……其实我不是最乖的那个。"' },
-{ id:'cLast3', who:-1, text:'其他人齐声说："我们知道。"', next:'@end' }
+{ id:'b1D1', who:-1, text:'你端着十二份饭回到座位，收获了十二句"谢谢"。' },
+{ id:'b1D2', who:11, text:'哇——尼好像我们宿舍的食堂！' },
+{ id:'b1D3', who:0, text:'（小声）他夸人的方式一直很奇怪，但他是真心的。', next:'b12' },
+
+{ id:'b12', who:-1, text:'（下午的课，全教室都在打嗝。）', next:'b20' },
+
+/* ===================== 第二幕 · 期中考 ===================== */
+{ id:'b20', who:-1, bg:'exam', place:'阶梯教室 · 期中考场', text:'十一月，期中考。考场在三楼阶梯教室，墙上挂着一只走得特别响的钟。' },
+{ id:'b21', who:-1, text:'你坐下以后才发现：左边是幼年恺，右边是绷绷恺。' },
+{ id:'b22', who:0, text:'别抄我的。不是我不给，是我也不会。' },
+{ id:'b23', who:9, text:'（面无表情）我会。但我不给。' },
+{ id:'b24', who:0, text:'这就是绷绷恺。他把"规则"两个字，刻在了脸上。' },
+{ id:'b25', who:9, text:'刻在脸上的是"不笑"。规则在心里。' },
+{ id:'b26', who:-1, text:'卷子发下来。第一题你就卡住了。钟走了七分钟，走廊里有人在咳嗽。' },
+
+{ id:'b2Choice', who:0, text:'这道题你打算怎么办？', choices:[
+  { label:'硬着头皮自己写，写到最后一秒', aff:{9:3, 0:1}, next:'b2A1' },
+  { label:'偷偷看托腮恺的卷子——他托着腮，答案好像很好抄', aff:{4:3, 5:1}, next:'b2B1' },
+  { label:'把会写的写完就交卷，回宿舍睡觉（装死）', flags:{dodge:1}, next:'b2C1' },
+  { label:'考完之后把十二个人拉到食堂对答案', affAll:2, next:'b2D1' }
+]},
+
+{ id:'b2A1', who:-1, text:'你把选择题全蒙了一个答案，大题写了三步就写不下去，但你一直坐到收卷。' },
+{ id:'b2A2', who:9, text:'（收卷时低声）你最后一题的方向是对的。只是算错了。' },
+{ id:'b2A3', who:-1, text:'那是绷绷恺第一次主动跟你说话。他说话的时候，脸依然是绷着的。', next:'b27' },
+
+{ id:'b2B1', who:-1, text:'你斜眼往左边看。托腮恺托着腮，卷子摊得很开，仿佛在邀请你。' },
+{ id:'b2B2', who:4, text:'（头也不回）我在想，抄答案这件事，本质上是对自己智力的不信任。' },
+{ id:'b2B3', who:4, text:'……算了，你看吧。反正我也不会。' },
+{ id:'b2B4', who:-1, text:'那天你抄到三道题的答案，其中两道是错的。托腮恺事后托着腮想了很久。', next:'b27' },
+
+{ id:'b2C1', who:-1, text:'你半小时就交了卷，走出教室的时候，监考老师看了你三秒。' },
+{ id:'b2C2', who:-1, text:'回到宿舍，你睡了两个小时。醒来时，桌上有十二张便利贴，写着同一句话："这道题选 C。"', next:'b27' },
+
+{ id:'b2D1', who:-1, text:'考完试，你带着十二个人去食堂，把整张桌子铺满草稿纸。' },
+{ id:'b2D2', who:6, text:'（叮当）我这题对了！奖牌以我的人格担保——虽然我的人格也挂在奖牌上。' },
+{ id:'b2D3', who:2, text:'（比心）不管对不对，我们先对答案，对了再对答案，错了就比心。', next:'b27' },
+
+{ id:'b27', who:-1, text:'（成绩出来那天，你发现自己的名字后面，跟着十二个不同的分数。）', next:'b30' },
+
+/* ===================== 第二幕 · 校运会（重要分支） ===================== */
+{ id:'b30', who:-1, bg:'sports', place:'校运会 · 田径场', text:'十二月，校运会。跑道上画着白线，风把彩旗吹得笔直。' },
+{ id:'b31', who:8, text:'全体注意——！入场式！站齐！走！' },
+{ id:'b32', who:6, text:'（叮当）今年的奖牌是金属的，比我身上这批亮。我必须拿到。' },
+{ id:'b33', who:7, text:'我要报"滚铁环"！评委说没有这个项目，我说那就立一个。' },
+{ id:'b34', who:2, text:'（比心）我报了拉拉队。虽然拉拉队只有我一个人。' },
+{ id:'b35', who:10, text:'我负责拍照。谁赢了拍谁，谁输了也拍谁，反正我都怼脸。' },
+{ id:'b36', who:-1, text:'报名表传到你手上，还空着一行。十二个人都在看你。' },
+
+{ id:'b3Choice', who:0, text:'你报什么项目？', choices:[
+  { label:'报 800 米，让军训恺带你跑', aff:{8:3, 6:1}, flags:{event:'run'}, next:'b3A1' },
+  { label:'报跳远，跟奖牌恺组队', aff:{6:3, 2:1}, flags:{event:'jump'}, next:'b3B1' },
+  { label:'报团体拔河，把十二个人全叫上', affAll:2, flags:{event:'tug'}, next:'b3C1' },
+  { label:'只当观众，帮十二个人看行李（装死）', flags:{dodge:1, event:'watch'}, next:'b3D1' }
+]},
+
+{ id:'b3A1', who:-1, text:'发令枪响之前，军训恺蹲下来，帮你看了一眼鞋带。' },
+{ id:'b3A2', who:8, text:'800 米不是跑，是"熬"。前四百米跟着我，后四百米跟着你自己的心跳。' },
+{ id:'b3A3', who:-1, text:'跑到第二圈的时候，你听见跑道边有人在喊你的名字。' },
+{ id:'b3A4', who:0, text:'{name}——！最后一圈——！' },
+{ id:'b3A5', who:-1, text:'你冲过终点线，直接坐在了地上。第一个跑过来的是军训恺。' },
+{ id:'b3A6', who:8, text:'及格。及格就是英雄。' },
+{ id:'b3A7', who:6, text:'（叮当）等等，奖牌呢？我准备了一块！' },
+{ id:'b3A8', who:6, text:'（摸遍全身）……我把它挂在天线上了。等等我，我去拿。', next:'b37' },
+
+{ id:'b3B1', who:-1, text:'跳远沙坑边上，奖牌恺把外套脱了，露出满身发亮的奖牌。' },
+{ id:'b3B2', who:6, text:'我教你。助跑要像去食堂，起跳要像看见最后一份红烧肉。' },
+{ id:'b3B3', who:-1, text:'你跳了三次：第三次踩线，第二次跳得最远，第一次最像样。' },
+{ id:'b3B4', who:6, text:'（把身上最小的一块摘下来）这块，"最佳第三次"。颁给你。' },
+{ id:'b3B5', who:-1, text:'那块奖牌上原本刻着"三年级跳绳"，他用圆珠笔在后面加了"第二版"三个字。', next:'b37' },
+
+{ id:'b3C1', who:-1, text:'拔河名单上填了十二个"杨璐恺"。裁判看了三遍，说这不合规。' },
+{ id:'b3C2', who:0, text:'我们是同一个人。规则写的是"每人限报一项"，我们确实只报了一项。' },
+{ id:'b3C3', who:-1, text:'裁判沉默了四秒，说："那你们站一边吧。"' },
+{ id:'b3C4', who:-1, text:'十二个人站在绳子的一端。对面班级看了很久，最后换了他们最壮的六个。' },
+{ id:'b3C5', who:-1, text:'你们赢了。因为绳子那头的人一直在笑，笑到手上没力气。', next:'b37' },
+
+{ id:'b3D1', who:-1, text:'你坐在看台上，帮十二个人看外套、看水壶、看手机。' },
+{ id:'b3D2', who:7, text:'你不参加吗？' },
+{ id:'b3D3', who:-1, text:'你说你负责"看台气氛组"。他愣了两秒，然后朝你竖了个大拇指。' },
+{ id:'b3D4', who:-1, text:'那天下午，你的看台上多了十二件外套，和十二句"帮我看一下"。', next:'b37' },
+
+{ id:'b37', who:6, text:'（运动会结束，夕阳把跑道染成一条橘色的河。奖牌恺站在领奖台边上，没上去。）', cond:[
+  { flag:'event', is:'run',   next:'b37r' },
+  { flag:'event', is:'jump',  next:'b37j' },
+  { flag:'event', is:'tug',   next:'b37t' }
+], next:'b37w' },
+{ id:'b37r', who:6, text:'我今天一块牌都没拿。但是你跑完了。这笔账我记在"值得"那一栏。', next:'b38' },
+{ id:'b37j', who:6, text:'我的名次是第四。第四没有奖牌，但我兜里现在少了一块。我一点也不亏。', next:'b38' },
+{ id:'b37t', who:6, text:'团体第一名的奖状发下来了，上面写着"十二钗联队"。裁判不肯写，是我们自己填的。', next:'b38' },
+{ id:'b37w', who:6, text:'我拿了两块。但台下没有一个人喊我的名字，因为喊了也分不清是喊谁。', next:'b38' },
+
+{ id:'b38', who:-1, bg:'medal', place:'奖牌墙 · 教学楼一层', text:'那天晚上，奖牌恺把身上所有的奖牌摘下来，铺在床上。' },
+{ id:'b39', who:6, text:'一共十七块。最旧的那块，是我小学三年级跳绳第三名。' },
+{ id:'b40', who:-1, text:'你问他，为什么跳绳第三名要留这么久。' },
+{ id:'b41', who:6, text:'因为那天，我爸妈都在场。……行吧，就这一块是正经的。' },
+
+/* ===================== 第二幕 · 奖牌墙与生日会 ===================== */
+{ id:'b50', who:-1, text:'奖牌墙在教学楼一层的走廊上，玻璃后面挂着历年的奖牌和照片。' },
+{ id:'b51', who:-1, text:'奖牌恺每次路过都要停三秒，像在给它们点名。' },
+{ id:'b52', who:6, text:'（叮当）总有一天，这面墙上会有一块是我自己赢的。' },
+{ id:'b53', who:4, text:'（托腮）我想通了。他不是喜欢奖牌，他是喜欢"被别人记住"。' },
+{ id:'b54', who:6, text:'……你别说出来啊。' },
+{ id:'b55', who:9, text:'（面无表情）说出来了。' },
+{ id:'b56', who:-1, text:'走廊尽头传来一段跑调的《生日快乐》，是从琴房飘出来的。' },
+{ id:'b57', who:1, text:'谁在弹我的歌？' },
+{ id:'b58', who:-1, text:'是生日恺。他每天都过生日，所以这首歌他一年要听三百六十五次。' },
+{ id:'b58b', who:-1, bg:'cake', place:'宿舍天台 · 生日会', text:'十二个人不知道从哪儿弄来一个六寸蛋糕，端到了宿舍天台上。' },
+{ id:'b58c', who:3, text:'（眨眼）吹蜡烛的时候……（眨眼）……我眨了两下，灭了四根。' },
+
+{ id:'b4Choice', who:0, text:'走廊尽头，琴声还没停。你打算——', choices:[
+  { label:'跟奖牌恺约定：明年这面墙上要有你俩的名字', aff:{6:3, 4:1}, next:'b4A1' },
+  { label:'把十二个人叫上天台，办一个只有蛋糕的生日会', affAll:2, next:'b4B1' },
+  { label:'回宿舍打游戏，让他们自己在走廊里待着（装死）', flags:{dodge:1}, next:'b4C1' },
+  { label:'一个人去天台看星星（一个人待着）', flags:{alone:1}, next:'b4D1' }
+]},
+
+{ id:'b4A1', who:-1, text:'奖牌恺盯着玻璃后面看了很久，然后伸出手，在玻璃上比了两个名字的位置。' },
+{ id:'b4A2', who:6, text:'（叮当）说好了。谁先上榜，谁就请另一个吃食堂三楼。' },
+{ id:'b4A3', who:-1, text:'第二年，那面墙上真的多了一张照片。照片上十二个人挤在一起，名字栏写着"杨璐恺等"。', next:'b59' },
+
+{ id:'b4B1', who:-1, text:'十二个人把蛋糕围在中间，插了十二根蜡烛——本来只该插一根。' },
+{ id:'b4B2', who:1, text:'按我的规矩，今天是我生日，所以每根蜡烛都是给我插的。' },
+{ id:'b4B3', who:0, text:'按我们的规矩，一人吹一根。' },
+{ id:'b4B4', who:-1, text:'那晚十二个人分了一个六寸的蛋糕，每人吃了不到两口，但都说很饱。', next:'b59' },
+
+{ id:'b4C1', who:-1, text:'你回了宿舍，开了一局游戏。走廊里的琴声停了，你没有注意。' },
+{ id:'b4C2', who:-1, text:'第二天你才知道，那晚十二个人在天台上等了你四十分钟。', next:'b59' },
+
+{ id:'b4D1', who:-1, text:'你一个人上了天台。风很大，星星很亮，楼下传来模糊的琴声。' },
+{ id:'b4D2', who:-1, text:'你在天台上站了很久，直到琴声停了，直到楼下最后一盏灯也灭了。', next:'b59' },
+
+{ id:'b59', who:-1, text:'（大二结束了。你发现宿舍桌子上，十二张脸的照片已经贴了一整面。）', next:'c01' },
+
+/* ===================== 第三幕 · 跨年夜（重要分支） ===================== */
+{ id:'c01', who:-1, bg:'newyear', place:'宿舍楼下 · 跨年夜', chapter:true, text:'—— 第三幕 · 大四 · 最后一个冬天 ——' },
+{ id:'c02', who:-1, text:'十二月三十一日，宿舍楼下的空地上，有人搬出了音箱，有人搬出了烟花。' },
+{ id:'c03', who:-1, text:'这一年过得很奇怪：明明每天都在上课，回想起来却只剩下食堂、跑道和这十二张脸。' },
+{ id:'c04', who:0, text:'跨年倒计时还有十分钟。按照传统，每个人都得许一个愿。' },
+{ id:'c05', who:2, text:'（比心）我的愿望是：明年还要比心。这个愿望最容易实现。' },
+{ id:'c05b', who:2, text:'（翻到新的一页）跨年这一笔得记双份——旧年一次，新年一次，两头都得算上。', next:'c06' },
+{ id:'c06', who:1, text:'我的愿望是：以后不要再有人问"今天到底是不是你生日"。' },
+{ id:'c07', who:0, text:'那是不可能的，因为你自己也不知道。' },
+{ id:'c08', who:8, text:'全体注意——！许愿也要站齐！从矮到高！……算了，一样高。' },
+{ id:'c09', who:5, text:'我左半边想许愿"保研成功"，右半边想许愿"永远别毕业"。他俩又要打起来了。' },
+{ id:'c10', who:9, text:'（面无表情）我的愿望不可说。说了就不灵。' },
+{ id:'c11', who:11, text:'窝的愿望是……窝的愿望是……窝不说！窝怕说出来就不灵了！' },
+{ id:'c11b', who:3, text:'（眨眼）我许愿的时候特别虔诚……（眨眼）……因为我要眨满三次才算许完。' },
+{ id:'c12', who:-1, text:'十二个人同时看向你。烟花还没点，但天上已经有人在放了。' },
+
+{ id:'c1Choice', who:0, text:'你的跨年愿望是什么？', choices:[
+  { label:'许愿"十二个人都不散"', affAll:2, flags:{wish:'all'}, next:'c1A1' },
+  { label:'许愿"希望有人记得我"', aff:{6:2, 4:2, 9:1}, flags:{wish:'remember'}, next:'c1B1' },
+  { label:'许愿"明年还要一起吃食堂最便宜那个窗口"', aff:{2:3, 11:2, 7:1}, flags:{wish:'canteen'}, next:'c1C1' },
+  { label:'不告诉任何人，自己心里许一个只关于自己的愿望（一个人待着）', flags:{alone:1, wish:'self'}, next:'c1D1' }
+]},
+
+{ id:'c1A1', who:-1, text:'你说完，十二个人同时安静了一秒。然后幼年恺先开口。' },
+{ id:'c1A2', who:0, text:'这个愿望，我们十二个一起许了。所以它得算十三票，肯定灵。' },
+{ id:'c1A3', who:-1, text:'零点的烟花在这时候炸开了。十二张脸被照得忽明忽暗。' },
+{ id:'c1A4', who:6, text:'（叮当）我宣布：从今天起，"不散"写进我们宿舍的规定里。' },
+{ id:'c1A5', who:9, text:'（绷着脸）规定这种东西，写了也没人遵守。' },
+{ id:'c1A6', who:0, text:'但我们会遵守。因为这是他自己写的。', next:'c13' },
+
+{ id:'c1B1', who:-1, text:'你说你想被人记得。说完你就后悔了，因为十二个人同时看了过来。' },
+{ id:'c1B2', who:6, text:'（叮当）这个好办。我给你做一块奖牌，上面写"被记得"。' },
+{ id:'c1B3', who:4, text:'（托腮）我想通了。被记住这件事，不需要奖牌，只需要有人在很多年以后，突然想起你。' },
+{ id:'c1B4', who:9, text:'（绷着脸）……我会记得。我记性很好，我只是不说。' },
+{ id:'c1B5', who:-1, text:'烟花在头顶炸开的时候，你听见十二个人几乎同时说了一句"会记得的"。' },
+{ id:'c1B6', who:-1, text:'声音很乱，但你听清了。', next:'c13' },
+
+{ id:'c1C1', who:-1, text:'你说希望明年还能一起吃食堂最便宜的那个窗口。' },
+{ id:'c1C2', who:11, text:'窝知道那个窗口！三块五的米粉！阿姨会给窝多放一勺酸豆角！' },
+{ id:'c1C3', who:7, text:'那个窗口的阿姨认识我们十二个。她说："你们家兄弟真多。"' },
+{ id:'c1C4', who:2, text:'（比心）为了三块五的米粉，我明年也要留在这里。' },
+{ id:'c1C4b', who:11, text:'（凑到尼耳边小声）那个窗口的阿姨窝已经打点过了——酸豆角管够。但尼不能告诉别人，这是窝的独家资源。', next:'c1C5' },
+{ id:'c1C5', who:-1, text:'很多年以后，你路过那家食堂，三块五的米粉涨到了九块。但窗口还在。', next:'c13' },
+
+{ id:'c1D1', who:-1, text:'你没有说出口。你在心里许了一个只关于自己的愿望。' },
+{ id:'c1D2', who:-1, text:'十二个人等了一会儿，见你不说话，就各自转过身去看烟花。' },
+{ id:'c1D3', who:-1, text:'零点的钟声敲响时，你站在人群外面，看着他们十二个抱在一起。' },
+{ id:'c1D4', who:-1, text:'那一刻你忽然想不起来，自己许的到底是什么愿。', next:'c13' },
+
+{ id:'c13', who:0, text:'（第二天，幼年恺在群里发了一条消息。）', cond:[
+  { flag:'wish', is:'all',      next:'c13a' },
+  { flag:'wish', is:'remember', next:'c13b' },
+  { flag:'wish', is:'canteen',  next:'c13c' }
+], next:'c13d' },
+{ id:'c13a', who:0, text:'"不散"这两个字，我已经抄在宿舍门后面的墙上了。以后每年今天，我们回来看一次。', next:'c20' },
+{ id:'c13b', who:0, text:'昨晚那句"会记得的"，我们商量了一下，决定不算数——因为要真的做到才算数。', next:'c20' },
+{ id:'c13c', who:0, text:'三块五的米粉窗口我查过了，下学期还在。所以这条愿望现在改名叫"计划"。', next:'c20' },
+{ id:'c13d', who:0, text:'昨晚你没说话。我们十二个猜了一晚上你许了什么愿，猜了十三个答案，全不对。', next:'c20' },
+
+/* ===================== 第三幕 · 表白墙 ===================== */
+{ id:'c20', who:-1, bg:'wall', place:'表白墙 · 宿舍楼下', text:'一月，宿舍楼下的表白墙。木板被便签贴了三层，最下面那层已经看不清字了。' },
+{ id:'c21', who:-1, text:'有人贴"我喜欢你"，有人贴"求组队打游戏"，还有人贴"谁看见我的水壶了"。' },
+{ id:'c22', who:4, text:'（托腮）我想通了。这不是表白墙，这是一面"想被看见墙"。' },
+{ id:'c23', who:10, text:'我拍了一张。照片里全是便签，只有角落里有个鬼脸。' },
+{ id:'c24', who:7, text:'那是我。我从左数第三张便签上面探出了半个头。' },
+{ id:'c25', who:3, text:'（眨眼）我想写点什么……（眨眼）……但每次抬手都想眨眼。' },
+{ id:'c26', who:11, text:'窝想写"窝们永远是好朋友"！但窝怕写错字，窝先在草稿纸上写了八遍。' },
+{ id:'c27', who:-1, text:'摊在你面前的，是一张空白的便签，和一支快没水的笔。' },
+
+{ id:'c2Choice', who:0, text:'你在表白墙上写下了——', choices:[
+  { label:'一句给生日恺的"生日快乐，三百六十五天都快乐"', aff:{1:3, 0:1}, next:'c2A1' },
+  { label:'一句给托腮恺的"别想了，就是我们"', aff:{4:3, 5:1}, next:'c2B1' },
+  { label:'十二句话，一人一句，一句都不能少', affAll:2, next:'c2D1' },
+  { label:'把便签折起来揣进兜里，什么也不写（装死）', flags:{dodge:1}, next:'c2C1' }
+]},
+
+{ id:'c2A1', who:1, text:'（他第一次没有说"今天是我生日"）……谢谢。' },
+{ id:'c2A2', who:-1, text:'他小声补了一句："明年这天，也可以算。"' },
+{ id:'c2A3', who:-1, text:'那张便签被风刮走过一次，他追了两百米，捡回来重新贴好。', next:'c28' },
+
+{ id:'c2B1', who:4, text:'我想通了。' },
+{ id:'c2B2', who:4, text:'这次，我不打算再想了。' },
+{ id:'c2B3', who:-1, text:'他在便签下面画了一个托腮的小人，小人也在看那行字。', next:'c28' },
+
+{ id:'c2D1', who:0, text:'幼年恺看完，点了点头："不错，十二个都照顾到了。"' },
+{ id:'c2D2', who:9, text:'（绷着脸）……我在第三行。' },
+{ id:'c2D3', who:-1, text:'十二张便签贴成了一竖排，远远看像一串连在一起的糖葫芦。', next:'c28' },
+
+{ id:'c2C1', who:-1, text:'你把便签折了两折，塞进外套口袋。' },
+{ id:'c2C2', who:10, text:'（举着相机）不写也行。我给你拍一张空白的便签，也挺好看。', next:'c28' },
+
+{ id:'c28', who:-1, text:'（一周后，那面墙被拆了。学校的通知说，要换成电子屏。）', next:'c30' },
+
+/* ===================== 第三幕 · 第一场雪 ===================== */
+{ id:'c30', who:-1, bg:'snow', place:'主干道 · 第一场雪', text:'一月下旬，下雪了。这是这座城市四年里下的第三场雪。' },
+{ id:'c31', who:-1, text:'南方人第一次见雪会尖叫，第二次会拍照，第三次会安静地站着。' },
+{ id:'c32', who:9, text:'（面无表情地站在雪里，站了很久）' },
+{ id:'c33', who:-1, text:'你走过去，发现他的睫毛上落了一片雪，他没有擦。' },
+{ id:'c34', who:9, text:'……我在想一件事。' },
+{ id:'c35', who:-1, text:'你从没见过绷绷恺"在想一件事"。你甚至以为他的人生只有"已阅"两个字。' },
+{ id:'c36', who:9, text:'我在想，等毕业以后，我是不是就再也绷不住了。' },
+{ id:'c37', who:-1, text:'他说完就把脸转开了。雪还在下，路灯下能看见很细的雪线。' },
+
+{ id:'c3Choice', who:0, text:'你打算——', choices:[
+  { label:'陪他站着，什么也不说', aff:{9:4}, next:'c3A1' },
+  { label:'把围巾解下来围到他脖子上', aff:{9:2, 0:2}, next:'c3B1' },
+  { label:'把十二个人都叫下来打雪仗', affAll:2, next:'c3D1' },
+  { label:'说"太冷了，我先回宿舍"（装死）', flags:{dodge:1}, next:'c3C1' }
+]},
+
+{ id:'c3A1', who:-1, text:'你什么都没说，就站在他旁边，一起看雪。' },
+{ id:'c3A2', who:-1, text:'站到第七分钟的时候，他忽然说了一句很轻的话。' },
+{ id:'c3A3', who:9, text:'……你还是第一个陪我站着的人。以前他们都以为我在生气。', next:'c38' },
+
+{ id:'c3B1', who:-1, text:'你把围巾解下来，绕到他脖子上。他僵了两秒，没有拒绝。' },
+{ id:'c3B2', who:9, text:'（绷着脸）这条围巾，我毕业那天还你。' },
+{ id:'c3B3', who:-1, text:'后来他一直没有还。你也没有要。', next:'c38' },
+
+{ id:'c3D1', who:-1, text:'你朝楼上喊了一声。十二个窗户同时打开，十二个脑袋同时探出来。' },
+{ id:'c3D2', who:7, text:'打雪仗？我这张脸冻硬了之后更有威慑力！' },
+{ id:'c3D3', who:-1, text:'那场雪仗你们打了四十分钟。最后所有人都在笑，只有绷绷恺的脸还是绷着的——但他捏的雪球最多。', next:'c38' },
+
+{ id:'c3C1', who:-1, text:'你说太冷了，先回去了。' },
+{ id:'c3C2', who:-1, text:'走到楼道口，你回头看了一眼。他还站在雪里，一个人，像一根路灯。', next:'c38' },
+
+{ id:'c38', who:-1, text:'（雪停的那天，图书馆四楼的自习室开始一座难求。）', next:'c40' },
+
+/* ===================== 第三幕 · 图书馆 ===================== */
+{ id:'c40', who:-1, bg:'library', place:'图书馆四楼 · 自习室', text:'毕业前的最后一个月。图书馆四楼的自习室，灯光白得像要考试。' },
+{ id:'c41', who:-1, text:'十二个人占了同一张长桌，桌上摊开的东西五花八门：考研资料、简历、相机，还有一盒蛋糕。' },
+{ id:'c42', who:0, text:'谁把蛋糕带进图书馆的？' },
+{ id:'c43', who:1, text:'我。今天是我生日。' },
+{ id:'c44', who:0, text:'……当我没问。' },
+{ id:'c45', who:6, text:'（叮当）我数了一下：我们十二个里，六个准备考研，三个在找工作，两个在等 offer，还有一个在写小说。' },
+{ id:'c46', who:5, text:'那个写小说的是我右半边。他的书叫《我的十一个兄弟》。' },
+{ id:'c46b', who:3, text:'（眨眼）我也在复习……（眨眼）……我看一行眨一次眼，所以我看得特别慢。' },
+{ id:'c47', who:-1, text:'你面前的椅子空着。而这张长桌，只能再坐一个人。' },
+
+{ id:'c4Choice', who:0, text:'你坐到谁旁边？', choices:[
+  { label:'坐到幼年恺旁边，陪他把最后一页笔记抄完', aff:{0:3, 5:1}, next:'c4A1' },
+  { label:'坐到托腮恺和绷绷恺中间', aff:{4:2, 9:2}, next:'c4B1' },
+  { label:'把椅子搬到桌子尽头，让十二个人都能看见你', affAll:2, next:'c4D1' },
+  { label:'抱着书去别的楼层，自己一个人复习（一个人待着）', flags:{alone:1}, next:'c4C1' }
+]},
+
+{ id:'c4A1', who:-1, text:'你拉开椅子坐下。幼年恺的笔记写得极其工整，连页码都用尺子对齐了。' },
+{ id:'c4A2', who:0, text:'别看我笔记。我这人看起来最乖，其实最会装。' },
+{ id:'c4A3', who:0, text:'……不过既然你坐下了，那就一起抄吧。抄完这本，我们就该毕业了。', next:'c48' },
+
+{ id:'c4B1', who:-1, text:'你坐到中间。左边托腮恺在发呆，右边绷绷恺在写东西。' },
+{ id:'c4B2', who:4, text:'（托腮）我想通了。两个人一句话不说地坐着，也是一种相处方式。' },
+{ id:'c4B3', who:9, text:'（头也不抬）他抄我的。别理他。' },
+{ id:'c4B4', who:-1, text:'你左右各看了一眼，发现他们写的其实是同一份答案，一个字都没差。', next:'c48' },
+
+{ id:'c4D1', who:-1, text:'你把椅子搬到长桌尽头，正对着十二个人。' },
+{ id:'c4D2', who:2, text:'（比心）这个位置好，一抬头就能看见我们全部。' },
+{ id:'c4D3', who:-1, text:'那天晚上，十二个人轮流抬头看你，像在确认你还在。', next:'c48' },
+
+{ id:'c4C1', who:-1, text:'你抱着书上了五楼。五楼的座位很多，很安静，一个人也没有。' },
+{ id:'c4C2', who:-1, text:'你复习到闭馆。下楼的时候，四楼那张长桌已经空了，桌上留了一块蛋糕。', next:'c48' },
+
+{ id:'c48', who:-1, text:'（毕业倒计时：7 天。）', next:'d01' },
+
+/* ===================== 终章 · 毕业照 ===================== */
+{ id:'d01', who:-1, bg:'photo', place:'图书馆台阶 · 毕业照', chapter:true, text:'—— 终章 · 毕业照 ——' },
+{ id:'d02', who:-1, text:'六月，图书馆台阶前。摄影师架好了三脚架，喊了一声"往中间靠一靠"。' },
+{ id:'d03', who:8, text:'全体注意！三分钟后集合！拍毕业照！' },
+{ id:'d04', who:7, text:'我要站第一排！我要在所有人头顶做鬼脸！' },
+{ id:'d05', who:10, text:'我先拍一张花絮！这张叫《最后一次怼脸》。' },
+{ id:'d06', who:6, text:'（叮当）今天我把所有奖牌都戴上了。走一步响六下。' },
+{ id:'d07', who:2, text:'（比心）我准备好了。我会一直比到快门响。' },
+{ id:'d07b', who:3, text:'（眨眼）我今天会尽量少眨眼……（眨眼）……争取照片里眼睛是睁开的。' },
+/* —— 支线 B 收束：不眨眼挑战的最后一轮 —— */
+{ id:'d07c', who:3, text:'（深呼吸）最后一轮挑战。这一次，快门响之前我不眨。' },
+{ id:'d07d', who:-1, text:'快门响了。他赢了——这是四年来，第一张他睁着眼睛的照片。', next:'d08' },
+{ id:'d08', who:11, text:'窝……窝今天不哭。窝已经成年了，成年人不哭的。' },
+{ id:'d09', who:9, text:'（面无表情）没人说要哭。' },
+{ id:'d10', who:11, text:'窝说的是窝自己啦！' },
+/* —— 支线 C 收束：腹黑的底牌，其实是"不想散" —— */
+{ id:'d10b', who:11, text:'（忽然不奶了）窝告诉尼一个秘密：这四年窝"不小心"办的每一件事，都是为了让十二个人别散。窝算得可准了。' },
+{ id:'d10c', who:-1, text:'他说完，立刻又奶了回去，好像刚才那两句是别人说的。', next:'d11' },
+{ id:'d11', who:-1, text:'摄影师举起手："同学，你站哪边？"' },
+
+{ id:'dChoice', who:0, text:'（最后一次选择。你站哪里？）', choices:[
+  { label:'站 C 位，把奖牌恺搂过来', aff:{6:3, 2:1}, next:'dA1' },
+  { label:'站边上，让鬼脸恺在我头顶做鬼脸', aff:{7:3, 3:1}, next:'dB1' },
+  { label:'让十二个人全挤进来，把画面塞满', affAll:2, next:'dC1' },
+  { label:'站到队伍最后面，让镜头里只剩他们十二个（装死）', flags:{dodge:1}, next:'dD1' }
+]},
+
+{ id:'dA1', who:-1, text:'你搂着奖牌恺站在正中间。他愣了一下，把最亮的那块奖牌挂到了你脖子上。' },
+{ id:'dA2', who:6, text:'（叮当）这块，颁给大学四年。' },
+{ id:'dA3', who:-1, text:'照片洗出来之后，那块奖牌在你胸前反着光，亮得有点晃眼。', next:'d20' },
+
+{ id:'dB1', who:-1, text:'你站在最边上。快门响起的前一秒，鬼脸恺从你头顶探了出来。' },
+{ id:'dB2', who:7, text:'完美！这张照片，我一辈子不删！' },
+{ id:'dB3', who:-1, text:'后来每次同学聚会，大家翻到这张照片，第一眼看到的还是那个鬼脸。', next:'d20' },
+
+{ id:'dC1', who:-1, text:'十二个人一起往上挤，队伍瞬间乱了套。摄影师连按了十次快门。' },
+{ id:'dC2', who:11, text:'挤一挤嘛~ 反正窝们本来就是一个人！' },
+{ id:'dC3', who:-1, text:'最后选中的那一张，十二张脸挤成了一团，谁也分不清谁是谁。', next:'d20' },
+
+{ id:'dD1', who:-1, text:'你退到队伍最后面，从取景框里看他们十二个。' },
+{ id:'dD2', who:-1, text:'镜头里十二张一模一样的脸笑得很好，边上空出来的那块，正好是一个人的位置。', next:'d20' },
+
+{ id:'d20', who:-1, text:'快门落下的那一刻，十二张脸同时安静了一秒。' },
+{ id:'d21', who:0, text:'……其实我不是最乖的那个。' },
+{ id:'d22', who:-1, text:'其他人齐声说："我们知道。"' },
+{ id:'d23', who:-1, bg:'gate', place:'校门口 · 散伙饭', text:'散伙饭在校门口那家开了二十年的小馆子。十二个人挤了两张桌子，椅子不够，有人坐塑料凳。' },
+{ id:'d24', who:1, text:'今天我生日，所以这顿我请。……开玩笑的，AA。' },
+{ id:'d25', who:4, text:'（托腮）我想通了。毕业不是结束，是"以后再也不能天天见"的另一种说法。' },
+{ id:'d26', who:8, text:'全体注意——！最后一次！立正！稍息！' },
+{ id:'d27', who:-1, text:'没有人动。' },
+{ id:'d28', who:8, text:'……我说解散。' },
+{ id:'d29', who:-1, text:'他说完就把头转过去了。你说不清他是在看窗外，还是在擦眼睛。' },
+{ id:'d30', who:0, text:'（幼年恺）我今天终于可以不用装乖了。……算了，还是装吧，装了四年了。' },
+{ id:'d31', who:1, text:'（生日恺）明年这天，我还会发消息给你们。你们别装作没看见。' },
+{ id:'d32', who:2, text:'（比心恺）这四年我比了大概三千次心。最后一次，给你们全桌。' },
+/* —— 支线 A 收束：《比心台账》的最后一页 —— */
+{ id:'d32b', who:2, text:'（合上本子）我刚才说少了。不是三千次，是一万零八百八十六次——我没敢报实数，怕吓着你们。' },
+{ id:'d32c', who:2, text:'（翻到最后一页，那一页是空的，只有一排小格子）这一页不记数字。这一页，是留给十二个人签名的。今天，填满了。', next:'d33' },
+{ id:'d33', who:3, text:'（Wink恺）我最后眨一次眼。眨完这一次，我就不眨了——我得看清楚你们。' },
+{ id:'d34', who:4, text:'（托腮恺）我想通了。这四年我最想不通的一件事，就是为什么要毕业。' },
+{ id:'d35', who:5, text:'（拼好恺）我左半边在哭，右半边在笑。你们看，我们俩都很舍不得。' },
+{ id:'d36', who:6, text:'（奖牌恺）我身上十七块奖牌，最重的那块是"和你们同宿舍四年"。这块我还没做出来。' },
+{ id:'d37', who:7, text:'（鬼脸恺）以后你们翻毕业照，第一个认出来的肯定是我。这是我这辈子最有用的技能。' },
+{ id:'d38', who:8, text:'（军训恺）全体都有——！我记得你们每一个人的学号，也包括他的。我说的是{name}。' },
+{ id:'d39', who:9, text:'（绷绷恺）我今天没有绷住。就这一次。你们不许说出去。' },
+{ id:'d40', who:10, text:'（怼脸恺）最后一张，我把三脚架架好了。这次不用怼脸，我们离远点拍，谁都别缺。' },
+{ id:'d41', who:11, text:'（奶龙恺）窝……窝不哭。窝真不哭。（他哭了，哭得整条街都听见了。）' },
+{ id:'d42', who:-1, text:'十一点半，馆子要打烊了。十二个人在校门口站成一排，谁也没有先走。' },
+{ id:'d43', who:0, text:'{name}，你说句总结吧。这四年，从你开始，也从你结束。' },
+{ id:'d44', who:-1, text:'你忽然想起来，四年前的那个早上，也是这样一群人围成一个半圆，问你叫什么。' },
+{ id:'d45', who:-1, text:'而这一次，他们都在等你说最后一句话。' },
+{ id:'d46', who:-1, text:'你说："……那就，毕业快乐。"', next:'@end' }
 
 ];
 
 /* ---------------------------------------------------------------
- * 4. 结局表（12 位钗的专属结局 + 十二钗齐聚后宫结局）
+ * 4. 结局表（12 位钗的专属结局 + 十二钗齐聚 + 毕业快乐 + 路人结局 = 15）
+ *    who 为 -1 表示结局页不显示头像
  * -------------------------------------------------------------*/
 var ENDINGS = [
   { id:'kai01', who:0, name:'《同桌的你，从小学开始》',
-    text:'毕业那天，幼年恺站在校门口，看起来还是开学第一天的样子。\n"我一直是十二钗里最乖的那个。"他说。\n你点点头，没有拆穿他——毕竟这四年，他装得也挺辛苦的。' },
+    text:'毕业那天，幼年恺站在校门口，看起来还是开学第一天的样子。\n"我一直是十二钗里最乖的那个。"他说。\n你点点头，没有拆穿他——毕竟这四年，他装得也挺辛苦的。\n只有你知道，每次自习室的灯亮到最晚的那一格，坐的都是他。' },
   { id:'kai02', who:1, name:'《今天也是你的生日》',
     text:'毕业后每年的这一天，你都会收到一条消息："今天我生日。"\n后来你才发现，他的生日是三百六十五天。\n但你每年都回了一句"生日快乐"，因为四年里，他确实陪你把每一天都过成了节日。' },
   { id:'kai03', who:2, name:'《比心到最后一秒》',
-    text:'散伙饭上，他举起酒杯，比了个心。\n"这是我第 10086 次比心了。"他说。\n你没数过，但你相信——因为从开学到毕业，他一直在比。有些人不会说好听的，只会比心。' },
+    text:'散伙饭上，他举起杯子，比了个心。\n"这是我第 10086 次比心了。"他说。\n你没数过，但你相信——因为从开学到毕业，他一直在比。\n有些人不会说好听的，只会比心。' },
   { id:'kai04', who:3, name:'《眨眼之间，四年就过去了》',
-    text:'你问他为什么总眨眼。他说："因为四年太快了，眨一下眼，就过去一学期。"\n毕业照那天，他眨眼眨得最凶。你说别眨了。\n他说："不行啊。不眨眼，就要哭了。"' },
+    text:'你问他为什么总眨眼。他说："因为四年太快了，眨一下眼，就过去一个学期。"\n毕业照那天，他眨眼眨得最凶。你说别眨了。\n他说："不行啊。不眨眼，就要哭了。"' },
   { id:'kai05', who:4, name:'《坐在窗边想了四年》',
-    text:'他在毕业典礼上托着腮，整整坐了两个小时。\n散场时你问他想了什么。\n"我想通了。"他说，"这四年我最想不通的，就是为什么要毕业。"' },
+    text:'他在毕业典礼上托着腮，整整坐了两个小时。\n散场时你问他想了什么。\n"我想通了。"他说，"这四年我最想不通的，就是为什么要毕业。"\n然后他补了一句："还有，我好像一直坐在你旁边，只是你没发现。"' },
   { id:'kai06', who:5, name:'《左半边和右半边都喜欢你》',
     text:'他的左半边很内向，右半边很社牛。\n毕业那天，左半边哭了，右半边在笑。你递过去一张纸巾，两边同时接住了。\n"你看，"他说，"我们俩都喜欢你。"' },
   { id:'kai07', who:6, name:'《这块奖牌，颁给大学四年》',
-    text:'他把最后一块奖牌挂到了你脖子上："大学四年，优秀室友奖。"\n你说这奖牌上没字啊。\n他说："没关系，我记得。"' },
+    text:'他把最后一块奖牌挂到了你脖子上："大学四年，优秀室友奖。"\n你说这奖牌上没字啊。\n他说："没关系，我记得。"\n后来你在抽屉最底下翻出它，背面用圆珠笔写着两个字：{name}。' },
   { id:'kai08', who:7, name:'《毕业照上，你又在做鬼脸》',
-    text:'毕业照上，他又做了一次鬼脸。辅导员说要重拍，你说不用了。\n"十年后翻出来，"你说，"我肯定第一个认出你。"\n他愣了一下，然后做了一个更大的鬼脸。' },
+    text:'毕业照上，他又做了一次鬼脸。辅导员说要重拍，你说不用了。\n"十年后翻出来，"你说，"我肯定第一个认出你。"\n他愣了一下，然后做了一个更大的鬼脸。\n那是他唯一一次，用鬼脸把眼泪藏起来。' },
   { id:'kai09', who:8, name:'《全体都有，解散》',
-    text:'"全体注意——"他喊了最后一次口令，"立正！稍息！……解散。"\n十二个人，第一次没有一个人动。\n他别过头去："我说解散。"' },
+    text:'"全体注意——"他喊了最后一次口令，"立正！稍息！……解散。"\n十二个人，第一次没有一个人动。\n他别过头去："我说解散。"\n那天晚上，他在空操场上自己跑了三公里，一个人喊了一路口号。' },
   { id:'kai10', who:9, name:'《绷了一整个大学，最后破功》',
-    text:'整整四年，没人见他笑过。\n毕业那天，他站在人群后面看着合影，嘴角动了动。\n"那个窗口，"他说，"下学期就不开了。"\n你第一次觉得，绷着脸的人，心里其实很软。' },
+    text:'整整四年，没人见他笑过。\n毕业那天，他站在人群后面看着合影，嘴角动了动。\n"那个窗口，"他说，"下学期就不开了。"\n你第一次觉得，绷着脸的人，心里其实很软。\n后来你听说，他每年都会回去吃一次那家食堂。' },
   { id:'kai11', who:10, name:'《最后一张怼脸拍》',
-    text:'他举起手机，怼脸拍了最后一张。\n"近点，再近点。"这次你没有躲。\n照片里两张脸挤在一起，背景是教学楼 302。\n"这张，"他说，"叫毕业。"' },
+    text:'他举起手机，怼脸拍了最后一张。\n"近点，再近点。"这次你没有躲。\n照片里两张脸挤在一起，背景是教学楼 302。\n"这张，"他说，"叫毕业。"\n后来这张照片成了班级群的群头像，一直用了很多年。' },
   { id:'kai12', who:11, name:'《奶声奶气地说再见》',
-    text:'奶龙恺毕业那天没哭，只是说话更奶了。\n"窝以后……还会来找尼玩的哦~"他吸了吸鼻子，"窝已经成年了，窝不哭的。"\n然后他哭得整栋楼都听见了。' },
+    text:'奶龙恺毕业那天没哭，只是说话更奶了。\n"窝以后……还会来找尼玩的哦~"他吸了吸鼻子，"窝已经成年了，窝不哭的。"\n然后他哭得整栋楼都听见了。\n第二天他给你发了条消息："窝昨天没哭，是眼睛出汗。"' },
   { id:'harem', who:-1, name:'《十二钗齐聚》',
-    text:'十二个人挤在一张毕业照里，谁也没抢到 C 位——因为画面已经满了。\n幼年恺说这四年他还是最乖的，生日恺说今天也是他生日，其他人七嘴八舌地反驳。\n辅导员说："别吵了，笑一个。"\n十二张一模一样的脸，同时笑了。\n那一刻你突然明白：所谓后宫，其实就是一群愿意陪你笑到最后的人。' }
+    text:'十二个人挤在一张毕业照里，谁也没抢到 C 位——因为画面已经满了。\n幼年恺说这四年他还是最乖的，生日恺说今天也是他生日，其他人七嘴八舌地反驳。\n辅导员说："别吵了，笑一个。"\n十二张一模一样的脸，同时笑了。\n很多年以后你才明白：所谓后宫，其实就是一群愿意陪你笑到最后的人。' },
+  { id:'graduate', who:-1, name:'《毕业快乐》',
+    text:'四年里，你总是一个人吃饭，一个人自习，一个人走过每一条需要两个人的路。\n不是没人叫你。是你每次都恰好有事。\n毕业典礼那天，你坐在最后一排，看着十二个一模一样的人挤在第一排自拍。\n散场的时候，幼年恺忽然回过头，朝你挥了挥手。\n"喂——{name}——"他喊，"一个人也要好好过啊——"\n你笑了笑。有些人陪你走了四年，哪怕你从来没有走近过他们。\n毕业快乐。' },
+  { id:'passerby', who:-1, name:'《路人结局》',
+    text:'四年里，你参加了每一次聚会，坐过每一张桌子，也笑过每一个梗。\n但散伙饭那天你忽然发现：他们聊起从前，一件都没有提到你。\n不是他们不记得，是他们记得的，都是彼此。\n你端起杯子，自己喝完了。没人问你为什么。\n后来你在班级群里看到毕业照：十二张脸挤在一起，而你站在最边上，半张脸被挡住了。\n路人结局——也挺好的，至少你完整地看完了这部喜剧。' }
 ];
 var END_BY_ID = {};
 for (var ei = 0; ei < ENDINGS.length; ei++) END_BY_ID[ENDINGS[ei].id] = ENDINGS[ei];
@@ -577,8 +1392,8 @@ function $(id){ return document.getElementById(id); }
 function clamp(v, a, b){ return v < a ? a : (v > b ? b : v); }
 
 /* ---- DOM ---- */
-var screenTitle = $('titleScreen'), screenGame = $('gameScreen'), screenEnding = $('endingScreen');
-var bgLayer = $('bgLayer'), sceneLabel = $('sceneLabel');
+var screenTitle = $('titleScreen'), screenGame = $('gameScreen'), screenEnding = $('endingScreen'), screenNameEl = $('nameScreen');
+var bgLayer = $('bgLayer'), bgDeco = $('bgDeco'), sceneLabel = $('sceneLabel');
 var portrait = $('portrait'), portraitImg = $('portraitImg'), groupCard = $('groupCard'), nameplate = $('nameplate');
 var dlName = $('dlName'), dlText = $('dlText'), dlHint = $('dlHint'), dialogueBox = $('dialogueBox');
 var choicesBox = $('choices'), toastEl = $('toast');
@@ -590,20 +1405,23 @@ var codexModal = $('codexModal'), codexList = $('codexList'), codexSub = $('code
 var NODE_BY_ID = {};
 for (var ni = 0; ni < SCRIPT.length; ni++) NODE_BY_ID[SCRIPT[ni].id] = SCRIPT[ni];
 
-var screenName = 'title';        // title | game | ending
+var screenName = 'title';        // title | name | game | ending
 var curId = null;                // 当前节点 id
 var curNode = null;
-var curBg = 'class';
+var curBg = null;
 var aff = [];                    // 12 位好感度
 var gainSeq = [];                // 每位钗最后一次涨好感的序号（用于并列时决胜）
 var gainCounter = 0;
 var curChoices = [];
 var typing = false, typeTimer = null, autoTimer = null, toastTimer = null;
-var fullText = '', typeIdx = 0;
+var fullText = '', typeIdx = 0, curIsNarr = false;
 var ended = false, endingId = null, endedAt = 0;
 var autoMode = false, muted = false;
 var unlockedEnds = {};
 var lastSavedAt = 0;
+var playerName = DEFAULT_NAME;   // 玩家名字（默认"同学"）
+var flags = {};                  // 剧情计数/标记：alone 独处、dodge 回避、club 社团、event 项目、wish 愿望
+var visited = [];                // 走过的节点 id 序列（测试用）
 
 /* ---- localStorage 安全包装（file:// 或隐私模式下不抛错） ---- */
 function lsGet(k){ try { return localStorage.getItem(k); } catch(e){ return null; } }
@@ -615,6 +1433,17 @@ function loadEnds(){
   if (raw){ try { var o = JSON.parse(raw); if (o && typeof o === 'object') unlockedEnds = o; } catch(e){} }
 }
 function saveEnds(){ lsSet(ENDS_KEY, JSON.stringify(unlockedEnds)); }
+
+/* ---- 玩家名字 ---- */
+function sanitizeName(v){
+  var s = String(v == null ? '' : v).replace(/\s+/g, ' ').trim();
+  if (s.length > 8) s = s.slice(0, 8);
+  return s || DEFAULT_NAME;                    // 空输入兜底
+}
+/* 台词模板：把 {name} 换成玩家名字（台词、选项、结局正文都用它） */
+function tpl(s){
+  return String(s == null ? '' : s).replace(/\{name\}/g, playerName);
+}
 
 /* ---- 音效：WebAudio 现场合成，无任何音频文件 ---- */
 var actx = null;
@@ -646,7 +1475,8 @@ var blipToggle = 0;
 function sfxText(){                     // 打字机逐字音：隔一个字响一次，避免太吵
   blipToggle = 1 - blipToggle;
   if (!blipToggle) return;
-  tone(760 + Math.random() * 260, 0.045, 'triangle', 0.022);
+  if (curIsNarr) tone(430 + Math.random() * 90, 0.05, 'sine', 0.016);   // 旁白：音色更低更轻
+  else tone(760 + Math.random() * 260, 0.045, 'triangle', 0.022);
 }
 function sfxChoice(){ tone(660, 0.09, 'square', 0.05); tone(990, 0.12, 'square', 0.045, 0.07); }
 function sfxClick(){ tone(520, 0.05, 'sine', 0.035); }
@@ -695,7 +1525,7 @@ function scheduleAuto(){
   }, 820);
 }
 
-/* ---- 好感度 ---- */
+/* ---- 好感度 / 剧情标记 ---- */
 function applyAff(choice){
   var parts = [];
   var k;
@@ -718,6 +1548,16 @@ function applyAff(choice){
   }
   if (parts.length) { renderAffPanel(); toast(parts.join(' · ')); }
 }
+/* flags：数值表示累加（alone / dodge），字符串表示打标记（club / event / wish） */
+function applyFlags(choice){
+  if (!choice.flags) return;
+  for (var k in choice.flags){
+    if (!choice.flags.hasOwnProperty(k)) continue;
+    var v = choice.flags[k];
+    if (typeof v === 'number') flags[k] = (flags[k] || 0) + v;
+    else flags[k] = v;
+  }
+}
 function toast(msg){
   toastEl.textContent = msg;
   toastEl.classList.add('show');
@@ -729,15 +1569,19 @@ function toast(msg){
 function showScreen(name){
   screenName = name;
   screenTitle.classList.toggle('active', name === 'title');
+  screenNameEl.classList.toggle('active', name === 'name');
   screenGame.classList.toggle('active', name === 'game');
   screenEnding.classList.toggle('active', name === 'ending');
 }
 
 function setBg(bgId){
-  if (!bgId || !BGS[bgId] || bgId === curBg) { if (bgId) curBg = bgId; return; }
+  if (!bgId || !BGS[bgId]) return;
+  if (bgId === curBg) return;
   curBg = bgId;
-  bgLayer.className = 'bg ' + BGS[bgId].cls;
-  sceneLabel.textContent = BGS[bgId].label;
+  var b = BGS[bgId];
+  bgLayer.className = 'bg ' + b.cls + (b.dark ? ' dark' : '');
+  bgDeco.innerHTML = b.deco || '';
+  sceneLabel.textContent = b.label;
 }
 
 function setPortrait(who){
@@ -752,7 +1596,6 @@ function setPortrait(who){
     nameplate.classList.remove('narr');
     dlName.textContent = CHARS[who].name;
     dlName.classList.remove('narr');
-    dlName.style.background = '';
   } else {
     portrait.classList.remove('show');
     groupCard.classList.add('show');
@@ -796,33 +1639,46 @@ function renderChoices(){
       var key = document.createElement('span');
       key.className = 'key'; key.textContent = String(i + 1);
       b.appendChild(key);
-      b.appendChild(document.createTextNode(curChoices[i].label));
+      b.appendChild(document.createTextNode(tpl(curChoices[i].label)));   // 选项文字也支持 {name}
       b.addEventListener('click', function(ev){ ev.stopPropagation(); choose(i); });
       choicesBox.appendChild(b);
     })(i);
   }
 }
 
+/* 下一句：先看 cond（按 flags 分流），再看 next，最后顺序取数组下一项 */
 function nextIdOf(node){
+  if (!node) return '@end';
+  if (node.cond && node.cond.length){
+    for (var i = 0; i < node.cond.length; i++){
+      var c = node.cond[i];
+      if (flags[c.flag] === c.is) return c.next;
+    }
+  }
   if (node.next) return node.next;
-  var i = SCRIPT.indexOf(node);
-  if (i >= 0 && i + 1 < SCRIPT.length) return SCRIPT[i + 1].id;
+  var idx = SCRIPT.indexOf(node);
+  if (idx >= 0 && idx + 1 < SCRIPT.length) return SCRIPT[idx + 1].id;
   return '@end';
 }
 
 /* 进入某个节点并渲染 */
 function goNode(id, instant){
-  if (id === '@end'){ showEnding(); return; }
+  if (id === '@end'){ showEnding(); return true; }
   var node = NODE_BY_ID[id];
   if (!node) return false;
   curId = id; curNode = node;
   setBg(node.bg);
+  if (node.place) sceneLabel.textContent = node.place;
   setPortrait(node.who);
-  dlText.className = 'dl-text' + (node.chapter ? ' chapter' : '');
-  startTyping(node.text, !!instant);
+  curIsNarr = !(node.who >= 0);
+  dlText.className = 'dl-text' + (node.chapter ? ' chapter' : '') + (curIsNarr && !node.chapter ? ' narr-text' : '');
+  dialogueBox.classList.toggle('narr-mode', curIsNarr && !node.chapter);
+  startTyping(tpl(node.text), !!instant);
   curChoices = (node.choices && node.choices.length) ? node.choices.slice() : [];
   renderChoices();
   updateHint();
+  visited.push(id);
+  if (visited.length > 500) visited.shift();
   autosave();
   if (autoMode && !curChoices.length) scheduleAuto();
   return true;
@@ -833,8 +1689,9 @@ function updateHint(){
   dlHint.textContent = keys;
 }
 
-/* 推进：正在打字则先补全整句；否则进入下一句 */
+/* 推进：正在打字则先补全整句；否则进入下一句。取名页按空格/回车 = 确认名字 */
 function advance(){
+  if (screenName === 'name') return submitName();
   if (screenName !== 'game') return false;
   if (typing){ finishTyping(); return true; }
   if (curChoices.length) return false;          // 有选项时必须先选择
@@ -849,6 +1706,7 @@ function choose(i){
   clearTimeout(autoTimer);
   sfxChoice();
   applyAff(c);
+  applyFlags(c);
   curChoices = [];
   choicesBox.innerHTML = '';
   updateHint();
@@ -859,11 +1717,13 @@ function choose(i){
 /* ---- 存档 ---- */
 function autosave(){
   var data = {
-    v: 1,
+    v: 2,
     node: curId,
+    name: playerName,
     aff: aff.slice(),
     gainSeq: gainSeq.slice(),
     gainCounter: gainCounter,
+    flags: flags,
     ends: unlockedEnds,
     muted: muted,
     ended: ended,
@@ -871,7 +1731,7 @@ function autosave(){
     savedAt: Date.now()
   };
   lastSavedAt = data.savedAt;
-  if (lsSet(SAVE_KEY, JSON.stringify(data))){}
+  lsSet(SAVE_KEY, JSON.stringify(data));
 }
 function manualSave(){
   autosave();
@@ -882,6 +1742,12 @@ function hasSave(){
   var raw = lsGet(SAVE_KEY);
   if (!raw) return null;
   try { var o = JSON.parse(raw); return (o && o.node) ? o : null; } catch(e){ return null; }
+}
+/* 存档能不能接着玩：节点还在新剧本里，或者它就是一个已达成结局 */
+function saveValid(s){
+  if (!s) return false;
+  if (s.ended && s.ending && END_BY_ID[s.ending]) return true;
+  return !!(s.node && NODE_BY_ID[s.node]);
 }
 function timeStr(ts){
   try { return new Date(ts).toLocaleString('zh-CN', { hour12:false }); }
@@ -895,11 +1761,20 @@ function dateStr(ts){
   } catch(e){ return ''; }
 }
 
-/* ---- 结局结算 ---- */
+/* ---- 结局结算（15 个） ----
+ * 1) 12 位好感全 >= HAREM_THRESHOLD    → 《十二钗齐聚》
+ * 2) 独处次数 >= ALONE_MIN            → 《毕业快乐》
+ * 3) 回避次数 >= DODGE_MIN            → 《路人结局》
+ * 4) 12 位好感全 <= PASSERBY_MAX（兜底）→ 《路人结局》
+ * 5) 其余 → 好感最高的那位钗的专属结局（并列时按最后一次涨好感决胜）
+ */
 function computeEnding(){
   var i, min = Infinity, max = -Infinity;
   for (i = 0; i < 12; i++){ if (aff[i] < min) min = aff[i]; if (aff[i] > max) max = aff[i]; }
-  if (min >= HAREM_THRESHOLD) return END_BY_ID['harem'];   // 十二钗齐聚
+  if (min >= HAREM_THRESHOLD) return END_BY_ID['harem'];
+  if ((flags.alone || 0) >= ALONE_MIN) return END_BY_ID['graduate'];
+  if ((flags.dodge || 0) >= DODGE_MIN) return END_BY_ID['passerby'];
+  if (max <= PASSERBY_MAX) return END_BY_ID['passerby'];
   var cands = [];
   for (i = 0; i < 12; i++){ if (aff[i] === max) cands.push(i); }
   var best = cands[0];
@@ -924,7 +1799,7 @@ function showEnding(){
 
 function renderEnding(e){
   endName.textContent = e.name;
-  endText.textContent = e.text;
+  endText.textContent = tpl(e.text);
   if (e.who >= 0){ endAvatar.src = CHARS[e.who].img; endAvatar.style.display = 'block'; }
   else { endAvatar.style.display = 'none'; }
   /* 好感排行 */
@@ -946,9 +1821,14 @@ function renderEnding(e){
   }
   endRank.innerHTML = html;
   var total = 0; for (var k in unlockedEnds) if (unlockedEnds.hasOwnProperty(k)) total++;
-  endMeta.innerHTML = '达成时间：<b>' + timeStr(endedAt) + '</b><br>'
+  var why = '';
+  if (e.id === 'harem') why = '<br>十二位钗的好感全部达到阈值 ' + HAREM_THRESHOLD + '。';
+  else if (e.id === 'graduate') why = '<br>独处次数 ' + (flags.alone || 0) + ' 次 · 你几乎是独自走完这四年的。';
+  else if (e.id === 'passerby') why = '<br>回避次数 ' + (flags.dodge || 0) + ' 次 · 你和每个人都只停在点头之交。';
+  endMeta.innerHTML = '主角名字：<b>' + playerName + '</b><br>'
+                    + '达成时间：<b>' + timeStr(endedAt) + '</b><br>'
                     + '结局收集：<b>' + total + ' / ' + ENDINGS.length + '</b>'
-                    + (e.id === 'harem' ? '<br>十二位钗的好感全部达到阈值 ' + HAREM_THRESHOLD + '。' : '')
+                    + why
                     + '<br>好感结算：最高 <b>' + Math.max.apply(null, aff) + '</b> · 最低 <b>' + Math.min.apply(null, aff) + '</b>';
   renderCodexLine();
 }
@@ -958,14 +1838,21 @@ function renderCodexLine(){
   var n = 0; for (var k in unlockedEnds) if (unlockedEnds.hasOwnProperty(k)) n++;
   codexLine.textContent = '结局收集：' + n + ' / ' + ENDINGS.length;
 }
+function endingTag(id){
+  if (id === 'harem') return '隐藏';
+  if (id === 'graduate') return '独行';
+  if (id === 'passerby') return '路人';
+  return '';
+}
 function openCodex(){
   var html = '', n = 0;
   for (var i = 0; i < ENDINGS.length; i++){
     var e = ENDINGS[i], got = !!unlockedEnds[e.id];
     if (got) n++;
-    html += '<div class="codex-item' + (got ? '' : ' locked') + '">'
+    var tag = endingTag(e.id);
+    html += '<div class="codex-item' + (got ? '' : ' locked') + (tag ? ' special' : '') + '">'
          +  '<span class="ci-nm">' + (got ? e.name : '？？？') + '</span>'
-         +  (e.id === 'harem' ? '<span class="ci-t">隐藏</span>' : '')
+         +  (tag ? '<span class="ci-t">' + tag + '</span>' : '')
          +  (got ? '<span class="ci-t">' + dateStr(unlockedEnds[e.id]) + '</span>' : '')
          +  '</div>';
   }
@@ -974,13 +1861,46 @@ function openCodex(){
   codexModal.classList.add('show');
 }
 
+/* ---- 标题页提示（存档失效时会写一行说明） ---- */
+function titleNote(msg, color){
+  var el = $('titleNote');
+  if (!el){
+    el = document.createElement('div');
+    el.id = 'titleNote';
+    el.className = 'name-tip';
+    var card = document.querySelector('#titleScreen .title-card');
+    if (card) card.appendChild(el);
+  }
+  el.style.display = msg ? 'block' : 'none';
+  el.style.color = color || '#9a2130';
+  el.textContent = msg || '';
+}
+
+/* ---- 取名页 ---- */
+function openNameScreen(){
+  playerName = DEFAULT_NAME;
+  titleNote('');
+  var inp = $('nameInput');
+  if (inp) inp.value = '';
+  showScreen('name');
+  setTimeout(function(){ try { if (inp) inp.focus(); } catch(e){} }, 30);
+}
+function submitName(){
+  var inp = $('nameInput');
+  playerName = sanitizeName(inp ? inp.value : playerName);
+  newGame(playerName);
+  return true;
+}
+
 /* ---- 新游戏 / 继续 ---- */
-function newGame(){
-  aff = []; gainSeq = [];
+function newGame(name){
+  playerName = sanitizeName(name !== undefined ? name : playerName);
+  aff = []; gainSeq = []; flags = {}; visited = [];
   for (var i = 0; i < 12; i++){ aff.push(1); gainSeq.push(0); }   // 序章：你和十二钗都打过招呼了
   gainCounter = 0;
   ended = false; endingId = null; endedAt = 0;
   curBg = null;
+  titleNote('');
   loadEnds();
   showScreen('game');
   renderAffPanel();
@@ -989,19 +1909,27 @@ function newGame(){
 }
 function continueGame(){
   var s = hasSave();
-  if (!s){ newGame(); return; }
+  if (!s){ openNameScreen(); return; }
+  playerName = sanitizeName(s.name || '');
+  flags = (s.flags && typeof s.flags === 'object') ? s.flags : {};
   aff = (s.aff && s.aff.length === 12) ? s.aff.slice() : [1,1,1,1,1,1,1,1,1,1,1,1];
   gainSeq = (s.gainSeq && s.gainSeq.length === 12) ? s.gainSeq.slice() : [0,0,0,0,0,0,0,0,0,0,0,0];
   gainCounter = s.gainCounter || 0;
   if (s.ends && typeof s.ends === 'object'){ for (var k in s.ends) if (s.ends.hasOwnProperty(k)) unlockedEnds[k] = s.ends[k]; }
   muted = !!s.muted; syncMuteBtn();
   ended = !!s.ended; endingId = s.ending || null; endedAt = s.savedAt || Date.now();
-  curBg = null;
+  curBg = null; visited = [];
   if (ended && endingId && END_BY_ID[endingId]){
     showScreen('game');
     renderAffPanel();
     renderEnding(END_BY_ID[endingId]);
     showScreen('ending');
+    return;
+  }
+  /* 旧存档里的节点在新剧本中已经不存在 → 安全回退到标题页（不报错、不白屏） */
+  if (!NODE_BY_ID[s.node]){
+    backToTitle();
+    titleNote('存档里的剧情节点「' + s.node + '」已不存在（剧本已改版），已安全回到标题页。');
     return;
   }
   showScreen('game');
@@ -1017,9 +1945,11 @@ function backToTitle(){
 }
 function refreshTitle(){
   var s = hasSave();
+  var ok = saveValid(s);
   $('btnContinue').disabled = !s;
   if (s){
-    $('btnContinue').textContent = '继续游戏 · ' + timeStr(s.savedAt).slice(-8) + (s.ended ? '（结局）' : '');
+    $('btnContinue').textContent = '继续游戏 · ' + timeStr(s.savedAt).slice(-8)
+      + (s.ended ? '（结局）' : (ok ? '' : '（存档已失效）'));
   } else {
     $('btnContinue').textContent = '继续游戏（暂无存档）';
   }
@@ -1058,7 +1988,13 @@ window.__state = function(){
     fullText: fullText,
     typing: typing,
     aff: aff.slice(),
-    choices: curChoices.map(function(c){ return c.label; }),
+    choices: curChoices.map(function(c){ return tpl(c.label); }),
+    /* 选项的完整数据（好感 / 标记 / 跳转），供自动化测试与分析使用 */
+    choiceMeta: curChoices.map(function(c){
+      var aff2 = {}; if (c.aff){ for (var k in c.aff) if (c.aff.hasOwnProperty(k)) aff2[k] = c.aff[k]; }
+      var fl = {}; if (c.flags){ for (var k2 in c.flags) if (c.flags.hasOwnProperty(k2)) fl[k2] = c.flags[k2]; }
+      return { label: tpl(c.label), next: c.next || null, aff: aff2, affAll: c.affAll || 0, flags: fl };
+    }),
     ended: !!ended,
     ending: endingId,
     endingName: endingId && END_BY_ID[endingId] ? END_BY_ID[endingId].name : null,
@@ -1067,22 +2003,90 @@ window.__state = function(){
     muted: muted,
     unlocked: Object.keys(unlockedEnds),
     bg: curBg,
+    name: playerName,
+    flags: JSON.parse(JSON.stringify(flags)),
+    visited: visited.slice(),
     total: SCRIPT.length
   };
 };
 window.__goto = function(sceneId){ return goNode(sceneId); };
 window.__choose = function(i){ return choose(i); };
 window.__skip = function(){
+  if (screenName === 'name') return submitName();   // 取名页：跳过 = 用默认名/已填名字开始
   if (screenName !== 'game') return false;
-  if (typing){ finishTyping(); return true; }   // 跳过打字机：先补全整句
-  return advance();                            // 否则推进到下一句
+  if (typing){ finishTyping(); return true; }       // 跳过打字机：先补全整句
+  return advance();                                 // 否则推进到下一句
 };
 window.__auto = function(on){ autoMode = !!on; $('btnAuto').classList.toggle('on', autoMode); $('btnAuto').textContent = autoMode ? '快进中' : '快进'; return autoMode; };
 window.__save = function(){ manualSave(); return lastSavedAt; };
 window.__affAll = function(v){ for (var i = 0; i < 12; i++){ aff[i] = v; gainSeq[i] = ++gainCounter; } renderAffPanel(); return aff.slice(); };
+window.__setName = function(n){ var inp = $('nameInput'); if (inp) inp.value = (n == null ? '' : String(n)); return inp ? inp.value : null; };
+window.__name = function(){ return playerName; };
+window.__start = function(name){ newGame(name === undefined ? playerName : name); return window.__state(); };
+window.__history = function(){ return visited.slice(); };
+window.__flags = function(){ return JSON.parse(JSON.stringify(flags)); };
+/* 剧本自检：节点数、重复 id、悬空引用、不可达节点、每位钗的台词数 */
+window.__audit = function(){
+  var i, j, seen = {}, dups = [], dangling = [], whoCounts = [], narrCount = 0, textNodes = 0;
+  var choiceNodes = 0, choiceOptions = 0, bgUsed = {}, condNodes = 0;
+  for (i = 0; i < 12; i++) whoCounts.push(0);
+  for (i = 0; i < SCRIPT.length; i++){
+    var n = SCRIPT[i];
+    if (seen[n.id]) dups.push(n.id); else seen[n.id] = 1;
+    if (n.text){ textNodes++; if (n.who >= 0) whoCounts[n.who]++; else narrCount++; }
+    if (n.bg) bgUsed[n.bg] = (bgUsed[n.bg] || 0) + 1;
+    if (n.cond && n.cond.length) condNodes++;
+    if (n.choices && n.choices.length){ choiceNodes++; choiceOptions += n.choices.length; }
+  }
+  for (i = 0; i < SCRIPT.length; i++){
+    var m = SCRIPT[i], refs = [];
+    if (m.next) refs.push(m.next);
+    if (m.cond) for (j = 0; j < m.cond.length; j++) refs.push(m.cond[j].next);
+    if (m.choices) for (j = 0; j < m.choices.length; j++) refs.push(m.choices[j].next);
+    for (j = 0; j < refs.length; j++){
+      var r = refs[j];
+      if (r === '@end') continue;
+      if (!seen[r]) dangling.push(m.id + '->' + r);
+    }
+  }
+  /* 可达性：从 p01 出发（含顺序播放的隐式边），找不可达节点 */
+  var reach = {}, queue = [], start = SCRIPT[0] ? SCRIPT[0].id : null;
+  if (start && seen[start]){ reach[start] = 1; queue.push(start); }
+  while (queue.length){
+    var id = queue.shift();
+    var nd = null;
+    for (i = 0; i < SCRIPT.length; i++) if (SCRIPT[i].id === id){ nd = SCRIPT[i]; break; }
+    if (!nd) continue;
+    var outs = [];
+    if (nd.cond) for (j = 0; j < nd.cond.length; j++) outs.push(nd.cond[j].next);
+    if (nd.choices) for (j = 0; j < nd.choices.length; j++) outs.push(nd.choices[j].next);
+    if (nd.next) outs.push(nd.next);
+    else {
+      var idx2 = SCRIPT.indexOf(nd);
+      if (idx2 >= 0 && idx2 + 1 < SCRIPT.length) outs.push(SCRIPT[idx2 + 1].id);
+    }
+    for (j = 0; j < outs.length; j++){
+      var o = outs[j];
+      if (o === '@end' || !seen[o] || reach[o]) continue;
+      reach[o] = 1; queue.push(o);
+    }
+  }
+  var unreachable = [];
+  for (i = 0; i < SCRIPT.length; i++) if (!reach[SCRIPT[i].id]) unreachable.push(SCRIPT[i].id);
+  return {
+    nodes: SCRIPT.length, textNodes: textNodes, narrCount: narrCount, whoCounts: whoCounts,
+    choiceNodes: choiceNodes, choiceOptions: choiceOptions, condNodes: condNodes,
+    dupIds: dups, dangling: dangling, unreachable: unreachable,
+    bgs: Object.keys(BGS), bgsUsed: Object.keys(bgUsed), bgsUnused: Object.keys(BGS).filter(function(k){ return !bgUsed[k]; }),
+    ends: ENDINGS.length, chars: CHARS.length,
+    thresholds: { harem: HAREM_THRESHOLD, alone: ALONE_MIN, dodge: DODGE_MIN, passerby: PASSERBY_MAX, affMax: AFF_MAX }
+  };
+};
 
 /* ---- 事件绑定 ---- */
-$('btnStart').addEventListener('click', function(){ sfxClick(); newGame(); });
+$('btnStart').addEventListener('click', function(){ sfxClick(); openNameScreen(); });
+$('btnNameOk').addEventListener('click', function(){ sfxClick(); submitName(); });
+$('btnNameBack').addEventListener('click', function(){ sfxClick(); backToTitle(); });
 $('btnContinue').addEventListener('click', function(){ sfxClick(); continueGame(); });
 $('btnCodex').addEventListener('click', function(){ sfxClick(); openCodex(); });
 $('btnCodexClose').addEventListener('click', function(){ sfxClick(); codexModal.classList.remove('show'); });
@@ -1103,8 +2107,11 @@ $('btnAff').addEventListener('click', function(ev){
   affPanel.classList.toggle('show');
   sfxClick();
 });
-$('btnRestart').addEventListener('click', function(){ sfxClick(); newGame(); });
+$('btnRestart').addEventListener('click', function(){ sfxClick(); newGame(playerName); });
 $('btnBackTitle').addEventListener('click', function(){ sfxClick(); backToTitle(); });
+$('nameInput').addEventListener('keydown', function(ev){
+  if (ev.key === 'Enter'){ ev.preventDefault(); sfxClick(); submitName(); }
+});
 
 /* 点击推进（点击正在打字的句子 → 先补全整句） */
 function onTap(ev){
@@ -1119,12 +2126,19 @@ choicesBox.addEventListener('click', function(ev){ ev.stopPropagation(); });
 /* 键盘：空格/回车推进，数字键选选项，M 静音，A 好感面板，S 存档 */
 document.addEventListener('keydown', function(ev){
   if (codexModal.classList.contains('show')){ if (ev.key === 'Escape') codexModal.classList.remove('show'); return; }
+  if (screenName === 'name'){
+    /* 输入框里打字不受影响；这里只在没聚焦输入框时兜底 */
+    if (ev.target && ev.target.id === 'nameInput') return;
+    if (ev.key === 'Enter' || ev.key === ' '){ ev.preventDefault(); submitName(); }
+    else if (ev.key === 'Escape'){ backToTitle(); }
+    return;
+  }
   if (screenName === 'title'){
-    if (ev.key === 'Enter' || ev.key === ' '){ ev.preventDefault(); if (! $('btnContinue').disabled) continueGame(); else newGame(); }
+    if (ev.key === 'Enter' || ev.key === ' '){ ev.preventDefault(); if (! $('btnContinue').disabled) continueGame(); else openNameScreen(); }
     return;
   }
   if (screenName === 'ending'){
-    if (ev.key === 'Enter' || ev.key === ' '){ ev.preventDefault(); newGame(); }
+    if (ev.key === 'Enter' || ev.key === ' '){ ev.preventDefault(); newGame(playerName); }
     return;
   }
   if (ev.key === ' ' || ev.key === 'Enter' || ev.key === 'Spacebar'){ ev.preventDefault(); advance(); return; }
